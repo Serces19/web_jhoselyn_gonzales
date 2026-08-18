@@ -1,9 +1,11 @@
-import React from 'react';
-import { Scale, Users, Shield, CheckCircle, MessageCircle, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Scale, Users, Shield, CheckCircle, MessageCircle, ArrowRight, ChevronDown, Globe } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const [activeArea, setActiveArea] = useState(null);
+
   const whatsappMessage = encodeURIComponent("Hola, me gustaría información sobre sus servicios legales.");
   const whatsappUrl = `https://wa.me/591XXXXXXXXX?text=${whatsappMessage}`; // Reemplazar con número real
 
@@ -16,8 +18,10 @@ export default function LandingPage() {
             <img src="/logo.jpg" alt="Logo Jhoselyn Gonzales" style={{ height: '100px', width: 'auto', objectFit: 'contain', borderRadius: '4px' }} />
           </div>
           <nav className="nav-links">
-            <a href="#servicios" className="nav-link">Servicios</a>
-            <a href="#nosotros" className="nav-link">Sobre Mí</a>
+            <a href="/#servicios" className="nav-link">Servicios</a>
+            <a href="/blog" className="nav-link">Blog</a>
+            <a href="/faq" className="nav-link">FAQ</a>
+            <a href="/contacto" className="nav-link">Contacto</a>
             <button onClick={() => navigate('/booking')} className="btn-primary" style={{ padding: '0.5rem 1rem' }}>Agendar Cita</button>
           </nav>
         </div>
@@ -52,13 +56,25 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* International Services Banner */}
+      <div style={{ backgroundColor: 'var(--color-primary-dark)', color: '#fff', padding: '0.9rem 0' }}>
+        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', flexWrap: 'wrap', textAlign: 'center' }}>
+          <Globe size={18} style={{ color: 'var(--color-accent-light)', flexShrink: 0 }} />
+          <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>
+            🇺🇸 <strong>Atendemos residentes en Estados Unidos.</strong> Consultas online · Pago internacional (AirTM / ACH / Tarjeta)
+          </span>
+          <a href="/contacto" style={{ backgroundColor: 'var(--color-accent-light)', color: 'var(--color-primary-dark)', border: 'none', padding: '0.4rem 1rem', borderRadius: '6px', fontWeight: '700', fontSize: '0.82rem', whiteSpace: 'nowrap', textDecoration: 'none' }}>
+            Contactar ahora →
+          </a>
+        </div>
+      </div>
+
       {/* Services Section */}
       <section id="servicios" className="services" style={{ padding: '6rem 0', backgroundColor: '#ffffff' }}>
         <div className="container">
-          
           <div className="editorial-grid">
-            
-            {/* Column 1 */}
+
+            {/* Column 1 — Label + Area 1 */}
             <div className="editorial-col">
               <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '4rem', color: 'var(--color-primary-dark)', lineHeight: 1, marginBottom: '4rem', fontWeight: 600 }}>
                 Áreas<br/>
@@ -66,33 +82,92 @@ export default function LandingPage() {
                 de<br/>
                 Práctica
               </h2>
-
               <div style={{ marginTop: 'auto' }}>
                 <Users size={32} style={{ color: 'var(--color-primary-light)', marginBottom: '1.5rem' }} />
-                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', color: 'var(--color-primary-dark)', marginBottom: '1rem', fontWeight: 600, lineHeight: 1.1 }}>Derecho Familiar</h3>
-                <p style={{ color: '#64748b', fontSize: '0.95rem', lineHeight: 1.6 }}>Asesoría y representación en procesos de divorcio, asistencia familiar, guarda y visitas, buscando siempre la solución más justa y humana.</p>
+                <h3
+                  onClick={() => setActiveArea(activeArea === 'familiar' ? null : 'familiar')}
+                  style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: 'var(--color-primary-dark)', marginBottom: '0.75rem', fontWeight: 600, lineHeight: 1.1, cursor: 'pointer', display: 'flex', alignItems: 'flex-start', gap: '0.5rem', userSelect: 'none' }}>
+                  Derecho Familiar
+                  <ChevronDown size={20} style={{ marginTop: '6px', flexShrink: 0, transition: 'transform 0.3s', transform: activeArea === 'familiar' ? 'rotate(180deg)' : 'none' }} />
+                </h3>
+                <p style={{ color: '#64748b', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '1rem' }}>Asesoría y representación en procesos de divorcio, asistencia familiar y guarda.</p>
+                {activeArea === 'familiar' && (
+                  <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0', animation: 'fadeIn 0.3s ease' }}>
+                    <p style={{ fontSize: '0.78rem', fontWeight: '700', color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.75rem' }}>Casos comunes</p>
+                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      {['Divorcio por mutuo acuerdo', 'Divorcio contencioso', 'Asistencia familiar (pensión)', 'Guarda y custodia de hijos', 'Régimen de visitas', 'Separación de bienes'].map(c => (
+                        <li key={c} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#334155', fontSize: '0.88rem' }}>
+                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--color-primary)', flexShrink: 0 }}></span>{c}
+                        </li>
+                      ))}
+                    </ul>
+                    <button onClick={() => navigate('/booking')} style={{ marginTop: '1.25rem', backgroundColor: 'var(--color-primary-dark)', color: '#fff', border: 'none', padding: '0.6rem 1.2rem', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      Agendar consulta <ArrowRight size={14} />
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Column 2 (Highlighted) */}
-            <div className="editorial-col" style={{ padding: 0, background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', color: '#fff', justifyContent: 'flex-end' }}>
+            {/* Column 2 — Highlighted */}
+            <div
+              className="editorial-col"
+              style={{ padding: 0, background: 'linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)', color: '#fff', justifyContent: 'flex-end', cursor: 'pointer' }}
+              onClick={() => setActiveArea(activeArea === 'ninez' ? null : 'ninez')}>
               <div style={{ padding: '3rem 2rem', marginTop: 'auto' }}>
                 <Shield size={32} style={{ color: 'rgba(255,255,255,0.8)', marginBottom: '1.5rem' }} />
-                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', color: '#fff', marginBottom: '1rem', fontWeight: 600, lineHeight: 1.1 }}>Niñez y Adolescencia</h3>
-                <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '0.95rem', lineHeight: 1.6 }}>Protección prioritaria de los derechos de menores. Acompañamiento en procesos de filiación, adopción y restitución internacional.</p>
+                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: '#fff', marginBottom: '0.75rem', fontWeight: 600, lineHeight: 1.1, display: 'flex', alignItems: 'flex-start', gap: '0.5rem', userSelect: 'none' }}>
+                  Niñez y Adolescencia
+                  <ChevronDown size={20} style={{ marginTop: '6px', flexShrink: 0, transition: 'transform 0.3s', transform: activeArea === 'ninez' ? 'rotate(180deg)' : 'none', color: 'rgba(255,255,255,0.7)' }} />
+                </h3>
+                <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '1rem' }}>Protección prioritaria de los derechos de menores.</p>
+                {activeArea === 'ninez' && (
+                  <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.2)' }}>
+                    <p style={{ fontSize: '0.78rem', fontWeight: '700', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.75rem' }}>Casos comunes</p>
+                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      {['Filiación y reconocimiento de hijos', 'Adopción nacional', 'Restitución internacional de menores', 'Violencia intrafamiliar (menores)', 'Tutela y curatela'].map(c => (
+                        <li key={c} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'rgba(255,255,255,0.85)', fontSize: '0.88rem' }}>
+                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.6)', flexShrink: 0 }}></span>{c}
+                        </li>
+                      ))}
+                    </ul>
+                    <button onClick={(e) => { e.stopPropagation(); navigate('/booking'); }} style={{ marginTop: '1.25rem', backgroundColor: 'rgba(255,255,255,0.15)', color: '#fff', border: '1px solid rgba(255,255,255,0.4)', padding: '0.6rem 1.2rem', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      Agendar consulta <ArrowRight size={14} />
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Column 3 */}
             <div className="editorial-col">
               <p style={{ color: '#334155', fontSize: '1.1rem', lineHeight: 1.6, fontWeight: 500, fontStyle: 'italic', marginBottom: '3rem' }}>
-                No perseguimos tendencias — respaldamos causas justas. Aquí es donde aportamos mayor firmeza, experiencia y empatía profunda:
+                No perseguimos tendencias — respaldamos causas justas.
               </p>
-
               <div style={{ marginTop: 'auto' }}>
                 <Scale size={32} style={{ color: 'var(--color-primary-light)', marginBottom: '1.5rem' }} />
-                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', color: 'var(--color-primary-dark)', marginBottom: '1rem', fontWeight: 600, lineHeight: 1.1 }}>Derecho Civil y Patrimonial</h3>
-                <p style={{ color: '#64748b', fontSize: '0.95rem', lineHeight: 1.6 }}>Defensa y saneamiento de propiedades, sucesiones, elaboración de contratos y resolución de conflictos sobre bienes y patrimonio familiar.</p>
+                <h3
+                  onClick={() => setActiveArea(activeArea === 'civil' ? null : 'civil')}
+                  style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: 'var(--color-primary-dark)', marginBottom: '0.75rem', fontWeight: 600, lineHeight: 1.1, cursor: 'pointer', display: 'flex', alignItems: 'flex-start', gap: '0.5rem', userSelect: 'none' }}>
+                  Derecho Civil y Patrimonial
+                  <ChevronDown size={20} style={{ marginTop: '6px', flexShrink: 0, transition: 'transform 0.3s', transform: activeArea === 'civil' ? 'rotate(180deg)' : 'none' }} />
+                </h3>
+                <p style={{ color: '#64748b', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '1rem' }}>Defensa y saneamiento de propiedades, sucesiones y contratos.</p>
+                {activeArea === 'civil' && (
+                  <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0' }}>
+                    <p style={{ fontSize: '0.78rem', fontWeight: '700', color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.75rem' }}>Casos comunes</p>
+                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      {['Saneamiento de propiedades', 'Sucesiones y herencias', 'Testamentos', 'Elaboración de contratos', 'Partición de bienes', 'Conflictos de copropiedad'].map(c => (
+                        <li key={c} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#334155', fontSize: '0.88rem' }}>
+                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--color-primary)', flexShrink: 0 }}></span>{c}
+                        </li>
+                      ))}
+                    </ul>
+                    <button onClick={() => navigate('/booking')} style={{ marginTop: '1.25rem', backgroundColor: 'var(--color-primary-dark)', color: '#fff', border: 'none', padding: '0.6rem 1.2rem', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      Agendar consulta <ArrowRight size={14} />
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -101,8 +176,28 @@ export default function LandingPage() {
               <div style={{ flex: 1 }}></div>
               <div style={{ marginTop: 'auto' }}>
                 <MessageCircle size={32} style={{ color: 'var(--color-primary-light)', marginBottom: '1.5rem' }} />
-                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', color: 'var(--color-primary-dark)', marginBottom: '1rem', fontWeight: 600, lineHeight: 1.1 }}>Solución de Conflictos</h3>
-                <p style={{ color: '#64748b', fontSize: '0.95rem', lineHeight: 1.6 }}>Estrategias de mediación y negociación extrajudicial para resolver disputas de forma pacífica, ahorrando tiempo y desgaste emocional.</p>
+                <h3
+                  onClick={() => setActiveArea(activeArea === 'conflictos' ? null : 'conflictos')}
+                  style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: 'var(--color-primary-dark)', marginBottom: '0.75rem', fontWeight: 600, lineHeight: 1.1, cursor: 'pointer', display: 'flex', alignItems: 'flex-start', gap: '0.5rem', userSelect: 'none' }}>
+                  Solución de Conflictos
+                  <ChevronDown size={20} style={{ marginTop: '6px', flexShrink: 0, transition: 'transform 0.3s', transform: activeArea === 'conflictos' ? 'rotate(180deg)' : 'none' }} />
+                </h3>
+                <p style={{ color: '#64748b', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '1rem' }}>Mediación y negociación extrajudicial para resolver disputas pacíficamente.</p>
+                {activeArea === 'conflictos' && (
+                  <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0' }}>
+                    <p style={{ fontSize: '0.78rem', fontWeight: '700', color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.75rem' }}>Casos comunes</p>
+                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      {['Conflictos de vecindad', 'Disputas comerciales', 'Acuerdos extrajudiciales', 'Mediación familiar', 'Conciliación previa al juicio'].map(c => (
+                        <li key={c} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#334155', fontSize: '0.88rem' }}>
+                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--color-primary)', flexShrink: 0 }}></span>{c}
+                        </li>
+                      ))}
+                    </ul>
+                    <button onClick={() => navigate('/booking')} style={{ marginTop: '1.25rem', backgroundColor: 'var(--color-primary-dark)', color: '#fff', border: 'none', padding: '0.6rem 1.2rem', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      Agendar consulta <ArrowRight size={14} />
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -228,10 +323,18 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="footer">
         <div className="container">
-          <div className="logo footer-logo" style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
-            <img src="/logo.jpg" alt="Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain', borderRadius: '4px' }} />
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
+            <img src="/logo.jpg" alt="Logo" style={{ height: '70px', width: 'auto', objectFit: 'contain', borderRadius: '4px' }} />
           </div>
-          <p>© 2026 Jhoselyn Gonzales Abogada. Todos los derechos reservados.</p>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '2.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+            <a href="/#servicios" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Servicios</a>
+            <a href="/blog" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Blog</a>
+            <a href="/faq" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>FAQ Legal</a>
+            <a href="/contacto" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Contacto</a>
+            <a href="/probono" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Pro Bono</a>
+            <a href="/booking" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Agendar Cita</a>
+          </div>
+          <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem' }}>© 2026 Jhoselyn Gonzales Abogada · Cochabamba, Bolivia · Hernínas y Oquendo</p>
         </div>
       </footer>
 

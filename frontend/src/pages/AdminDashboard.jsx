@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Calendar, Check, X, Bell, MessageCircle, Plus, Clock, TrendingUp, Edit2 } from 'lucide-react';
+import { LogOut, Calendar, Check, X, Bell, MessageCircle, Plus, Clock, TrendingUp, Edit2, BookOpen, FileText, Trash2 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -19,6 +19,12 @@ export default function AdminDashboard() {
   const [editingAppt, setEditingAppt] = useState(null);
   const [editFormData, setEditFormData] = useState({});
 
+  // Blog states
+  const [posts, setPosts] = useState([]);
+  const [showPostEditor, setShowPostEditor] = useState(false);
+  const [editingPost, setEditingPost] = useState(null);
+  const [postForm, setPostForm] = useState({ title: '', category: '', excerpt: '', content: '', image_url: '', published: true });
+
   useEffect(() => {
     const token = localStorage.getItem('admin_token');
     if (!token) {
@@ -30,7 +36,7 @@ export default function AdminDashboard() {
 
   const fetchData = async () => {
     setLoading(true);
-    await Promise.all([fetchAppointments(), fetchSchedule()]);
+    await Promise.all([fetchAppointments(), fetchSchedule(), fetchPosts()]);
     setLoading(false);
   };
 
@@ -159,6 +165,49 @@ export default function AdminDashboard() {
     setSchedule({ ...schedule, [day]: updated });
   };
 
+  // Blog functions
+  const fetchPosts = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/blog`);
+      if (res.ok) { const d = await res.json(); setPosts(d.posts || []); }
+    } catch (e) { console.error(e); }
+  };
+
+  const openNewPost = () => {
+    setEditingPost(null);
+    setPostForm({ title: '', category: '', excerpt: '', content: '', image_url: '', published: true });
+    setShowPostEditor(true);
+  };
+
+  const openEditPost = (post) => {
+    setEditingPost(post);
+    setPostForm({ title: post.title, category: post.category || '', excerpt: post.excerpt || '', content: post.content || '', image_url: post.image_url || '', published: post.published !== false });
+    setShowPostEditor(true);
+  };
+
+  const handleSavePost = async (e) => {
+    e.preventDefault();
+    try {
+      if (editingPost) {
+        await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/blog/${editingPost.post_id}`, {
+          method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(postForm)
+        });
+      } else {
+        await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/blog`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(postForm)
+        });
+      }
+      setShowPostEditor(false);
+      fetchPosts();
+    } catch (e) { console.error(e); }
+  };
+
+  const handleDeletePost = async (post_id) => {
+    if (!confirm('¿Eliminar este artículo?')) return;
+    await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/blog/${post_id}`, { method: 'DELETE' });
+    fetchPosts();
+  };
+
   // Metrics
   const pendingCount = appointments.filter(a => a.status === 'PENDING_APPROVAL').length;
   const approvedCount = appointments.filter(a => a.status === 'APPROVED').length;
@@ -183,6 +232,11 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab('availability')}
             style={{ padding: '0.8rem 1rem', textAlign: 'left', background: activeTab === 'availability' ? '#10b981' : 'transparent', color: activeTab === 'availability' ? '#fff' : '#64748b', border: 'none', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', fontWeight: '500', transition: 'all 0.2s' }}>
             <Clock size={20} /> Horarios Semanales
+          </button>
+          <button 
+            onClick={() => setActiveTab('blog')}
+            style={{ padding: '0.8rem 1rem', textAlign: 'left', background: activeTab === 'blog' ? '#10b981' : 'transparent', color: activeTab === 'blog' ? '#fff' : '#64748b', border: 'none', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', fontWeight: '500', transition: 'all 0.2s' }}>
+            <BookOpen size={20} /> Blog & Noticias
           </button>
         </nav>
 
@@ -368,7 +422,100 @@ export default function AdminDashboard() {
             </div>
           </div>
         )}
+
+        {/* Blog Tab */}
+        {activeTab === 'blog' && (
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+              <div>
+                <h3 style={{ fontSize: '1.4rem', color: '#0f172a', margin: '0 0 0.25rem 0' }}>Blog & Noticias</h3>
+                <p style={{ color: '#64748b', margin: 0, fontSize: '0.9rem' }}>Gestiona los artículos del blog. El contenido soporta formato Markdown.</p>
+              </div>
+              <button onClick={openNewPost} style={{ backgroundColor: '#10b981', color: '#fff', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Plus size={18} /> Nuevo Artículo
+              </button>
+            </div>
+
+            {posts.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '5rem', backgroundColor: '#fff', borderRadius: '16px', border: '2px dashed #e2e8f0' }}>
+                <BookOpen size={40} style={{ color: '#cbd5e1', marginBottom: '1rem' }} />
+                <p style={{ color: '#94a3b8', marginBottom: '1.5rem' }}>No hay artículos todavía. ¡Crea el primero!</p>
+                <button onClick={openNewPost} className="btn-primary" style={{ padding: '0.75rem 1.5rem' }}>Crear artículo</button>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {posts.map(post => (
+                  <div key={post.post_id} style={{ backgroundColor: '#fff', borderRadius: '12px', padding: '1.5rem', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                    {post.image_url && <img src={post.image_url} alt={post.title} style={{ width: '80px', height: '60px', objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }} />}
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
+                        <span style={{ fontWeight: '600', color: '#0f172a' }}>{post.title}</span>
+                        {post.published === false && <span style={{ padding: '0.2rem 0.6rem', backgroundColor: '#fef3c7', color: '#92400e', borderRadius: '20px', fontSize: '0.75rem', fontWeight: '600' }}>Borrador</span>}
+                        {post.category && <span style={{ padding: '0.2rem 0.6rem', backgroundColor: '#f0fdf4', color: '#166534', borderRadius: '20px', fontSize: '0.75rem', fontWeight: '600' }}>{post.category}</span>}
+                      </div>
+                      <div style={{ color: '#94a3b8', fontSize: '0.82rem' }}>{new Date(post.created_at).toLocaleDateString('es-BO', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+                    </div>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <button onClick={() => openEditPost(post)} style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid #cbd5e1', background: '#fff', cursor: 'pointer', color: '#64748b', display: 'flex' }} title="Editar"><Edit2 size={16} /></button>
+                      <button onClick={() => handleDeletePost(post.post_id)} style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid #fecaca', background: '#fff', cursor: 'pointer', color: '#ef4444', display: 'flex' }} title="Eliminar"><Trash2 size={16} /></button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </main>
+
+      {/* Blog Editor Modal */}
+      {showPostEditor && (
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(15,23,42,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem' }}>
+          <div style={{ backgroundColor: '#fff', borderRadius: '16px', padding: '2rem', width: '100%', maxWidth: '720px', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 25px 50px rgba(0,0,0,0.15)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+              <h3 style={{ fontSize: '1.4rem', margin: 0, color: '#0f172a' }}>{editingPost ? 'Editar Artículo' : 'Nuevo Artículo'}</h3>
+              <button onClick={() => setShowPostEditor(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}><X size={24} /></button>
+            </div>
+            <form onSubmit={handleSavePost} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <div>
+                <label style={{ display: 'block', fontWeight: '600', color: '#334155', marginBottom: '0.4rem', fontSize: '0.85rem' }}>Título *</label>
+                <input required value={postForm.title} onChange={e => setPostForm({ ...postForm, title: e.target.value })} placeholder="Título del artículo" style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1.5px solid #e2e8f0', fontSize: '1rem', outline: 'none', boxSizing: 'border-box' }} onFocus={e => e.target.style.borderColor = '#10b981'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontWeight: '600', color: '#334155', marginBottom: '0.4rem', fontSize: '0.85rem' }}>Categoría</label>
+                  <select value={postForm.category} onChange={e => setPostForm({ ...postForm, category: e.target.value })} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1.5px solid #e2e8f0', fontSize: '0.95rem', backgroundColor: '#fff', outline: 'none', boxSizing: 'border-box' }}>
+                    <option value="">Sin categoría</option>
+                    <option>Derecho Familiar</option>
+                    <option>Niñez y Adolescencia</option>
+                    <option>Derecho Civil</option>
+                    <option>Herencias</option>
+                    <option>Noticias</option>
+                  </select>
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontWeight: '600', color: '#334155', marginBottom: '0.4rem', fontSize: '0.85rem' }}>URL de Imagen (opcional)</label>
+                  <input value={postForm.image_url} onChange={e => setPostForm({ ...postForm, image_url: e.target.value })} placeholder="https://..." style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1.5px solid #e2e8f0', fontSize: '0.95rem', outline: 'none', boxSizing: 'border-box' }} onFocus={e => e.target.style.borderColor = '#10b981'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+                </div>
+              </div>
+              <div>
+                <label style={{ display: 'block', fontWeight: '600', color: '#334155', marginBottom: '0.4rem', fontSize: '0.85rem' }}>Extracto (resumen breve)</label>
+                <textarea value={postForm.excerpt} onChange={e => setPostForm({ ...postForm, excerpt: e.target.value })} placeholder="Resumen de 1-2 oraciones que aparece en el listado..." rows={2} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1.5px solid #e2e8f0', fontSize: '0.95rem', resize: 'vertical', outline: 'none', boxSizing: 'border-box' }} onFocus={e => e.target.style.borderColor = '#10b981'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontWeight: '600', color: '#334155', marginBottom: '0.4rem', fontSize: '0.85rem' }}>Contenido * <span style={{ color: '#94a3b8', fontWeight: 400 }}>(soporta Markdown: **negrita**, # título, - listas)</span></label>
+                <textarea required value={postForm.content} onChange={e => setPostForm({ ...postForm, content: e.target.value })} placeholder="## Introducción&#10;&#10;Escribe el contenido completo aquí..." rows={14} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1.5px solid #e2e8f0', fontSize: '0.9rem', fontFamily: 'monospace', resize: 'vertical', outline: 'none', boxSizing: 'border-box' }} onFocus={e => e.target.style.borderColor = '#10b981'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <input type="checkbox" id="published" checked={postForm.published} onChange={e => setPostForm({ ...postForm, published: e.target.checked })} style={{ width: '18px', height: '18px', cursor: 'pointer' }} />
+                <label htmlFor="published" style={{ fontWeight: '500', color: '#334155', cursor: 'pointer', fontSize: '0.95rem' }}>Publicar ahora (visible en la web)</label>
+              </div>
+              <button type="submit" style={{ backgroundColor: '#10b981', color: '#fff', border: 'none', padding: '1rem', borderRadius: '10px', fontWeight: '700', fontSize: '1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                <FileText size={18} /> {editingPost ? 'Guardar Cambios' : 'Publicar Artículo'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Modal Añadir Cita */}
       {showAddModal && (

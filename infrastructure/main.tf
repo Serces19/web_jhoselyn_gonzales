@@ -102,6 +102,28 @@ resource "aws_dynamodb_table" "availability_blocks" {
   }
 }
 
+resource "aws_dynamodb_table" "blog_posts" {
+  name         = "BlogPosts"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "post_id"
+
+  attribute {
+    name = "post_id"
+    type = "S"
+  }
+}
+
+resource "aws_dynamodb_table" "probono_requests" {
+  name         = "ProBonoRequests"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "request_id"
+
+  attribute {
+    name = "request_id"
+    type = "S"
+  }
+}
+
 # ---------------------------------------------------------
 # LAMBDA FUNCTION (1M requests gratis/mes)
 # ---------------------------------------------------------
@@ -147,7 +169,9 @@ resource "aws_iam_role_policy" "lambda_dynamodb" {
           aws_dynamodb_table.appointments.arn,
           "${aws_dynamodb_table.appointments.arn}/index/*",
           aws_dynamodb_table.availability_blocks.arn,
-          "${aws_dynamodb_table.availability_blocks.arn}/index/*"
+          "${aws_dynamodb_table.availability_blocks.arn}/index/*",
+          aws_dynamodb_table.blog_posts.arn,
+          aws_dynamodb_table.probono_requests.arn
         ]
       },
       {
@@ -175,6 +199,8 @@ resource "aws_lambda_function" "api_handler" {
     variables = {
       APPOINTMENTS_TABLE = aws_dynamodb_table.appointments.name
       BLOCKS_TABLE       = aws_dynamodb_table.availability_blocks.name
+      BLOG_TABLE         = aws_dynamodb_table.blog_posts.name
+      PROBONO_TABLE      = aws_dynamodb_table.probono_requests.name
     }
   }
 }

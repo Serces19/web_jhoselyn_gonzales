@@ -142,6 +142,11 @@
   border-right: none;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 1024px) {
   .editorial-grid {
     grid-template-columns: repeat(2, 1fr);

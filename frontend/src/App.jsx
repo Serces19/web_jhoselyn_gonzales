@@ -9,6 +9,7 @@ import BlogPost from './pages/BlogPost';
 import ContactPage from './pages/ContactPage';
 import ProBonoPage from './pages/ProBonoPage';
 import FaqPage from './pages/FaqPage';
+import PagosPage from './pages/PagosPage';
 import './App.css';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path="/contacto" element={<ContactPage />} />
         <Route path="/probono" element={<ProBonoPage />} />
         <Route path="/faq" element={<FaqPage />} />
+        <Route path="/pagos" element={<PagosPage />} />
       </Routes>
     </BrowserRouter>
   );

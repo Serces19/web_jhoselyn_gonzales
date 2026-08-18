@@ -21,6 +21,7 @@ export default function LandingPage() {
             <a href="/#servicios" className="nav-link">Servicios</a>
             <a href="/blog" className="nav-link">Blog</a>
             <a href="/faq" className="nav-link">FAQ</a>
+            <a href="/pagos" className="nav-link">Pagos</a>
             <a href="/contacto" className="nav-link">Contacto</a>
             <button onClick={() => navigate('/booking')} className="btn-primary" style={{ padding: '0.5rem 1rem' }}>Agendar Cita</button>
           </nav>
@@ -330,6 +331,7 @@ export default function LandingPage() {
             <a href="/#servicios" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Servicios</a>
             <a href="/blog" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Blog</a>
             <a href="/faq" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>FAQ Legal</a>
+            <a href="/pagos" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Opciones de Pago</a>
             <a href="/contacto" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Contacto</a>
             <a href="/probono" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Pro Bono</a>
             <a href="/booking" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Agendar Cita</a>

@@ -179,14 +179,16 @@ export default function BookingApp() {
                 <textarea placeholder="Motivo de la consulta (Opcional)" className="form-control" rows="3" value={details.reason} onChange={e => setDetails({...details, reason: e.target.value})}></textarea>
               </div>
 
-              <div style={{ marginTop: '2rem', padding: '1.5rem', backgroundColor: 'rgba(220, 166, 121, 0.1)', borderRadius: '8px' }}>
-                <h4 style={{ color: 'var(--color-accent)', marginBottom: '0.5rem' }}>Información de Pago</h4>
-                <p style={{ fontSize: '0.9rem', color: '#4a5568', marginBottom: '1rem' }}>El costo de reserva es de 50 Bs. Puedes pagar ahora escaneando el código QR para agilizar tu trámite, o pagar posteriormente. Tu cita entrará en estado Pendiente de Aprobación.</p>
-                <button className="btn-secondary" style={{ fontSize: '0.9rem', padding: '0.5rem 1rem' }}>Ver Código QR (Opcional)</button>
+              <div style={{ marginTop: '2rem', padding: '1.5rem', backgroundColor: 'rgba(220, 166, 121, 0.1)', borderRadius: '12px', border: '1px solid rgba(220, 166, 121, 0.3)' }}>
+                <h4 style={{ color: 'var(--color-accent)', marginBottom: '0.5rem', fontWeight: '700' }}>Información de Pago</h4>
+                <p style={{ fontSize: '0.9rem', color: '#4a5568', marginBottom: '1rem', lineHeight: 1.6 }}>El costo de la consulta inicial es de 50 Bs. (o $15 USD para el exterior). Puedes pagar mediante <strong>QR Banco Bolivia, AirTM, Transferencia Bancaria o ACH/Zelle (EEUU)</strong>.</p>
+                <a href="/pagos" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', backgroundColor: 'var(--color-primary-dark)', color: '#fff', fontSize: '0.88rem', padding: '0.6rem 1.2rem', borderRadius: '8px', textDecoration: 'none', fontWeight: '600' }}>
+                  💳 Ver Opciones de Pago y QR →
+                </a>
               </div>
 
-              <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between' }}>
-                <button onClick={() => navigate('/login')} style={{ background: 'none', border: 'none', color: 'var(--color-primary-dark)', textDecoration: 'underline', cursor: 'pointer' }}>
+              <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <button onClick={() => navigate('/login')} style={{ background: 'none', border: 'none', color: 'var(--color-primary-dark)', textDecoration: 'underline', cursor: 'pointer', fontSize: '0.9rem' }}>
                   Ya tengo cuenta
                 </button>
                 <button onClick={handleNext} className="btn-primary">Confirmar Reserva</button>
@@ -198,11 +200,16 @@ export default function BookingApp() {
             <div className="animate-fade-in" style={{ textAlign: 'center', padding: '2rem 0' }}>
               <CheckCircle size={64} color="var(--color-primary)" style={{ margin: '0 auto 1.5rem' }} />
               <h2 style={{ fontSize: '2rem', marginBottom: '1rem', color: 'var(--color-primary-dark)' }}>¡Solicitud Recibida!</h2>
-              <p style={{ color: '#4a5568', marginBottom: '2rem' }}>
-                Tu cita para el {format(selectedDate, "d 'de' MMMM", { locale: es })} a las {selectedTime} ha sido registrada.
-                La abogada revisará tu solicitud y recibirás una notificación de confirmación en breve.
+              <p style={{ color: '#4a5568', marginBottom: '2rem', maxWidth: '500px', margin: '0 auto 2rem', lineHeight: 1.6 }}>
+                Tu cita para el <strong>{format(selectedDate, "d 'de' MMMM", { locale: es })} a las {selectedTime}</strong> ha sido registrada.
+                La abogada revisará tu solicitud y confirmaremos tu cita en breve.
               </p>
-              <button onClick={() => navigate('/')} className="btn-primary">Volver al Inicio</button>
+              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <button onClick={() => navigate('/')} className="btn-primary">Volver al Inicio</button>
+                <a href="/pagos" className="btn-secondary" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+                  Realizar Pago / Enviar Comprobante
+                </a>
+              </div>
             </div>
           )}
         </div>

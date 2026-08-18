@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Phone, Mail, MessageCircle, Instagram, Share2, Send, ArrowRight } from 'lucide-react';
+import { MapPin, Phone, Mail, MessageCircle, Globe, AtSign, Send } from 'lucide-react';
 
 export default function ContactPage() {
   const navigate = useNavigate();
@@ -31,8 +31,8 @@ export default function ContactPage() {
   ];
 
   const socials = [
-    { icon: <Instagram size={22} />, label: 'Instagram', href: '#', handle: '@jhoselyn.abogada' },
-    { icon: <Share2 size={22} />, label: 'Facebook', href: '#', handle: 'Jhoselyn Gonzales Abogada' },
+    { icon: <AtSign size={22} />, label: 'Instagram', href: '#', handle: '@jhoselyn.abogada' },
+    { icon: <Globe size={22} />, label: 'Facebook', href: '#', handle: 'Jhoselyn Gonzales Abogada' },
     { icon: <MessageCircle size={22} />, label: 'WhatsApp', href: whatsappBase, handle: 'Consulta directa' },
   ];
 

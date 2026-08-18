@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Calendar, Check, X, Bell, MessageCircle, Plus, Clock, TrendingUp, Edit2, BookOpen, FileText, Trash2 } from 'lucide-react';
+import { LogOut, Calendar, Check, X, Bell, MessageCircle, Plus, Clock, TrendingUp, Edit2, BookOpen, FileText, Trash2, Bot, Sparkles, Phone, ExternalLink } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -25,6 +25,9 @@ export default function AdminDashboard() {
   const [editingPost, setEditingPost] = useState(null);
   const [postForm, setPostForm] = useState({ title: '', category: '', excerpt: '', content: '', image_url: '', published: true });
 
+  // Leads states
+  const [leads, setLeads] = useState([]);
+
   useEffect(() => {
     const token = localStorage.getItem('admin_token');
     if (!token) {
@@ -36,7 +39,7 @@ export default function AdminDashboard() {
 
   const fetchData = async () => {
     setLoading(true);
-    await Promise.all([fetchAppointments(), fetchSchedule(), fetchPosts()]);
+    await Promise.all([fetchAppointments(), fetchSchedule(), fetchPosts(), fetchLeads()]);
     setLoading(false);
   };
 
@@ -208,6 +211,32 @@ export default function AdminDashboard() {
     fetchPosts();
   };
 
+  // Leads functions
+  const fetchLeads = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/chat/leads`);
+      if (res.ok) {
+        const d = await res.json();
+        setLeads(d.leads || []);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleUpdateLeadStatus = async (lead_id, newStatus) => {
+    try {
+      await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/chat/leads/${lead_id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+      fetchLeads();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   // Metrics
   const pendingCount = appointments.filter(a => a.status === 'PENDING_APPROVAL').length;
   const approvedCount = appointments.filter(a => a.status === 'APPROVED').length;
@@ -237,6 +266,15 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab('blog')}
             style={{ padding: '0.8rem 1rem', textAlign: 'left', background: activeTab === 'blog' ? '#10b981' : 'transparent', color: activeTab === 'blog' ? '#fff' : '#64748b', border: 'none', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', fontWeight: '500', transition: 'all 0.2s' }}>
             <BookOpen size={20} /> Blog & Noticias
+          </button>
+          <button 
+            onClick={() => setActiveTab('leads')}
+            style={{ padding: '0.8rem 1rem', textAlign: 'left', background: activeTab === 'leads' ? '#10b981' : 'transparent', color: activeTab === 'leads' ? '#fff' : '#64748b', border: 'none', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', fontWeight: '500', transition: 'all 0.2s' }}>
+            <Bot size={20} /> Consultas IA / Leads {leads.filter(l => l.status === 'NUEVO_LEAD').length > 0 && (
+              <span style={{ backgroundColor: '#ef4444', color: '#fff', fontSize: '0.75rem', padding: '0.1rem 0.5rem', borderRadius: '10px', marginLeft: 'auto', fontWeight: '700' }}>
+                {leads.filter(l => l.status === 'NUEVO_LEAD').length}
+              </span>
+            )}
           </button>
         </nav>
 
@@ -461,6 +499,152 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Leads Tab (Consultas IA) */}
+        {activeTab === 'leads' && (
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                  <Bot size={22} style={{ color: '#10b981' }} />
+                  <h3 style={{ fontSize: '1.4rem', color: '#0f172a', margin: 0 }}>Consultas y Casos Sintetizados por IA</h3>
+                </div>
+                <p style={{ color: '#64748b', margin: 0, fontSize: '0.9rem' }}>Fichas de clientes recopiladas automáticamente por el Asistente Jurídico Virtual.</p>
+              </div>
+              <button onClick={fetchLeads} style={{ backgroundColor: '#f1f5f9', color: '#334155', border: '1px solid #cbd5e1', padding: '0.6rem 1.2rem', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', fontSize: '0.85rem' }}>
+                Actualizar Fichas
+              </button>
+            </div>
+
+            {leads.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '5rem', backgroundColor: '#fff', borderRadius: '16px', border: '2px dashed #e2e8f0' }}>
+                <Bot size={40} style={{ color: '#cbd5e1', marginBottom: '1rem' }} />
+                <h4 style={{ color: '#0f172a', marginBottom: '0.5rem' }}>No hay consultas de IA registradas aún</h4>
+                <p style={{ color: '#94a3b8', maxWidth: '400px', margin: '0 auto', fontSize: '0.9rem' }}>
+                  Cuando los clientes interactúen con el Chatbot en la web y proporcionen sus datos, sus fichas sintetizadas aparecerán aquí en tiempo real.
+                </p>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                {leads.map(lead => {
+                  const whatsappMsg = encodeURIComponent(
+                    `Hola ${lead.client_name}, soy la Dra. Jhoselyn Gonzales. He revisado la síntesis de tu consulta legal sobre ${lead.category} realizada en nuestra plataforma web. Me pongo en contacto para coordinar los detalles de tu caso y agendar la consulta formal.`
+                  );
+                  const cleanPhone = (lead.client_phone || '').replace(/[^0-9]/g, '');
+                  const waUrl = cleanPhone ? `https://wa.me/${cleanPhone.startsWith('591') ? cleanPhone : '591' + cleanPhone}?text=${whatsappMsg}` : null;
+
+                  return (
+                    <div
+                      key={lead.lead_id}
+                      style={{
+                        backgroundColor: '#fff',
+                        borderRadius: '16px',
+                        padding: '1.75rem',
+                        border: '1px solid #f1f5f9',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1rem'
+                      }}
+                    >
+                      {/* Top row */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+                        <div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.35rem' }}>
+                            <span style={{ fontWeight: '700', fontSize: '1.15rem', color: '#0f172a' }}>{lead.client_name}</span>
+                            <span
+                              style={{
+                                padding: '0.2rem 0.65rem',
+                                borderRadius: '20px',
+                                fontSize: '0.75rem',
+                                fontWeight: '700',
+                                backgroundColor: lead.status === 'NUEVO_LEAD' ? '#fee2e2' : '#f0fdf4',
+                                color: lead.status === 'NUEVO_LEAD' ? '#b91c1c' : '#166534'
+                              }}
+                            >
+                              {lead.status === 'NUEVO_LEAD' ? '● Nuevo Lead' : '✓ Contactado'}
+                            </span>
+                            {lead.urgency === 'ALTA' && (
+                              <span style={{ backgroundColor: '#fef3c7', color: '#92400e', fontSize: '0.72rem', padding: '0.2rem 0.5rem', borderRadius: '12px', fontWeight: '700' }}>
+                                Urgencia Alta
+                              </span>
+                            )}
+                          </div>
+                          <div style={{ color: '#64748b', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                            <span>📱 WhatsApp: <strong>{lead.client_phone}</strong></span>
+                            <span>⚖️ Área: <strong>{lead.category}</strong></span>
+                            <span>💳 Preferencia de pago: <strong>{lead.payment_preference || 'Por coordinar'}</strong></span>
+                          </div>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                          {waUrl && (
+                            <a
+                              href={waUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                backgroundColor: '#25D366',
+                                color: '#fff',
+                                textDecoration: 'none',
+                                padding: '0.6rem 1.2rem',
+                                borderRadius: '8px',
+                                fontWeight: '700',
+                                fontSize: '0.85rem',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.4rem'
+                              }}
+                            >
+                              <MessageCircle size={16} /> Contactar por WhatsApp
+                            </a>
+                          )}
+                          <button
+                            onClick={() => handleUpdateLeadStatus(lead.lead_id, lead.status === 'NUEVO_LEAD' ? 'CONTACTADO' : 'NUEVO_LEAD')}
+                            style={{
+                              backgroundColor: '#f8fafc',
+                              color: '#475569',
+                              border: '1px solid #cbd5e1',
+                              padding: '0.6rem 1rem',
+                              borderRadius: '8px',
+                              fontWeight: '600',
+                              fontSize: '0.85rem',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            {lead.status === 'NUEVO_LEAD' ? 'Marcar Contactado' : 'Marcar Nuevo'}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Case summary block */}
+                      <div
+                        style={{
+                          backgroundColor: '#f8fafc',
+                          borderRadius: '10px',
+                          padding: '1.1rem 1.25rem',
+                          borderLeft: '4px solid var(--color-primary)',
+                          fontSize: '0.92rem',
+                          lineHeight: 1.6,
+                          color: '#334155'
+                        }}
+                      >
+                        <div style={{ fontSize: '0.78rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>
+                          Síntesis del Caso (IA)
+                        </div>
+                        {lead.case_summary}
+                      </div>
+
+                      <div style={{ fontSize: '0.78rem', color: '#94a3b8', textAlign: 'right' }}>
+                        Fecha de consulta: {new Date(lead.created_at).toLocaleString('es-BO', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>

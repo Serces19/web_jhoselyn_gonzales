@@ -124,6 +124,28 @@ resource "aws_dynamodb_table" "probono_requests" {
   }
 }
 
+resource "aws_dynamodb_table" "chat_leads" {
+  name         = "ChatLeads"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "lead_id"
+
+  attribute {
+    name = "lead_id"
+    type = "S"
+  }
+}
+
+resource "aws_dynamodb_table" "chat_sessions" {
+  name         = "ChatSessions"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "session_id"
+
+  attribute {
+    name = "session_id"
+    type = "S"
+  }
+}
+
 # ---------------------------------------------------------
 # LAMBDA FUNCTION (1M requests gratis/mes)
 # ---------------------------------------------------------
@@ -171,8 +193,18 @@ resource "aws_iam_role_policy" "lambda_dynamodb" {
           aws_dynamodb_table.availability_blocks.arn,
           "${aws_dynamodb_table.availability_blocks.arn}/index/*",
           aws_dynamodb_table.blog_posts.arn,
-          aws_dynamodb_table.probono_requests.arn
+          aws_dynamodb_table.probono_requests.arn,
+          aws_dynamodb_table.chat_leads.arn,
+          aws_dynamodb_table.chat_sessions.arn
         ]
+      },
+      {
+        Action = [
+          "bedrock:InvokeModel",
+          "bedrock:InvokeModelWithResponseStream"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
       },
       {
         Action = [
@@ -194,6 +226,7 @@ resource "aws_lambda_function" "api_handler" {
   handler          = "handler.lambda_handler"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   runtime          = "python3.11" # Updated to 3.11 for better support
+  timeout          = 30 # Aumentar timeout para llamadas de inferencia LLM
 
   environment {
     variables = {
@@ -201,6 +234,9 @@ resource "aws_lambda_function" "api_handler" {
       BLOCKS_TABLE       = aws_dynamodb_table.availability_blocks.name
       BLOG_TABLE         = aws_dynamodb_table.blog_posts.name
       PROBONO_TABLE      = aws_dynamodb_table.probono_requests.name
+      LEADS_TABLE        = aws_dynamodb_table.chat_leads.name
+      SESSIONS_TABLE     = aws_dynamodb_table.chat_sessions.name
+      BEDROCK_MODEL_ID   = "us.amazon.nova-lite-v1:0"
     }
   }
 }

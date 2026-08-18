@@ -10,6 +10,7 @@ import ContactPage from './pages/ContactPage';
 import ProBonoPage from './pages/ProBonoPage';
 import FaqPage from './pages/FaqPage';
 import PagosPage from './pages/PagosPage';
+import ChatWidget from './components/ChatWidget';
 import './App.css';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/faq" element={<FaqPage />} />
         <Route path="/pagos" element={<PagosPage />} />
       </Routes>
+      <ChatWidget />
     </BrowserRouter>
   );
 }

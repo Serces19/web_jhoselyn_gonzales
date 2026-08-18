@@ -226,6 +226,38 @@ def lambda_handler(event, context):
             )
             return build_response(200, {'message': 'Status updated'})
 
+        # ==========================================
+        # CHATBOT AI & LEADS
+        # ==========================================
+        elif path == '/api/chat' and http_method == 'POST':
+            from agent_core import process_chat_message
+            body = json.loads(event.get('body', '{}'))
+            session_id = body.get('session_id')
+            message = body.get('message', '')
+            if not message:
+                return build_response(400, {'error': 'Missing message parameter'})
+            result = process_chat_message(session_id, message)
+            return build_response(200, result)
+
+        elif path == '/api/chat/leads' and http_method == 'GET':
+            from agent_core import leads_table
+            resp = leads_table.scan()
+            items = sorted(resp.get('Items', []), key=lambda x: x.get('created_at', ''), reverse=True)
+            return build_response(200, {'leads': items})
+
+        elif path.startswith('/api/chat/leads/') and http_method == 'PATCH':
+            from agent_core import leads_table
+            lead_id = path.split('/')[-1]
+            body = json.loads(event.get('body', '{}'))
+            status = body.get('status', 'CONTACTADO')
+            leads_table.update_item(
+                Key={'lead_id': lead_id},
+                UpdateExpression='SET #s = :s',
+                ExpressionAttributeNames={'#s': 'status'},
+                ExpressionAttributeValues={':s': status}
+            )
+            return build_response(200, {'message': 'Lead status updated'})
+
         return build_response(404, {'error': 'Route not found'})
 
     except Exception as e:

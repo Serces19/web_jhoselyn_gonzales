@@ -37,12 +37,16 @@ export default function LandingPage() {
               Brindamos acompañamiento y asesoría legal integral a familias en conflicto y a personas que necesitan respaldo en la protección de su patrimonio.
             </p>
             <div className="hero-buttons">
-              <button onClick={() => navigate('/booking')} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                Agendar Consulta Online <ArrowRight size={18} />
+              <button
+                onClick={() => navigate('/chat')}
+                className="btn-primary"
+                style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '1.05rem', padding: '1rem 2rem' }}
+              >
+                Cuéntame tu problema
               </button>
-              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn-secondary">
-                Contactar por WhatsApp
-              </a>
+              <button onClick={() => navigate('/booking')} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                Agendar Cita <ArrowRight size={16} />
+              </button>
             </div>
           </div>
           <div className="hero-image-container" style={{ textAlign: 'center', overflow: 'visible', boxShadow: 'none' }}>
@@ -340,9 +344,33 @@ export default function LandingPage() {
         </div>
       </footer>
 
-      {/* WhatsApp Widget */}
-      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="whatsapp-widget" aria-label="Contactar por WhatsApp">
-        <MessageCircle size={32} />
+      {/* Chat CTA Floating Button */}
+      <a
+        href="/chat"
+        style={{
+          position: 'fixed',
+          bottom: '2rem',
+          right: '2rem',
+          backgroundColor: 'var(--color-primary-dark)',
+          color: '#fff',
+          textDecoration: 'none',
+          borderRadius: '50px',
+          padding: '0.85rem 1.5rem',
+          fontWeight: '700',
+          fontSize: '0.92rem',
+          boxShadow: '0 8px 24px rgba(65,85,54,0.28)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.6rem',
+          zIndex: 998,
+          fontFamily: 'var(--font-sans)',
+          transition: 'transform 0.2s, box-shadow 0.2s'
+        }}
+        onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 12px 30px rgba(65,85,54,0.38)'; }}
+        onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(65,85,54,0.28)'; }}
+      >
+        <MessageCircle size={18} />
+        Cuéntame tu problema
       </a>
     </div>
   );

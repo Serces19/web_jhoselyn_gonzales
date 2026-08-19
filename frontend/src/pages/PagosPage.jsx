@@ -73,18 +73,24 @@ const PAYMENT_METHODS = [
     color: '#7c3aed',
     bg: '#faf5ff',
     steps: [
-      'Crea una cuenta gratis en airtm.com si aún no tienes',
-      'Busca el usuario @JhoselynAbogada (pendiente de confirmar)',
-      'Envía el monto acordado en USD',
+      'Haz clic en el botón de pago AirTM de abajo',
+      'Inicia sesión o crea una cuenta gratuita en AirTM',
+      'Ingresa el monto acordado en USD',
       'Escribe "Consulta Legal" como referencia',
-      'Envía el comprobante por WhatsApp',
+      'Envía el comprobante por WhatsApp para confirmar',
     ],
     extra: (
       <div style={{ backgroundColor: '#faf5ff', borderRadius: '12px', padding: '1.5rem', margin: '1rem 0', border: '1px solid #e9d5ff', textAlign: 'center' }}>
-        <p style={{ fontSize: '0.85rem', color: '#7c3aed', fontWeight: '700', marginBottom: '0.5rem' }}>Link de pago directo (próximamente)</p>
-        <div style={{ backgroundColor: '#fff', border: '2px dashed #c4b5fd', borderRadius: '8px', padding: '1rem', color: '#94a3b8', fontSize: '0.85rem' }}>
-          Se habilitará el link de pago de AirTM aquí.<br />Por ahora, contacta por WhatsApp para coordinar.
-        </div>
+        <p style={{ fontSize: '0.85rem', color: '#7c3aed', fontWeight: '700', marginBottom: '1rem' }}>Link de pago directo</p>
+        <a
+          href="https://airtm.me/sergio4hny2enm"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', backgroundColor: '#7c3aed', color: '#fff', textDecoration: 'none', padding: '0.75rem 1.5rem', borderRadius: '8px', fontWeight: '700', fontSize: '0.9rem' }}
+        >
+          Pagar con AirTM →
+        </a>
+        <p style={{ color: '#94a3b8', fontSize: '0.8rem', marginTop: '0.75rem' }}>Envía el comprobante por WhatsApp después de pagar</p>
       </div>
     ),
   },
@@ -133,7 +139,7 @@ export default function PagosPage() {
   const [sending, setSending] = useState(false);
   const [copied, setCopied] = useState(null);
 
-  const whatsappBase = 'https://wa.me/591XXXXXXXXX';
+  const whatsappBase = 'https://wa.me/59169512921';
 
   const handleSelectMethod = (method) => {
     setSelectedMethod(method);

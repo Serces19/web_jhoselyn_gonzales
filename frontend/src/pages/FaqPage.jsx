@@ -54,7 +54,7 @@ export default function FaqPage() {
   const handleClick = (id) => {
     setClicked(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
     // Open AirTM payment (link to be configured)
-    window.open('https://airtm.com', '_blank'); // TODO: replace with real AirTM link
+    window.open('https://airtm.me/sergio4hny2enm', '_blank');
   };
 
   const totalClicks = Object.values(clicked).reduce((a, b) => a + b, 0);

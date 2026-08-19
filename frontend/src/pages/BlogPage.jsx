@@ -15,7 +15,7 @@ export default function BlogPage() {
   }, []);
 
   const whatsappMessage = encodeURIComponent("Hola, me gustaría información sobre sus servicios legales.");
-  const whatsappUrl = `https://wa.me/591XXXXXXXXX?text=${whatsappMessage}`;
+  const whatsappUrl = `https://wa.me/59169512921?text=${whatsappMessage}`;
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--color-background)', fontFamily: 'var(--font-sans)' }}>

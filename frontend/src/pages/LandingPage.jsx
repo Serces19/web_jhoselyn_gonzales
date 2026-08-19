@@ -7,7 +7,7 @@ export default function LandingPage() {
   const [activeArea, setActiveArea] = useState(null);
 
   const whatsappMessage = encodeURIComponent("Hola, me gustaría información sobre sus servicios legales.");
-  const whatsappUrl = `https://wa.me/591XXXXXXXXX?text=${whatsappMessage}`; // Reemplazar con número real
+  const whatsappUrl = `https://wa.me/59169512921?text=${whatsappMessage}`;
 
   return (
     <div className="app">

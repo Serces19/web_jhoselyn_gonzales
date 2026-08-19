@@ -8,7 +8,7 @@ export default function ContactPage() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
 
-  const whatsappBase = 'https://wa.me/591XXXXXXXXX'; // TODO: replace number
+  const whatsappBase = 'https://wa.me/59169512921';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,14 +25,16 @@ export default function ContactPage() {
   };
 
   const contacts = [
-    { icon: <Phone size={20} />, label: 'Teléfono / WhatsApp', value: '+591 XXXXXXXX', href: whatsappBase },
+    { icon: <Phone size={20} />, label: 'Teléfono / WhatsApp', value: '+591 69512921', href: whatsappBase },
     { icon: <Mail size={20} />, label: 'Correo Electrónico', value: 'scope.estudio@gmail.com', href: 'mailto:scope.estudio@gmail.com' },
     { icon: <MapPin size={20} />, label: 'Oficina', value: 'Heroínas y Oquendo, Cochabamba, Bolivia', href: 'https://maps.google.com/?q=Heroinas+y+Oquendo+Cochabamba+Bolivia' },
   ];
 
   const socials = [
-    { icon: <AtSign size={22} />, label: 'Instagram', href: '#', handle: '@jhoselyn.abogada' },
-    { icon: <Globe size={22} />, label: 'Facebook', href: '#', handle: 'Jhoselyn Gonzales Abogada' },
+    { icon: <AtSign size={22} />, label: 'Instagram', href: 'https://www.instagram.com/jhoselyn.gonzales.abogada', handle: '@jhoselyn.gonzales.abogada' },
+    { icon: <Globe size={22} />, label: 'Facebook', href: 'https://www.facebook.com/jhoselyn.gonzales.abogada', handle: 'Jhoselyn Gonzales Abogada' },
+    { icon: <MessageCircle size={22} />, label: 'TikTok', href: 'https://tiktok.com/@jhos.gonzales.abogada', handle: '@jhos.gonzales.abogada' },
+    { icon: <Globe size={22} />, label: 'LinkedIn', href: 'https://www.linkedin.com/in/jhoselyn-gonzales-abogada', handle: 'Jhoselyn Gonzales · LinkedIn' },
     { icon: <MessageCircle size={22} />, label: 'WhatsApp', href: whatsappBase, handle: 'Consulta directa' },
   ];
 

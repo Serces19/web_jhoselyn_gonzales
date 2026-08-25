@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
+import AboutPage from './pages/AboutPage';
 import BookingApp from './pages/BookingApp';
 import AdminDashboard from './pages/AdminDashboard';
 import Login from './pages/Login';
@@ -18,6 +19,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/sobre-mi" element={<AboutPage />} />
         <Route path="/booking" element={<BookingApp />} />
         <Route path="/admin/*" element={<AdminDashboard />} />
         <Route path="/login" element={<Login />} />

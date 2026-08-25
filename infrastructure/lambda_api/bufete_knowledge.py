@@ -3,10 +3,10 @@ BUFETE_KNOWLEDGE = """
 INFORMACIÓN OFICIAL Y VERIFICADA DEL BUFETE:
 
 1. TITULAR Y DESPACHO:
-- Dra. Jhoselyn Gonzales — Abogada Especialista.
+- Dra. Jhoselyn Gonzales — Abogada Especialista, Conciliadora y Docente Universitaria en programas de Grado y Posgrado.
 - Ubicación física: Cochabamba, Bolivia (Avenida Heroínas y Oquendo).
 - Modalidades de atención: Presencial en Cochabamba y Virtual (videollamada Zoom/Meet/WhatsApp) para toda Bolivia y el exterior.
-- Atención especial internacional: Residentes bolivianos en Estados Unidos (Virginia, Maryland, Washington D.C., California, Nueva York, Florida, Texas, etc.) para poderes consulares, divorcios a distancia, asistencia familiar y trámites en Derechos Reales sin tener que viajar a Bolivia.
+- Atención especial internacional: Residentes bolivianos en el extranjero (Estados Unidos, España, Europa, etc.) para trámites consulares, poderes, divorcios a distancia, asistencia familiar y trámites en Derechos Reales sin tener que viajar a Bolivia.
 
 2. ÁREAS DE ESPECIALIDAD:
 - Derecho de Familia (Ley 603 Código de las Familias):
@@ -21,14 +21,19 @@ INFORMACIÓN OFICIAL Y VERIFICADA DEL BUFETE:
   * Declaratorias de herederos y sucesiones hereditarias.
   * Compraventa, saneamiento de títulos y minutas en Derechos Reales.
   * Contratos, desalojos y recuperación de inmuebles.
-- Casos Sociales / Pro Bono:
-  * Atención evaluada a personas en situación de alta vulnerabilidad económica.
+- Solución de Conflictos y Conciliación Extrajudicial.
+- Casos Sociales / Pro Bono (evaluación socioeconómica).
 
-3. OPCIONES DE PAGO:
-- En Bolivia: QR Simple / Transferencia Banco BNB.
-- Desde el Exterior (EEUU y otros países): AirTM y Transferencias ACH / Zelle coordinadas con el despacho.
+3. TARIFAS Y HONORARIOS DE CONSULTA:
+- Clientes residentes en Bolivia: 200 Bs por consulta jurídica personalizada (45-60 min).
+- Clientes residentes en el Exterior (EEUU, Europa, Latinoamérica): 20 USD o 20 EUR por consulta jurídica personalizada.
+- La orientación inicial en el chat es gratuita y orientativa.
 
-4. POLÍTICA DE ATENCIÓN:
-- La primera orientación por chat es gratuita y busca entender a fondo el problema.
-- El análisis profundo de documentos y representación legal se realiza en consulta privada agendada.
+4. OPCIONES DE PAGO HABILITADAS:
+- En Bolivia: Código QR interoperable bancario / Transferencia Bancaria Banco BNB.
+- Desde el Exterior: Pago seguro con Tarjeta de Débito / Crédito internacional o transferencia bancaria coordinada con el despacho.
+
+5. DINÁMICA Y HERMENÉUTICA DE ATENCIÓN:
+- La consulta incluye análisis del caso, fundamentación en normativa boliviana, estrategia jurídica y resolución de dudas.
+- No incluye revisión exhaustiva ni redacción de documentos complejos en la consulta inicial (se cotizan como patrocinio por separado).
 """

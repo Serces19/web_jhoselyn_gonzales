@@ -53,8 +53,7 @@ export default function FaqPage() {
 
   const handleClick = (id) => {
     setClicked(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
-    // Open AirTM payment (link to be configured)
-    window.open('https://airtm.me/sergio4hny2enm', '_blank');
+    navigate('/pagos');
   };
 
   const totalClicks = Object.values(clicked).reduce((a, b) => a + b, 0);
@@ -87,7 +86,7 @@ export default function FaqPage() {
               Preguntas Frecuentes
             </h1>
             <p style={{ color: '#64748b', fontSize: '1.1rem', maxWidth: '560px', margin: '0 auto', lineHeight: 1.7 }}>
-              Respuestas detalladas a las dudas más comunes en casos de derecho familiar, civil y patrimonio.
+              Respuestas detalladas a las dudas más comunes en casos de derecho familiar, civil, niñez y adolescencia.
             </p>
           </div>
 
@@ -95,9 +94,12 @@ export default function FaqPage() {
           <div style={{ backgroundColor: 'var(--color-primary-dark)', color: '#fff', borderRadius: '16px', padding: '1.5rem 2rem', marginBottom: '2.5rem', display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
             <Lock size={28} style={{ flexShrink: 0, color: 'var(--color-accent-light)' }} />
             <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: '700', fontSize: '1.05rem', marginBottom: '0.25rem' }}>Respuestas Detalladas — Solo Bs. 20 por pregunta</div>
-              <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.9rem', lineHeight: 1.5 }}>
-                Cada respuesta incluye el artículo legal aplicable, pasos concretos a seguir y en qué casos conviene actuar rápido. Pago vía AirTM (se habilita al momento de la compra).
+              <div style={{ fontWeight: '700', fontSize: '1.05rem', marginBottom: '0.35rem' }}>Respuestas Detalladas — Solo Bs. 20 por consulta temática</div>
+              <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.9rem', lineHeight: 1.55 }}>
+                Cada respuesta incluye el artículo legal aplicable, pasos concretos a seguir y en qué casos conviene actuar rápido. Pago disponible vía QR o Tarjeta.
+              </div>
+              <div style={{ color: 'var(--color-accent-light)', fontSize: '0.84rem', marginTop: '0.4rem', fontWeight: '500' }}>
+                ⚠️ No incluye revisión ni redacción de documentos. Si tu caso requiere un análisis más profundo, te sugerimos agendar una consulta jurídica personalizada.
               </div>
             </div>
             <div style={{ backgroundColor: 'var(--color-accent-light)', color: 'var(--color-primary-dark)', padding: '0.5rem 1.25rem', borderRadius: '8px', fontWeight: '700', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>

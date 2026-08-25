@@ -19,8 +19,13 @@
 - [x] **Base de Conocimiento Jurídico:** Módulo [`bufete_knowledge.py`](infrastructure/lambda_api/bufete_knowledge.py) con datos oficiales y áreas de práctica.
 - [x] **Infraestructura de Alertas:** Creación de SNS Topic `jhoselyn_lead_alerts` y permisos `sns:Publish` en Lambda.
 - [x] **UX del Chat:** Manejo de límite en [`ChatPage.jsx`](frontend/src/pages/ChatPage.jsx) con banner de acción rápida y bloqueo amigable de input.
-- [x] **Despliegue Terraform:** `terraform apply` ejecutado exitosamente en AWS us-east-1.
-- [x] **Pruebas End-to-End en Vivo:** Verificación multi-turno de la API con respuestas jurídicas de alta calidad.
+- [x] **CTA Banner en Servicios:** Añadida tarjeta interactiva y estética *"¿No encuentras tu caso específico? Agenda una consulta"* en [`LandingPage.jsx`](frontend/src/pages/LandingPage.jsx).
+- [x] **Nueva Página "Sobre Mí":** Creada [`AboutPage.jsx`](frontend/src/pages/AboutPage.jsx) con biografía, valores, sección de Docencia y testimonios de Google Reviews.
+- [x] **Actualización de Tarifas y Métodos de Pago:** 200 Bs (Bolivia) / 20 USD o 20 EUR (Exterior) en [`PagosPage.jsx`](frontend/src/pages/PagosPage.jsx), [`BookingApp.jsx`](frontend/src/pages/BookingApp.jsx) y [`bufete_knowledge.py`](infrastructure/lambda_api/bufete_knowledge.py). Removidas referencias a AirTM y Zelle.
+- [x] **Ajuste en FAQ:** Banner actualizado en [`FaqPage.jsx`](frontend/src/pages/FaqPage.jsx) aclarando que no incluye redacción de documentos complejos y recomendando consulta personalizada.
+- [x] **Integración Google Reviews:** Testimonios destacados y botón directo a `https://g.page/r/CdRUSSwaGWpAEBM/review` en Landing y Sobre Mí.
+- [x] **Sección de Docencia con Imagen:** Generada imagen fotorrealista de cátedra universitaria (`docencia.jpg`) e integrada en Sobre Mí y Home.
+- [x] **Despliegue Terraform:** `terraform apply` ejecutado exitosamente en AWS us-east-1 actualizando la base de conocimiento de la Lambda.
 
 ---
 

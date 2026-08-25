@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Scale, Users, Shield, CheckCircle, MessageCircle, ArrowRight, ChevronDown, Globe } from 'lucide-react';
+import { Scale, Users, Shield, CheckCircle, MessageCircle, ArrowRight, ChevronDown, Globe, Calendar, Star, ExternalLink, GraduationCap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function LandingPage() {
@@ -18,9 +18,10 @@ export default function LandingPage() {
             <img src="/logo.jpg" alt="Logo Jhoselyn Gonzales" style={{ height: '100px', width: 'auto', objectFit: 'contain', borderRadius: '4px' }} />
           </div>
           <nav className="nav-links">
+            <a href="/sobre-mi" className="nav-link">Sobre Mí</a>
             <a href="/#servicios" className="nav-link">Servicios</a>
             <a href="/blog" className="nav-link">Blog</a>
-            <a href="/faq" className="nav-link">FAQ</a>
+            <a href="/faq" className="nav-link">Encuentra tu problema</a>
             <a href="/pagos" className="nav-link">Pagos</a>
             <a href="/contacto" className="nav-link">Contacto</a>
             <button onClick={() => navigate('/booking')} className="btn-primary" style={{ padding: '0.5rem 1rem' }}>Agendar Cita</button>
@@ -66,7 +67,7 @@ export default function LandingPage() {
         <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', flexWrap: 'wrap', textAlign: 'center' }}>
           <Globe size={18} style={{ color: 'var(--color-accent-light)', flexShrink: 0 }} />
           <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>
-            🇺🇸 <strong>Se atiende a bolivianos residentes en el extranjero.</strong> Consultas online · Pago internacional (AirTM / ACH / Tarjeta)
+            <strong>Se atiende a bolivianos residentes en el extranjero con conflictos jurídicos en Bolivia</strong> Consultas online · Pago internacional (Wester Union Express /ACH / Tarjeta)
           </span>
           <a href="/contacto" style={{ backgroundColor: 'var(--color-accent-light)', color: 'var(--color-primary-dark)', border: 'none', padding: '0.4rem 1rem', borderRadius: '6px', fontWeight: '700', fontSize: '0.82rem', whiteSpace: 'nowrap', textDecoration: 'none' }}>
             Contactar ahora →
@@ -82,17 +83,16 @@ export default function LandingPage() {
             {/* Column 1 — Label + Area 1 */}
             <div className="editorial-col">
               <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '4rem', color: 'var(--color-primary-dark)', lineHeight: 1, marginBottom: '4rem', fontWeight: 600 }}>
-                Áreas<br/>
+                Servicios<br/>
                 <span style={{ display: 'inline-block', width: '50px', height: '24px', backgroundColor: 'var(--color-primary-light)', borderRadius: '40px', verticalAlign: 'middle', margin: '0 0.5rem' }}></span>
-                de<br/>
-                Práctica
+                <br/>
               </h2>
               <div style={{ marginTop: 'auto' }}>
                 <Users size={32} style={{ color: 'var(--color-primary-light)', marginBottom: '1.5rem' }} />
                 <h3
                   onClick={() => setActiveArea(activeArea === 'familiar' ? null : 'familiar')}
                   style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: 'var(--color-primary-dark)', marginBottom: '0.75rem', fontWeight: 600, lineHeight: 1.1, cursor: 'pointer', display: 'flex', alignItems: 'flex-start', gap: '0.5rem', userSelect: 'none' }}>
-                  Derecho Familiar
+                  Derecho de las Familias
                   <ChevronDown size={20} style={{ marginTop: '6px', flexShrink: 0, transition: 'transform 0.3s', transform: activeArea === 'familiar' ? 'rotate(180deg)' : 'none' }} />
                 </h3>
                 <p style={{ color: '#64748b', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '1rem' }}>Asesoría y representación en procesos de divorcio, asistencia familiar y guarda.</p>
@@ -100,7 +100,7 @@ export default function LandingPage() {
                   <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0', animation: 'fadeIn 0.3s ease' }}>
                     <p style={{ fontSize: '0.78rem', fontWeight: '700', color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.75rem' }}>Casos comunes</p>
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                      {['Divorcio por mutuo acuerdo', 'Divorcio contencioso', 'Asistencia familiar (pensión)', 'Guarda y custodia de hijos', 'Régimen de visitas', 'Separación de bienes'].map(c => (
+                      {['Divorcio', 'Asistencia familiar', 'Guarda', 'Régimen de visitas', 'División y partición de bienes gananciales', 'Union Libre', 'Filiación'].map(c => (
                         <li key={c} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#334155', fontSize: '0.88rem' }}>
                           <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--color-primary)', flexShrink: 0 }}></span>{c}
                         </li>
@@ -122,7 +122,7 @@ export default function LandingPage() {
               <div style={{ padding: '3rem 2rem', marginTop: 'auto' }}>
                 <Shield size={32} style={{ color: 'rgba(255,255,255,0.8)', marginBottom: '1.5rem' }} />
                 <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: '#fff', marginBottom: '0.75rem', fontWeight: 600, lineHeight: 1.1, display: 'flex', alignItems: 'flex-start', gap: '0.5rem', userSelect: 'none' }}>
-                  Niñez y Adolescencia
+                  Derecho de la Niñez y Adolescencia
                   <ChevronDown size={20} style={{ marginTop: '6px', flexShrink: 0, transition: 'transform 0.3s', transform: activeArea === 'ninez' ? 'rotate(180deg)' : 'none', color: 'rgba(255,255,255,0.7)' }} />
                 </h3>
                 <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '1rem' }}>Protección prioritaria de los derechos de menores.</p>
@@ -130,7 +130,7 @@ export default function LandingPage() {
                   <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.2)' }}>
                     <p style={{ fontSize: '0.78rem', fontWeight: '700', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.75rem' }}>Casos comunes</p>
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                      {['Filiación y reconocimiento de hijos', 'Adopción nacional', 'Restitución internacional de menores', 'Violencia intrafamiliar (menores)', 'Tutela y curatela'].map(c => (
+                      {['Guarda', 'Adopción nacional e internacional', 'Restitución internacional de NNA', 'Tutela de interdictos', 'Permisos de viajes'].map(c => (
                         <li key={c} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'rgba(255,255,255,0.85)', fontSize: '0.88rem' }}>
                           <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.6)', flexShrink: 0 }}></span>{c}
                         </li>
@@ -154,7 +154,7 @@ export default function LandingPage() {
                 <h3
                   onClick={() => setActiveArea(activeArea === 'civil' ? null : 'civil')}
                   style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: 'var(--color-primary-dark)', marginBottom: '0.75rem', fontWeight: 600, lineHeight: 1.1, cursor: 'pointer', display: 'flex', alignItems: 'flex-start', gap: '0.5rem', userSelect: 'none' }}>
-                  Derecho Civil y Patrimonial
+                  Derecho Civil
                   <ChevronDown size={20} style={{ marginTop: '6px', flexShrink: 0, transition: 'transform 0.3s', transform: activeArea === 'civil' ? 'rotate(180deg)' : 'none' }} />
                 </h3>
                 <p style={{ color: '#64748b', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '1rem' }}>Defensa y saneamiento de propiedades, sucesiones y contratos.</p>
@@ -162,7 +162,7 @@ export default function LandingPage() {
                   <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0' }}>
                     <p style={{ fontSize: '0.78rem', fontWeight: '700', color: 'var(--color-primary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.75rem' }}>Casos comunes</p>
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                      {['Saneamiento de propiedades', 'Sucesiones y herencias', 'Testamentos', 'Elaboración de contratos', 'Partición de bienes', 'Conflictos de copropiedad'].map(c => (
+                      {['Saneamiento de propiedades', 'Sucesiones y herencias', 'Contratos', 'Usucapión', 'Conflictos de copropiedad', 'Deudas'].map(c => (
                         <li key={c} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#334155', fontSize: '0.88rem' }}>
                           <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--color-primary)', flexShrink: 0 }}></span>{c}
                         </li>
@@ -207,6 +207,93 @@ export default function LandingPage() {
             </div>
 
           </div>
+
+          {/* Call to action if case is not listed */}
+          <div style={{
+            marginTop: '3.5rem',
+            padding: '2.5rem 2.2rem',
+            backgroundColor: '#FAF8F5',
+            border: '1px solid #EAE5DC',
+            borderRadius: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '2rem',
+            flexWrap: 'wrap',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.02)'
+          }}>
+            <div style={{ maxWidth: '620px' }}>
+              <span style={{
+                fontSize: '0.78rem',
+                fontWeight: '700',
+                color: 'var(--color-primary)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+                display: 'block',
+                marginBottom: '0.4rem'
+              }}>
+                Atención Personalizada
+              </span>
+              <h3 style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '1.85rem',
+                color: 'var(--color-primary-dark)',
+                fontWeight: 600,
+                marginBottom: '0.6rem',
+                lineHeight: 1.2
+              }}>
+                ¿No encuentras tu caso específico?
+              </h3>
+              <p style={{ color: '#64748b', fontSize: '0.98rem', lineHeight: 1.6, margin: 0 }}>
+                Cada situación jurídica es única. Cuéntanos los antecedentes de tu caso para una orientación inicial o agenda una consulta privada directamente con la Dra. Jhoselyn Gonzales.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+              <button
+                onClick={() => navigate('/booking')}
+                style={{
+                  backgroundColor: 'var(--color-primary-dark)',
+                  color: '#ffffff',
+                  border: 'none',
+                  padding: '0.9rem 1.6rem',
+                  borderRadius: '10px',
+                  fontWeight: '600',
+                  fontSize: '0.92rem',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  boxShadow: '0 4px 14px rgba(184, 134, 11, 0.18)',
+                  transition: 'background-color 0.2s'
+                }}
+              >
+                <Calendar size={18} />
+                Agendar una Consulta
+              </button>
+
+              <button
+                onClick={() => navigate('/chat')}
+                style={{
+                  backgroundColor: '#ffffff',
+                  color: 'var(--color-primary-dark)',
+                  border: '1.5px solid #d4cdbf',
+                  padding: '0.9rem 1.4rem',
+                  borderRadius: '10px',
+                  fontWeight: '600',
+                  fontSize: '0.92rem',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}
+              >
+                <MessageCircle size={18} />
+                Consultar al Asistente IA
+              </button>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -288,6 +375,130 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Docencia Universitaria Highlight */}
+      <section style={{ padding: '5rem 0', backgroundColor: '#FAF8F5', borderTop: '1px solid #ede8df', borderBottom: '1px solid #ede8df' }}>
+        <div className="container" style={{ maxWidth: '1000px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '3rem', alignItems: 'center' }}>
+            <div>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-primary)', fontSize: '0.82rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.75rem' }}>
+                <GraduationCap size={16} /> Cátedra & Formación Continua
+              </div>
+              <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.4rem', color: 'var(--color-primary-dark)', lineHeight: 1.2, marginBottom: '1.25rem', fontWeight: 700 }}>
+                Docencia Universitaria en Grado y Posgrado
+              </h2>
+              <p style={{ color: '#475569', fontSize: '1rem', lineHeight: 1.7, marginBottom: '1.5rem' }}>
+                La Dra. Jhoselyn Gonzales es docente activa en programas de <strong>Pregrado, Diplomados y Posgrados</strong> en prestigiosas universidades de Bolivia, formando a futuras generaciones de abogados en Derecho Procesal Familiar, Protección a la Niñez y Conciliación Extrajudicial.
+              </p>
+              <button
+                onClick={() => navigate('/sobre-mi')}
+                style={{
+                  backgroundColor: 'var(--color-primary-dark)',
+                  color: '#fff',
+                  border: 'none',
+                  padding: '0.75rem 1.4rem',
+                  borderRadius: '8px',
+                  fontWeight: '600',
+                  fontSize: '0.9rem',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}
+              >
+                Conocer Trayectoria Completa <ArrowRight size={15} />
+              </button>
+            </div>
+            <div>
+              <img
+                src="/docencia.jpg"
+                alt="Docencia Universitaria Dra. Jhoselyn Gonzales"
+                style={{ width: '100%', borderRadius: '16px', boxShadow: '0 12px 30px rgba(0,0,0,0.08)', objectFit: 'cover' }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Google Reviews Section */}
+      <section style={{ padding: '6rem 0', backgroundColor: '#ffffff' }}>
+        <div className="container" style={{ maxWidth: '1000px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: '#eab308', marginBottom: '0.5rem' }}>
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={22} fill="#eab308" color="#eab308" />
+              ))}
+            </div>
+            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.8rem', color: 'var(--color-primary-dark)', marginBottom: '0.5rem', fontWeight: 700 }}>
+              Opiniones en Google Reviews
+            </h2>
+            <p style={{ color: '#64748b', fontSize: '1.05rem', maxWidth: '600px', margin: '0 auto' }}>
+              Testimonios de personas y familias que confiaron en nuestro acompañamiento legal.
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '2.5rem' }}>
+            {[
+              {
+                author: 'Mariela V. (Cochabamba)',
+                text: 'Excelente profesional y muy humana. Me ayudó a resolver el proceso de asistencia familiar de mis hijos con total rapidez y tranquilidad.',
+                stars: 5
+              },
+              {
+                author: 'Carlos R. (Virginia, EEUU)',
+                text: 'Desde Estados Unidos pude realizar el trámite de poder y divorcio sin tener que viajar a Bolivia. Comunicación impecable y transparente.',
+                stars: 5
+              },
+              {
+                author: 'Patricia M. (Cochabamba)',
+                text: 'Muy agradecida con la Dra. Jhoselyn. Su orientación legal fue clara desde el primer minuto y evitó que fuéramos a un juicio desgastante.',
+                stars: 5
+              }
+            ].map((rev, idx) => (
+              <div key={idx} style={{ backgroundColor: '#FAF9F6', padding: '1.75rem', borderRadius: '16px', border: '1px solid #EAE5DC', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ display: 'flex', gap: '3px', color: '#eab308', marginBottom: '0.75rem' }}>
+                    {[...Array(rev.stars)].map((_, s) => (
+                      <Star key={s} size={15} fill="#eab308" color="#eab308" />
+                    ))}
+                  </div>
+                  <p style={{ color: '#475569', fontSize: '0.94rem', lineHeight: 1.6, margin: 0 }}>
+                    "{rev.text}"
+                  </p>
+                </div>
+                <div style={{ marginTop: '1.25rem', fontSize: '0.85rem', fontWeight: '700', color: 'var(--color-primary-dark)' }}>
+                  {rev.author}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ textAlign: 'center' }}>
+            <a
+              href="https://g.page/r/CdRUSSwaGWpAEBM/review"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.6rem',
+                backgroundColor: '#ffffff',
+                color: 'var(--color-primary-dark)',
+                border: '1.5px solid var(--color-primary)',
+                padding: '0.9rem 2rem',
+                borderRadius: '10px',
+                fontWeight: '700',
+                fontSize: '0.95rem',
+                textDecoration: 'none',
+                boxShadow: '0 4px 14px rgba(0,0,0,0.05)',
+                transition: 'all 0.2s'
+              }}
+            >
+              ⭐ Ver o Dejar una Reseña en Google Reviews <ExternalLink size={16} />
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* About Section */}
       <section id="nosotros" className="about">
         <div className="container about-content">
@@ -334,7 +545,7 @@ export default function LandingPage() {
           <div style={{ display: 'flex', justifyContent: 'center', gap: '2.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
             <a href="/#servicios" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Servicios</a>
             <a href="/blog" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Blog</a>
-            <a href="/faq" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>FAQ Legal</a>
+            <a href="/faq" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Encuentra tu problema</a>
             <a href="/pagos" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Opciones de Pago</a>
             <a href="/contacto" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Contacto</a>
             <a href="/probono" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Pro Bono</a>

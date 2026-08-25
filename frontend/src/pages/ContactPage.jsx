@@ -47,8 +47,11 @@ export default function ContactPage() {
             <img src="/logo.jpg" alt="Logo" style={{ height: '70px', width: 'auto', objectFit: 'contain' }} />
           </div>
           <nav className="nav-links">
+            <a href="/sobre-mi" className="nav-link">Sobre Mí</a>
             <a href="/#servicios" className="nav-link">Servicios</a>
-            <a href="/blog" className="nav-link">Blog</a>
+            <a href="/faq" className="nav-link">FAQ</a>
+            <a href="/pagos" className="nav-link">Pagos</a>
+            <a href="/contacto" className="nav-link" style={{ color: 'var(--color-primary-dark)', fontWeight: '700' }}>Contacto</a>
             <button onClick={() => navigate('/booking')} className="btn-primary" style={{ padding: '0.5rem 1rem' }}>Agendar Cita</button>
           </nav>
         </div>

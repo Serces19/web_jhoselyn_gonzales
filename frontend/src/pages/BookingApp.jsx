@@ -179,19 +179,43 @@ export default function BookingApp() {
                 <textarea placeholder="Motivo de la consulta (Opcional)" className="form-control" rows="3" value={details.reason} onChange={e => setDetails({...details, reason: e.target.value})}></textarea>
               </div>
 
-              <div style={{ marginTop: '2rem', padding: '1.5rem', backgroundColor: 'rgba(220, 166, 121, 0.1)', borderRadius: '12px', border: '1px solid rgba(220, 166, 121, 0.3)' }}>
-                <h4 style={{ color: 'var(--color-accent)', marginBottom: '0.5rem', fontWeight: '700' }}>Información de Pago</h4>
-                <p style={{ fontSize: '0.9rem', color: '#4a5568', marginBottom: '1rem', lineHeight: 1.6 }}>El costo de la consulta inicial es de 50 Bs. (o $15 USD para el exterior). Puedes pagar mediante <strong>QR Banco Bolivia, AirTM, Transferencia Bancaria o ACH/Zelle (EEUU)</strong>.</p>
-                <a href="/pagos" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', backgroundColor: 'var(--color-primary-dark)', color: '#fff', fontSize: '0.88rem', padding: '0.6rem 1.2rem', borderRadius: '8px', textDecoration: 'none', fontWeight: '600' }}>
-                  💳 Ver Opciones de Pago y QR →
+              <div style={{ marginTop: '2rem', padding: '1.75rem', backgroundColor: '#FAF8F5', borderRadius: '14px', border: '1.5px solid #EAE5DC' }}>
+                <h4 style={{ color: 'var(--color-primary-dark)', marginBottom: '0.75rem', fontWeight: '700', fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  💼 Hermenéutica y Tarifas de la Consulta
+                </h4>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                  <div style={{ padding: '0.85rem', backgroundColor: '#fff', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
+                    <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>Residentes en Bolivia</span>
+                    <div style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--color-primary-dark)', marginTop: '0.2rem' }}>200 Bs</div>
+                    <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>QR Bancario / Transferencia BNB</span>
+                  </div>
+                  <div style={{ padding: '0.85rem', backgroundColor: '#fff', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
+                    <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>Exterior (EEUU / Europa)</span>
+                    <div style={{ fontSize: '1.25rem', fontWeight: '800', color: '#7c3aed', marginTop: '0.2rem' }}>20 USD / 20 EUR</div>
+                    <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>Tarjeta de Débito / Crédito</span>
+                  </div>
+                </div>
+
+                <div style={{ fontSize: '0.86rem', color: '#475569', lineHeight: 1.6, marginBottom: '1.2rem' }}>
+                  <ul style={{ margin: 0, paddingLeft: '1.2rem' }}>
+                    <li><strong>Duración:</strong> Sesión personalizada de 45 a 60 minutos con la Dra. Jhoselyn Gonzales.</li>
+                    <li><strong>Modalidad:</strong> Presencial (Despacho Cochabamba) o Virtual (Videollamada Zoom / Google Meet / WhatsApp).</li>
+                    <li><strong>Alcance:</strong> Análisis profundo del caso, fundamentación legal y trazado de estrategia. No incluye redacción de demandas complejas en esta primera sesión.</li>
+                    <li><strong>Confirmación:</strong> Tras confirmar tu reserva, realiza el pago y envía el comprobante para asegurar tu horario.</li>
+                  </ul>
+                </div>
+
+                <a href="/pagos" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', backgroundColor: 'var(--color-primary-dark)', color: '#fff', fontSize: '0.88rem', padding: '0.65rem 1.25rem', borderRadius: '8px', textDecoration: 'none', fontWeight: '600' }}>
+                  💳 Ver Opciones de Pago y QR Oficial →
                 </a>
               </div>
 
               <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <button onClick={() => navigate('/login')} style={{ background: 'none', border: 'none', color: 'var(--color-primary-dark)', textDecoration: 'underline', cursor: 'pointer', fontSize: '0.9rem' }}>
-                  Ya tengo cuenta
+                  Acceso Administrativo
                 </button>
-                <button onClick={handleNext} className="btn-primary">Confirmar Reserva</button>
+                <button onClick={handleNext} className="btn-primary" style={{ padding: '0.85rem 1.8rem', fontSize: '1rem' }}>Confirmar Reserva</button>
               </div>
             </div>
           )}
@@ -199,15 +223,22 @@ export default function BookingApp() {
           {step === 3 && (
             <div className="animate-fade-in" style={{ textAlign: 'center', padding: '2rem 0' }}>
               <CheckCircle size={64} color="var(--color-primary)" style={{ margin: '0 auto 1.5rem' }} />
-              <h2 style={{ fontSize: '2rem', marginBottom: '1rem', color: 'var(--color-primary-dark)' }}>¡Solicitud Recibida!</h2>
-              <p style={{ color: '#4a5568', marginBottom: '2rem', maxWidth: '500px', margin: '0 auto 2rem', lineHeight: 1.6 }}>
-                Tu cita para el <strong>{format(selectedDate, "d 'de' MMMM", { locale: es })} a las {selectedTime}</strong> ha sido registrada.
-                La abogada revisará tu solicitud y confirmaremos tu cita en breve.
+              <h2 style={{ fontSize: '2rem', marginBottom: '1rem', color: 'var(--color-primary-dark)' }}>¡Reserva Registrada!</h2>
+              <p style={{ color: '#4a5568', marginBottom: '1.5rem', maxWidth: '540px', margin: '0 auto 1.5rem', lineHeight: 1.6 }}>
+                Tu cita para el <strong>{format(selectedDate, "d 'de' MMMM", { locale: es })} a las {selectedTime}</strong> ha sido agendada con éxito.
               </p>
+              
+              <div style={{ backgroundColor: '#FAF8F5', borderRadius: '12px', border: '1px solid #EAE5DC', padding: '1.25rem', maxWidth: '500px', margin: '0 auto 2rem', textAlign: 'left', fontSize: '0.9rem', color: '#475569' }}>
+                <strong>Siguiente paso para habilitar tu cita:</strong>
+                <p style={{ margin: '0.5rem 0 0' }}>
+                  Realiza el pago correspondiente (<strong>200 Bs</strong> en Bolivia o <strong>20 USD/EUR</strong> desde el exterior) mediante QR o Tarjeta y envía el comprobante a nuestro WhatsApp oficial para enviarte el enlace de videollamada o confirmar la sala en despacho.
+                </p>
+              </div>
+
               <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <button onClick={() => navigate('/')} className="btn-primary">Volver al Inicio</button>
                 <a href="/pagos" className="btn-secondary" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
-                  Realizar Pago / Enviar Comprobante
+                  💳 Realizar Pago / Enviar Comprobante
                 </a>
               </div>
             </div>

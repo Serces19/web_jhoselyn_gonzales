@@ -1,59 +1,62 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CreditCard, Smartphone, Building2, Globe, Upload, CheckCircle, Copy, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
+import { CreditCard, Smartphone, Building2, Globe, Upload, CheckCircle, ChevronDown, ChevronUp, ArrowRight, ShieldCheck } from 'lucide-react';
 
 const PAYMENT_METHODS = [
   {
     id: 'qr',
     icon: <Smartphone size={28} />,
-    label: 'QR Banco Bolivia',
-    sublabel: 'Pago desde cualquier app bancaria boliviana',
-    badge: 'Bolivia',
+    label: 'QR Bancario Interoperable (Bolivia)',
+    sublabel: '200 Bs · Pago instantáneo desde cualquier app bancaria',
+    badge: 'Bolivia · 200 Bs',
     badgeColor: '#1e40af',
     color: '#1d4ed8',
     bg: '#eff6ff',
+    amount: '200 Bs',
     steps: [
-      'Abre la app de tu banco (BNB, Banco Sol, Mercantil, etc.)',
-      'Selecciona "Pago con QR" o "Transferencia QR"',
-      'Escanea el código QR de abajo',
-      'Ingresa el monto de la consulta o servicio',
-      'Confirma el pago y envía el comprobante',
+      'Abre la app de tu banco (BNB, Banco Sol, Mercantil, BCP, etc.)',
+      'Selecciona la opción "Pago con QR"',
+      'Escanea el código QR oficial del despacho',
+      'Confirma el monto de la consulta (200 Bs)',
+      'Guarda tu comprobante y envíalo por WhatsApp para confirmar tu horario'
     ],
     extra: (
       <div style={{ textAlign: 'center', margin: '1.5rem 0' }}>
         <div style={{ display: 'inline-block', padding: '1rem', backgroundColor: '#fff', border: '2px solid #e2e8f0', borderRadius: '12px' }}>
-          {/* QR placeholder — reemplazar con imagen real */}
-          <div style={{ width: '160px', height: '160px', backgroundColor: '#f1f5f9', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontSize: '0.8rem', textAlign: 'center', padding: '1rem' }}>
-            📱 QR pendiente<br />de configurar
+          <div style={{ width: '160px', height: '160px', backgroundColor: '#f1f5f9', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontSize: '0.82rem', textAlign: 'center', padding: '1rem' }}>
+            📱 QR Oficial BNB<br />(200 Bs)
           </div>
         </div>
-        <p style={{ color: '#64748b', fontSize: '0.8rem', marginTop: '0.75rem' }}>Código QR de Jhoselyn Gonzales Abogada</p>
+        <p style={{ color: '#64748b', fontSize: '0.85rem', marginTop: '0.75rem', fontWeight: '500' }}>
+          Monto de la consulta: <strong>200 Bs</strong> · Despacho Dra. Jhoselyn Gonzales
+        </p>
       </div>
     ),
   },
   {
     id: 'banco',
     icon: <Building2 size={28} />,
-    label: 'Transferencia Bancaria',
-    sublabel: 'Depósito o transferencia en Bolivia',
-    badge: 'Bolivia',
-    badgeColor: '#1e40af',
+    label: 'Transferencia Bancaria BNB (Bolivia)',
+    sublabel: '200 Bs · Transferencia o depósito bancario',
+    badge: 'Bolivia · 200 Bs',
+    badgeColor: '#0f766e',
     color: '#0f766e',
     bg: '#f0fdfa',
+    amount: '200 Bs',
     steps: [
-      'Realiza una transferencia o depósito a la cuenta indicada abajo',
-      'Incluye tu nombre completo como referencia',
-      'Guarda el comprobante de pago',
-      'Envíalo por WhatsApp para confirmar tu cita',
+      'Realiza una transferencia a la cuenta BNB indicada abajo',
+      'Monto: 200 Bolivianos',
+      'Coloca tu nombre completo como referencia / glosa',
+      'Envía la captura de tu transferencia para habilitar tu cita'
     ],
     extra: (
       <div style={{ backgroundColor: '#f8fafc', borderRadius: '12px', padding: '1.5rem', margin: '1rem 0', display: 'flex', flexDirection: 'column', gap: '0.75rem', border: '1px solid #e2e8f0' }}>
         {[
           { label: 'Banco', value: 'Banco Nacional de Bolivia (BNB)' },
-          { label: 'Titular', value: 'Jhoselyn Gonzales' },
-          { label: 'N° de Cuenta', value: '— Pendiente —' },
-          { label: 'CI / NIT', value: '— Pendiente —' },
-          { label: 'Moneda', value: 'Bolivianos (BOB)' },
+          { label: 'Titular', value: 'Dra. Jhoselyn Gonzales' },
+          { label: 'Monto Consulta', value: '200 BOB (Bolivianos)' },
+          { label: 'N° de Cuenta', value: 'Coordinar por WhatsApp' },
+          { label: 'Tipo de Cuenta', value: 'Caja de Ahorro' },
         ].map(row => (
           <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontSize: '0.82rem', color: '#94a3b8', fontWeight: '600' }}>{row.label}</span>
@@ -64,66 +67,37 @@ const PAYMENT_METHODS = [
     ),
   },
   {
-    id: 'airtm',
-    icon: <Globe size={28} />,
-    label: 'AirTM',
-    sublabel: 'Para pagos internacionales y desde EEUU',
-    badge: '🇺🇸 Internacional',
+    id: 'tarjeta',
+    icon: <CreditCard size={28} />,
+    label: 'Tarjeta de Débito / Crédito (Exterior)',
+    sublabel: '20 USD o 20 EUR · Clientes en EEUU, Europa y Latinoamérica',
+    badge: '🌍 Internacional · 20 USD / 20 EUR',
     badgeColor: '#7c3aed',
     color: '#7c3aed',
     bg: '#faf5ff',
+    amount: '20 USD / 20 EUR',
     steps: [
-      'Haz clic en el botón de pago AirTM de abajo',
-      'Inicia sesión o crea una cuenta gratuita en AirTM',
-      'Ingresa el monto acordado en USD',
-      'Escribe "Consulta Legal" como referencia',
-      'Envía el comprobante por WhatsApp para confirmar',
+      'Pago con cualquier tarjeta Visa, Mastercard o American Express internacional',
+      'Monto: 20 USD (Estados Unidos / Resto del mundo) o 20 EUR (Europa)',
+      'Procesamiento seguro y confirmación directa con el despacho',
+      'Te enviamos el link de pago seguro o coordinamos directamente por WhatsApp'
     ],
     extra: (
       <div style={{ backgroundColor: '#faf5ff', borderRadius: '12px', padding: '1.5rem', margin: '1rem 0', border: '1px solid #e9d5ff', textAlign: 'center' }}>
-        <p style={{ fontSize: '0.85rem', color: '#7c3aed', fontWeight: '700', marginBottom: '1rem' }}>Link de pago directo</p>
+        <p style={{ fontSize: '0.95rem', color: '#7c3aed', fontWeight: '700', marginBottom: '0.5rem' }}>
+          Atención Internacional a Residentes en el Exterior
+        </p>
+        <p style={{ color: '#64748b', fontSize: '0.88rem', lineHeight: 1.6, marginBottom: '1.2rem', maxWidth: '500px', margin: '0 auto 1.2rem' }}>
+          Tarifa plana de <strong>20 USD o 20 EUR</strong> por consulta personalizada online (Zoom/Google Meet/WhatsApp).
+        </p>
         <a
-          href="https://airtm.me/sergio4hny2enm"
+          href="https://wa.me/59169512921?text=Hola%20Dra.%20Jhoselyn,%20resido%20en%20el%20extranjero%20y%20deseo%20pagar%20mi%20consulta%20(20%20USD/EUR)%20con%20tarjeta."
           target="_blank"
           rel="noopener noreferrer"
           style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', backgroundColor: '#7c3aed', color: '#fff', textDecoration: 'none', padding: '0.75rem 1.5rem', borderRadius: '8px', fontWeight: '700', fontSize: '0.9rem' }}
         >
-          Pagar con AirTM →
+          💳 Solicitar Link de Pago con Tarjeta →
         </a>
-        <p style={{ color: '#94a3b8', fontSize: '0.8rem', marginTop: '0.75rem' }}>Envía el comprobante por WhatsApp después de pagar</p>
-      </div>
-    ),
-  },
-  {
-    id: 'ach',
-    icon: <CreditCard size={28} />,
-    label: 'ACH / Wire Transfer (EEUU)',
-    sublabel: 'Transferencia bancaria desde banco en USA',
-    badge: '🇺🇸 EEUU',
-    badgeColor: '#1e40af',
-    color: '#1e40af',
-    bg: '#eff6ff',
-    steps: [
-      'Realiza una transferencia ACH o Wire desde tu banco en EEUU',
-      'Usa los datos bancarios de abajo (Zelle también disponible)',
-      'Incluye tu nombre y "Consulta Legal" como memo/referencia',
-      'Envía el comprobante por WhatsApp o email para confirmar',
-    ],
-    extra: (
-      <div style={{ backgroundColor: '#f8fafc', borderRadius: '12px', padding: '1.5rem', margin: '1rem 0', display: 'flex', flexDirection: 'column', gap: '0.75rem', border: '1px solid #e2e8f0' }}>
-        {[
-          { label: 'Beneficiario', value: 'Jhoselyn Gonzales' },
-          { label: 'Banco', value: '— Pendiente de configurar —' },
-          { label: 'Routing Number', value: '— Pendiente —' },
-          { label: 'Account Number', value: '— Pendiente —' },
-          { label: 'Moneda', value: 'USD' },
-          { label: 'Zelle', value: '— Pendiente —' },
-        ].map(row => (
-          <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.82rem', color: '#94a3b8', fontWeight: '600' }}>{row.label}</span>
-            <span style={{ fontSize: '0.9rem', color: '#1e293b', fontWeight: '500' }}>{row.value}</span>
-          </div>
-        ))}
       </div>
     ),
   },
@@ -134,15 +108,16 @@ export default function PagosPage() {
   const [openMethod, setOpenMethod] = useState(null);
   const [step, setStep] = useState('select'); // select | proof | done
   const [selectedMethod, setSelectedMethod] = useState(null);
-  const [proofForm, setProofForm] = useState({ name: '', phone: '', amount: '', notes: '' });
+  const [proofForm, setProofForm] = useState({ name: '', phone: '', amount: '200 Bs', notes: '' });
   const [file, setFile] = useState(null);
   const [sending, setSending] = useState(false);
-  const [copied, setCopied] = useState(null);
 
   const whatsappBase = 'https://wa.me/59169512921';
 
-  const handleSelectMethod = (method) => {
-    setSelectedMethod(method);
+  const handleSelectMethod = (methodId) => {
+    const m = PAYMENT_METHODS.find(item => item.id === methodId);
+    setSelectedMethod(methodId);
+    setProofForm(prev => ({ ...prev, amount: m ? m.amount : '200 Bs' }));
     setStep('proof');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -161,13 +136,6 @@ export default function PagosPage() {
     }, 800);
   };
 
-  const copyText = (text, key) => {
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(key);
-      setTimeout(() => setCopied(null), 2000);
-    });
-  };
-
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--color-background)', fontFamily: 'var(--font-sans)' }}>
       {/* Header */}
@@ -177,7 +145,9 @@ export default function PagosPage() {
             <img src="/logo.jpg" alt="Logo" style={{ height: '70px', width: 'auto', objectFit: 'contain' }} />
           </div>
           <nav className="nav-links">
+            <a href="/sobre-mi" className="nav-link">Sobre Mí</a>
             <a href="/#servicios" className="nav-link">Servicios</a>
+            <a href="/faq" className="nav-link">FAQ</a>
             <a href="/contacto" className="nav-link">Contacto</a>
             <button onClick={() => navigate('/booking')} className="btn-primary" style={{ padding: '0.5rem 1rem' }}>Agendar Cita</button>
           </nav>
@@ -193,13 +163,13 @@ export default function PagosPage() {
               {/* Hero */}
               <div style={{ marginBottom: '3rem' }}>
                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'rgba(65,85,54,0.08)', color: 'var(--color-primary)', padding: '0.4rem 1rem', borderRadius: '20px', fontSize: '0.82rem', fontWeight: '700', marginBottom: '1.25rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                  <CreditCard size={14} /> Métodos de Pago
+                  <CreditCard size={14} /> Tarifas y Opciones de Pago
                 </div>
                 <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '3.2rem', color: 'var(--color-primary-dark)', lineHeight: 1.1, marginBottom: '1rem', fontWeight: 700 }}>
-                  Opciones de Pago
+                  Métodos de Pago y Tarifas
                 </h1>
-                <p style={{ color: '#64748b', fontSize: '1.1rem', maxWidth: '540px', lineHeight: 1.7 }}>
-                  Ofrecemos múltiples opciones para que puedas pagar desde Bolivia o desde el exterior de forma segura y sencilla.
+                <p style={{ color: '#64748b', fontSize: '1.1rem', maxWidth: '640px', lineHeight: 1.7 }}>
+                  Tarifa clara y transparente: <strong>200 Bs</strong> para residentes en Bolivia y <strong>20 USD o 20 EUR</strong> para bolivianos en el extranjero.
                 </p>
               </div>
 
@@ -230,7 +200,7 @@ export default function PagosPage() {
                     {openMethod === method.id && (
                       <div style={{ padding: '0 1.5rem 1.5rem', borderTop: `1px solid ${method.color}20` }}>
                         {method.extra}
-                        <div style={{ marginBottom: '1rem' }}>
+                        <div style={{ marginBottom: '1.5rem' }}>
                           <p style={{ fontSize: '0.82rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.75rem' }}>Pasos a seguir</p>
                           <ol style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
                             {method.steps.map((s, i) => (
@@ -244,7 +214,7 @@ export default function PagosPage() {
                         <button
                           onClick={() => handleSelectMethod(method.id)}
                           style={{ backgroundColor: method.color, color: '#fff', border: 'none', padding: '0.85rem 2rem', borderRadius: '10px', fontWeight: '700', cursor: 'pointer', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'var(--font-sans)' }}>
-                          Ya realicé el pago — Enviar comprobante <ArrowRight size={16} />
+                          Ya realicé el pago — Enviar comprobante ({method.amount}) <ArrowRight size={16} />
                         </button>
                       </div>
                     )}
@@ -256,9 +226,9 @@ export default function PagosPage() {
               <div style={{ backgroundColor: 'var(--color-primary-dark)', borderRadius: '20px', padding: '2.5rem', display: 'flex', gap: '2rem', alignItems: 'center', flexWrap: 'wrap' }}>
                 <div style={{ flex: 1, minWidth: '220px' }}>
                   <h3 style={{ fontFamily: 'var(--font-serif)', color: '#fff', fontSize: '1.5rem', marginBottom: '0.5rem' }}>¿Tienes dudas sobre el pago?</h3>
-                  <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.9rem', lineHeight: 1.6, margin: 0 }}>Escríbenos por WhatsApp y te orientamos sobre qué método es mejor para tu caso.</p>
+                  <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.9rem', lineHeight: 1.6, margin: 0 }}>Escríbenos por WhatsApp y te orientamos sobre el método más conveniente para tu ubicación.</p>
                 </div>
-                <a href={`${whatsappBase}?text=${encodeURIComponent('Hola, tengo dudas sobre cómo realizar el pago de la consulta.')}`} target="_blank" rel="noopener noreferrer" style={{ backgroundColor: '#25D366', color: '#fff', padding: '0.9rem 1.75rem', borderRadius: '10px', fontWeight: '700', textDecoration: 'none', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}>
+                <a href={`${whatsappBase}?text=${encodeURIComponent('Hola Dra. Jhoselyn, tengo dudas sobre las opciones de pago.')}`} target="_blank" rel="noopener noreferrer" style={{ backgroundColor: '#25D366', color: '#fff', padding: '0.9rem 1.75rem', borderRadius: '10px', fontWeight: '700', textDecoration: 'none', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}>
                   💬 Consultar por WhatsApp
                 </a>
               </div>
@@ -292,11 +262,11 @@ export default function PagosPage() {
                   </div>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-primary-dark)', marginBottom: '0.4rem' }}>Monto Pagado *</label>
-                    <input required value={proofForm.amount} onChange={e => setProofForm({ ...proofForm, amount: e.target.value })} placeholder="Ej. Bs. 150 / $25 USD" style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1.5px solid #e2e8f0', fontSize: '0.95rem', outline: 'none', boxSizing: 'border-box', fontFamily: 'var(--font-sans)' }} onFocus={e => e.target.style.borderColor = 'var(--color-primary)'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+                    <input required value={proofForm.amount} onChange={e => setProofForm({ ...proofForm, amount: e.target.value })} placeholder="200 Bs o 20 USD / EUR" style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1.5px solid #e2e8f0', fontSize: '0.95rem', outline: 'none', boxSizing: 'border-box', fontFamily: 'var(--font-sans)' }} onFocus={e => e.target.style.borderColor = 'var(--color-primary)'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
                   </div>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-primary-dark)', marginBottom: '0.4rem' }}>Notas adicionales</label>
-                    <textarea value={proofForm.notes} onChange={e => setProofForm({ ...proofForm, notes: e.target.value })} placeholder="Ej. pago de consulta inicial, número de transacción..." rows={3} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1.5px solid #e2e8f0', fontSize: '0.95rem', resize: 'vertical', outline: 'none', boxSizing: 'border-box', fontFamily: 'var(--font-sans)' }} onFocus={e => e.target.style.borderColor = 'var(--color-primary)'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
+                    <textarea value={proofForm.notes} onChange={e => setProofForm({ ...proofForm, notes: e.target.value })} placeholder="Ej. pago consulta del viernes 10:00 AM..." rows={3} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1.5px solid #e2e8f0', fontSize: '0.95rem', resize: 'vertical', outline: 'none', boxSizing: 'border-box', fontFamily: 'var(--font-sans)' }} onFocus={e => e.target.style.borderColor = 'var(--color-primary)'} onBlur={e => e.target.style.borderColor = '#e2e8f0'} />
                   </div>
 
                   {/* File upload */}
@@ -313,7 +283,7 @@ export default function PagosPage() {
                   </div>
 
                   <div style={{ backgroundColor: '#fffbeb', borderRadius: '10px', padding: '1rem 1.25rem', border: '1px solid #fde68a', fontSize: '0.85rem', color: '#92400e', lineHeight: 1.5 }}>
-                    ⚡ Al enviar, se abrirá <strong>WhatsApp</strong> con el resumen de tu pago. Adjunta también la captura del comprobante directamente en el chat para una confirmación más rápida.
+                    ⚡ Al enviar, se abrirá <strong>WhatsApp</strong> con el resumen de tu pago para que adjuntes la captura y confirmemos tu cita de inmediato.
                   </div>
 
                   <button type="submit" disabled={sending} style={{ backgroundColor: 'var(--color-primary-dark)', color: '#fff', border: 'none', padding: '1rem', borderRadius: '10px', fontWeight: '700', fontSize: '1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontFamily: 'var(--font-sans)', opacity: sending ? 0.7 : 1 }}>
@@ -330,11 +300,11 @@ export default function PagosPage() {
               <div style={{ fontSize: '4rem', marginBottom: '1.5rem' }}>🎉</div>
               <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', color: 'var(--color-primary-dark)', marginBottom: '1rem' }}>¡Comprobante Enviado!</h2>
               <p style={{ color: '#64748b', fontSize: '1.05rem', maxWidth: '480px', margin: '0 auto 2.5rem', lineHeight: 1.7 }}>
-                Hemos recibido tu comprobante. Lo verificaremos y confirmaremos tu servicio o cita dentro de las próximas <strong>2 horas hábiles</strong>.
+                Hemos recibido tu comprobante. Lo verificaremos y confirmaremos tu cita o servicio a la brevedad posible.
               </p>
               <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <button onClick={() => navigate('/booking')} className="btn-primary" style={{ padding: '0.9rem 2rem' }}>Agendar una Cita</button>
-                <button onClick={() => { setStep('select'); setSelectedMethod(null); setProofForm({ name: '', phone: '', amount: '', notes: '' }); setFile(null); }} style={{ backgroundColor: '#fff', color: 'var(--color-primary-dark)', border: '1.5px solid var(--color-primary-dark)', padding: '0.9rem 2rem', borderRadius: '10px', fontWeight: '600', cursor: 'pointer', fontSize: '0.95rem' }}>
+                <button onClick={() => { setStep('select'); setSelectedMethod(null); setProofForm({ name: '', phone: '', amount: '200 Bs', notes: '' }); setFile(null); }} style={{ backgroundColor: '#fff', color: 'var(--color-primary-dark)', border: '1.5px solid var(--color-primary-dark)', padding: '0.9rem 2rem', borderRadius: '10px', fontWeight: '600', cursor: 'pointer', fontSize: '0.95rem' }}>
                   Realizar otro pago
                 </button>
               </div>
@@ -346,6 +316,7 @@ export default function PagosPage() {
       <footer className="footer">
         <div className="container">
           <div style={{ display: 'flex', justifyContent: 'center', gap: '2.5rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+            <a href="/sobre-mi" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: '0.88rem' }}>Sobre Mí</a>
             <a href="/#servicios" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: '0.88rem' }}>Servicios</a>
             <a href="/blog" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: '0.88rem' }}>Blog</a>
             <a href="/faq" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: '0.88rem' }}>FAQ</a>

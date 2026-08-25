@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MessageSquare, X, Send, Bot, User, Sparkles, CreditCard, Calendar, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
 
 const QUICK_PROMPTS = [
   'Quiero consultar sobre Divorcio',
@@ -238,11 +239,30 @@ export default function ChatWidget() {
                     lineHeight: 1.55,
                     boxShadow: msg.role === 'user' ? 'none' : '0 2px 8px rgba(0,0,0,0.04)',
                     border: msg.role === 'user' ? 'none' : '1px solid #f1f5f9',
-                    wordBreak: 'break-word',
-                    whiteSpace: 'pre-line'
+                    wordBreak: 'break-word'
                   }}
                 >
-                  {msg.text}
+                  {msg.role === 'assistant' ? (
+                    <div style={{ fontSize: '0.9rem' }}>
+                      <ReactMarkdown
+                        components={{
+                          p: ({ node, ...props }) => <p style={{ margin: '0 0 0.5rem 0', lineHeight: 1.55 }} {...props} />,
+                          strong: ({ node, ...props }) => <strong style={{ fontWeight: '700', color: 'var(--color-primary-dark)' }} {...props} />,
+                          em: ({ node, ...props }) => <em style={{ fontStyle: 'italic' }} {...props} />,
+                          ul: ({ node, ...props }) => <ul style={{ margin: '0.3rem 0 0.5rem 1.1rem', padding: 0 }} {...props} />,
+                          ol: ({ node, ...props }) => <ol style={{ margin: '0.3rem 0 0.5rem 1.1rem', padding: 0 }} {...props} />,
+                          li: ({ node, ...props }) => <li style={{ marginBottom: '0.25rem' }} {...props} />,
+                          a: ({ node, ...props }) => <a style={{ color: 'var(--color-primary-dark)', fontWeight: '600', textDecoration: 'underline' }} target="_blank" rel="noopener noreferrer" {...props} />
+                        }}
+                      >
+                        {msg.text}
+                      </ReactMarkdown>
+                    </div>
+                  ) : (
+                    <div style={{ whiteSpace: 'pre-line' }}>
+                      {msg.text}
+                    </div>
+                  )}
                 </div>
 
                 {/* Quick actions if lead or conversion suggested */}

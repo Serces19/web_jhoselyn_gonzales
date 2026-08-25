@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Send, ArrowLeft } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 export default function ChatPage() {
   const navigate = useNavigate();
@@ -203,10 +204,48 @@ export default function ChatPage() {
               lineHeight: 1.65,
               boxShadow: msg.role === 'user' ? 'none' : '0 1px 4px rgba(0,0,0,0.06)',
               border: msg.role === 'user' ? 'none' : '1px solid #ece9e4',
-              whiteSpace: 'pre-line',
               wordBreak: 'break-word'
             }}>
-              {msg.text}
+              {msg.role === 'assistant' ? (
+                <div className="chat-markdown" style={{ fontSize: '0.95rem' }}>
+                  <ReactMarkdown
+                    components={{
+                      p: ({ node, ...props }) => <p style={{ margin: '0 0 0.55rem 0', lineHeight: 1.65 }} {...props} />,
+                      strong: ({ node, ...props }) => <strong style={{ fontWeight: '700', color: 'var(--color-primary-dark)' }} {...props} />,
+                      em: ({ node, ...props }) => <em style={{ fontStyle: 'italic' }} {...props} />,
+                      ul: ({ node, ...props }) => <ul style={{ margin: '0.3rem 0 0.6rem 1.2rem', padding: 0 }} {...props} />,
+                      ol: ({ node, ...props }) => <ol style={{ margin: '0.3rem 0 0.6rem 1.2rem', padding: 0 }} {...props} />,
+                      li: ({ node, ...props }) => <li style={{ marginBottom: '0.3rem' }} {...props} />,
+                      a: ({ node, ...props }) => (
+                        <a
+                          style={{ color: 'var(--color-primary-dark)', fontWeight: '600', textDecoration: 'underline' }}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          {...props}
+                        />
+                      ),
+                      blockquote: ({ node, ...props }) => (
+                        <blockquote
+                          style={{
+                            margin: '0.5rem 0',
+                            padding: '0.4rem 0.8rem',
+                            borderLeft: '3px solid var(--color-primary)',
+                            backgroundColor: '#f8fafc',
+                            fontStyle: 'italic'
+                          }}
+                          {...props}
+                        />
+                      )
+                    }}
+                  >
+                    {msg.text}
+                  </ReactMarkdown>
+                </div>
+              ) : (
+                <div style={{ whiteSpace: 'pre-line', lineHeight: 1.65 }}>
+                  {msg.text}
+                </div>
+              )}
             </div>
           </div>
         ))}

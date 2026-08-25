@@ -157,34 +157,50 @@ export default function AboutPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '2.5rem' }}>
               {[
                 {
-                  author: 'Mariela V. (Cochabamba)',
-                  text: 'Excelente profesional y muy humana. Me ayudó a resolver el proceso de asistencia familiar de mis hijos con total rapidez y tranquilidad.',
+                  author: 'Brenda A.',
+                  date: 'Reciente',
+                  text: '¡Excelente experiencia! La doctora es muy amable, profesional y atenta.',
                   stars: 5
                 },
                 {
-                  author: 'Carlos R. (Virginia, EEUU)',
-                  text: 'Desde Estados Unidos pude realizar el trámite de poder y divorcio sin tener que viajar a Bolivia. Comunicación impecable y transparente.',
+                  author: 'Keil Lucas',
+                  date: 'Hace un mes',
+                  text: 'Excelente servicio, el asesoramiento brindado fue de primera. Siempre estuvo al pendiente de cada detalle desde el primer momento hasta el final, excelente profesional. 100% recomendada 😊',
                   stars: 5
                 },
                 {
-                  author: 'Patricia M. (Cochabamba)',
-                  text: 'Muy agradecida con la Dra. Jhoselyn. Su orientación legal fue clara desde el primer minuto y evitó que fuéramos a un juicio desgastante.',
+                  author: 'Fernanda Villarroel',
+                  date: 'Hace un mes',
+                  text: 'Calidad de profesional y humana 👏🏻 Estoy muy agradecida por su asesoría, dedicación y excelentes resultados.',
                   stars: 5
                 }
               ].map((rev, idx) => (
-                <div key={idx} style={{ backgroundColor: '#fff', padding: '1.75rem', borderRadius: '14px', border: '1px solid #ede8df', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div key={idx} style={{ backgroundColor: '#fff', padding: '1.75rem', borderRadius: '16px', border: '1px solid #ede8df', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                   <div>
-                    <div style={{ display: 'flex', gap: '3px', color: '#eab308', marginBottom: '0.75rem' }}>
-                      {[...Array(rev.stars)].map((_, s) => (
-                        <Star key={s} size={14} fill="#eab308" color="#eab308" />
-                      ))}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                      <div style={{ display: 'flex', gap: '3px', color: '#eab308' }}>
+                        {[...Array(rev.stars)].map((_, s) => (
+                          <Star key={s} size={14} fill="#eab308" color="#eab308" />
+                        ))}
+                      </div>
+                      <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: '500' }}>{rev.date}</span>
                     </div>
                     <p style={{ color: '#475569', fontSize: '0.92rem', lineHeight: 1.6, margin: 0 }}>
                       "{rev.text}"
                     </p>
                   </div>
-                  <div style={{ marginTop: '1.25rem', fontSize: '0.84rem', fontWeight: '700', color: 'var(--color-primary-dark)' }}>
-                    {rev.author}
+                  <div style={{ marginTop: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: 'var(--color-primary)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700', fontSize: '0.85rem' }}>
+                      {rev.author.charAt(0)}
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.88rem', fontWeight: '700', color: 'var(--color-primary-dark)', lineHeight: 1.2 }}>
+                        {rev.author}
+                      </div>
+                      <div style={{ fontSize: '0.74rem', color: '#94a3b8' }}>
+                        Reseña verificada en Google
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}

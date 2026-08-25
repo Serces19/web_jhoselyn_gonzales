@@ -14,6 +14,8 @@ export default function ChatPage() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [limitReached, setLimitReached] = useState(false);
+  const [turnCount, setTurnCount] = useState(0);
   const [sessionId] = useState(() => {
     let sId = sessionStorage.getItem('jhoselyn_chat_session_id');
     if (!sId) {
@@ -35,7 +37,7 @@ export default function ChatPage() {
 
   const handleSend = async () => {
     const text = input.trim();
-    if (!text || loading) return;
+    if (!text || loading || limitReached) return;
 
     const userMsg = { id: 'u_' + Date.now(), role: 'user', text };
     setMessages(prev => [...prev, userMsg]);
@@ -56,6 +58,12 @@ export default function ChatPage() {
 
       if (res.ok) {
         const data = await res.json();
+        if (data.turn_count) {
+          setTurnCount(data.turn_count);
+        }
+        if (data.limit_reached) {
+          setLimitReached(true);
+        }
         setMessages(prev => [
           ...prev,
           { id: 'b_' + Date.now(), role: 'assistant', text: data.response || '' }
@@ -227,66 +235,120 @@ export default function ChatPage() {
         borderTop: '1px solid #e8e6e1',
         padding: '1.25rem 1rem 1.75rem'
       }}>
-        <div style={{
-          maxWidth: '720px',
-          margin: '0 auto',
-          display: 'flex',
-          alignItems: 'flex-end',
-          gap: '0.75rem',
-          backgroundColor: '#ffffff',
-          border: '1.5px solid #e0ddd8',
-          borderRadius: '18px',
-          padding: '0.6rem 0.6rem 0.6rem 1.1rem',
-          boxShadow: '0 2px 12px rgba(0,0,0,0.05)',
-          transition: 'border-color 0.2s',
-        }}
-          onFocus={() => {}}
-        >
-          <textarea
-            ref={textareaRef}
-            value={input}
-            onChange={(e) => { setInput(e.target.value); autoResize(e); }}
-            onKeyDown={handleKeyDown}
-            placeholder="Cuéntame tu situación..."
-            disabled={loading}
-            rows={1}
-            style={{
-              flex: 1,
-              border: 'none',
-              outline: 'none',
-              resize: 'none',
-              fontSize: '0.97rem',
-              lineHeight: 1.55,
-              fontFamily: 'var(--font-sans)',
-              backgroundColor: 'transparent',
-              color: '#2c2c2c',
-              overflowY: 'hidden',
-              paddingTop: '0.4rem',
-              paddingBottom: '0.4rem',
-            }}
-          />
-          <button
-            onClick={handleSend}
-            disabled={loading || !input.trim()}
-            style={{
-              width: '40px', height: '40px', borderRadius: '12px',
-              backgroundColor: input.trim() && !loading ? 'var(--color-primary-dark)' : '#e2e8f0',
-              color: '#ffffff',
-              border: 'none',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: input.trim() && !loading ? 'pointer' : 'not-allowed',
-              flexShrink: 0,
-              transition: 'background 0.2s'
-            }}
-          >
-            <Send size={18} />
-          </button>
-        </div>
+        {limitReached ? (
+          <div style={{
+            maxWidth: '720px',
+            margin: '0 auto',
+            padding: '1.2rem',
+            backgroundColor: '#ffffff',
+            border: '1.5px solid var(--color-primary)',
+            borderRadius: '16px',
+            textAlign: 'center',
+            boxShadow: '0 4px 16px rgba(184, 134, 11, 0.08)'
+          }}>
+            <p style={{ margin: '0 0 0.8rem 0', fontWeight: '600', color: 'var(--color-primary-dark)', fontSize: '0.95rem' }}>
+              Consulta inicial completada ({turnCount}/6 mensajes)
+            </p>
+            <p style={{ margin: '0 0 1rem 0', fontSize: '0.86rem', color: '#64748b' }}>
+              Para una revisión detallada de tus documentos y asesoría personalizada con la Dra. Jhoselyn:
+            </p>
+            <div style={{ display: 'flex', gap: '0.8rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button
+                onClick={() => navigate('/booking')}
+                style={{
+                  backgroundColor: 'var(--color-primary-dark)',
+                  color: '#ffffff',
+                  border: 'none',
+                  borderRadius: '10px',
+                  padding: '0.65rem 1.25rem',
+                  fontSize: '0.88rem',
+                  fontWeight: '600',
+                  cursor: 'pointer'
+                }}
+              >
+                📅 Agendar Cita
+              </button>
+              <a
+                href="https://wa.me/59169512921"
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  backgroundColor: '#25D366',
+                  color: '#ffffff',
+                  textDecoration: 'none',
+                  borderRadius: '10px',
+                  padding: '0.65rem 1.25rem',
+                  fontSize: '0.88rem',
+                  fontWeight: '600',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem'
+                }}
+              >
+                💬 WhatsApp Directo
+              </a>
+            </div>
+          </div>
+        ) : (
+          <div style={{
+            maxWidth: '720px',
+            margin: '0 auto',
+            display: 'flex',
+            alignItems: 'flex-end',
+            gap: '0.75rem',
+            backgroundColor: '#ffffff',
+            border: '1.5px solid #e0ddd8',
+            borderRadius: '18px',
+            padding: '0.6rem 0.6rem 0.6rem 1.1rem',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.05)',
+            transition: 'border-color 0.2s',
+          }}>
+            <textarea
+              ref={textareaRef}
+              value={input}
+              onChange={(e) => { setInput(e.target.value); autoResize(e); }}
+              onKeyDown={handleKeyDown}
+              placeholder="Cuéntame tu situación..."
+              disabled={loading}
+              rows={1}
+              style={{
+                flex: 1,
+                border: 'none',
+                outline: 'none',
+                resize: 'none',
+                fontSize: '0.97rem',
+                lineHeight: 1.55,
+                fontFamily: 'var(--font-sans)',
+                backgroundColor: 'transparent',
+                color: '#2c2c2c',
+                overflowY: 'hidden',
+                paddingTop: '0.4rem',
+                paddingBottom: '0.4rem',
+              }}
+            />
+            <button
+              onClick={handleSend}
+              disabled={loading || !input.trim()}
+              style={{
+                width: '40px', height: '40px', borderRadius: '12px',
+                backgroundColor: input.trim() && !loading ? 'var(--color-primary-dark)' : '#e2e8f0',
+                color: '#ffffff',
+                border: 'none',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                cursor: input.trim() && !loading ? 'pointer' : 'not-allowed',
+                flexShrink: 0,
+                transition: 'background 0.2s'
+              }}
+            >
+              <Send size={18} />
+            </button>
+          </div>
+        )}
         <p style={{
           textAlign: 'center', marginTop: '0.7rem',
           fontSize: '0.74rem', color: '#c0b9b0'
         }}>
-          Presiona Enter para enviar · Shift+Enter para salto de línea
+          {limitReached ? 'Sesión finalizada · Gracias por tu confianza' : 'Presiona Enter para enviar · Shift+Enter para salto de línea'}
         </p>
       </div>
     </div>

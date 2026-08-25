@@ -208,6 +208,13 @@ resource "aws_iam_role_policy" "lambda_dynamodb" {
       },
       {
         Action = [
+          "sns:Publish"
+        ]
+        Effect   = "Allow"
+        Resource = aws_sns_topic.lead_alerts.arn
+      },
+      {
+        Action = [
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
           "logs:PutLogEvents"
@@ -236,9 +243,18 @@ resource "aws_lambda_function" "api_handler" {
       PROBONO_TABLE      = aws_dynamodb_table.probono_requests.name
       LEADS_TABLE        = aws_dynamodb_table.chat_leads.name
       SESSIONS_TABLE     = aws_dynamodb_table.chat_sessions.name
-      BEDROCK_MODEL_ID   = "us.amazon.nova-lite-v1:0"
+      BEDROCK_MODEL_ID   = "us.anthropic.claude-haiku-4-5-20251001-v1:0"
+      MAX_CHAT_TURNS     = "6"
+      SNS_TOPIC_ARN      = aws_sns_topic.lead_alerts.arn
     }
   }
+}
+
+# ---------------------------------------------------------
+# SNS TOPIC PARA NOTIFICACIONES DE LEADS (CANAL POR SUSCRIBIR)
+# ---------------------------------------------------------
+resource "aws_sns_topic" "lead_alerts" {
+  name = "jhoselyn_lead_alerts"
 }
 
 # ---------------------------------------------------------

@@ -32,9 +32,9 @@ export default function LandingPage() {
       <section className="hero animate-fade-in">
         <div className="container hero-content">
           <div className="hero-text">
-            <h1>Protección legal con humanidad y empatía</h1>
+            <h1>¿Tienes un problema legal y no sabes por donde empezar?</h1>
             <p>
-              Brindamos acompañamiento y asesoría legal integral a familias en conflicto y a personas que necesitan respaldo en la protección de su patrimonio.
+              Encontrar una solución jurídica no debería ser tan complicada. Recibe una atención personalizada y una explicación clara de tu situación. 
             </p>
             <div className="hero-buttons">
               <button
@@ -66,7 +66,7 @@ export default function LandingPage() {
         <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', flexWrap: 'wrap', textAlign: 'center' }}>
           <Globe size={18} style={{ color: 'var(--color-accent-light)', flexShrink: 0 }} />
           <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>
-            🇺🇸 <strong>Atendemos residentes en Estados Unidos.</strong> Consultas online · Pago internacional (AirTM / ACH / Tarjeta)
+            🇺🇸 <strong>Se atiende a bolivianos residentes en el extranjero.</strong> Consultas online · Pago internacional (AirTM / ACH / Tarjeta)
           </span>
           <a href="/contacto" style={{ backgroundColor: 'var(--color-accent-light)', color: 'var(--color-primary-dark)', border: 'none', padding: '0.4rem 1rem', borderRadius: '6px', fontWeight: '700', fontSize: '0.82rem', whiteSpace: 'nowrap', textDecoration: 'none' }}>
             Contactar ahora →

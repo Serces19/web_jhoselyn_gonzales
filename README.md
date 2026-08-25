@@ -24,9 +24,7 @@ Incluye landing page, blog, sistema de citas, asistente legal IA, panel administ
 
 ---
 
-## Stack
-
-| Capa | Tecnología |
+| **Stack** | **Tecnología** |
 |---|---|
 | **Frontend** | React 19 + Vite 8, React Router v7 |
 | **Estilos** | CSS Variables custom, inline styles |
@@ -35,7 +33,8 @@ Incluye landing page, blog, sistema de citas, asistente legal IA, panel administ
 | **API** | AWS API Gateway HTTP API v2 |
 | **Base de datos** | AWS DynamoDB (PAY_PER_REQUEST) |
 | **Auth admin** | AWS Cognito User Pool |
-| **IA / Chat** | Amazon Bedrock — `us.amazon.nova-lite-v1:0` (Converse API) |
+| **IA / Chat** | Amazon Bedrock — `us.anthropic.claude-haiku-4-5-20251001-v1:0` (Converse API + Tool Calling) |
+| **Notificaciones** | AWS SNS (`jhoselyn_lead_alerts`) |
 | **IaC** | Terraform (state local) |
 | **Iconos** | lucide-react |
 
@@ -177,20 +176,22 @@ VITE_COGNITO_CLIENT_ID    = 7bnjmrjftms9vgrjksg2shc48b
 ---
 
 ## Asistente IA
-
+ 
 Implementado en `infrastructure/lambda_api/agent_core.py`.
 
-**Modelo:** Amazon Nova Lite (`us.amazon.nova-lite-v1:0`) via Bedrock Converse API  
-**Historial:** Guardado en DynamoDB `ChatSessions` (hasta 16 turnos)  
-**Temperatura:** 0.7 | **Max tokens:** 1200  
-**Tool calling:** `save_lead_summary` guarda en `ChatLeads` cuando hay nombre real  
+**Modelo:** Claude Haiku 4.5 (`us.anthropic.claude-haiku-4-5-20251001-v1:0`) via Bedrock Converse API  
+**Historial y Turnos:** Guardado en DynamoDB `ChatSessions` (límite estricto de 6 turnos por sesión)  
+**Temperatura:** 0.5 | **Max tokens:** 1024  
+**Base de Conocimiento:** Contexto verificado en `infrastructure/lambda_api/bufete_knowledge.py`  
+**Tool calling:** `save_lead_summary` con extracción profunda (`case_details`, `emotional_state`, `urgency`)  
+**Alertas:** Publicación de evento `LeadCreated` en SNS Topic `jhoselyn_lead_alerts`  
 
-### Flujo de la conversacion
+### Flujo de la Conversación (Método de la Escucha y Anclaje Profundo)
 
-1. **Escucha activa** — empatia genuina, max 2 preguntas por turno
-2. **Orientacion juridica** — 2-3 conceptos basados en Ley 603, Codigo Civil, Ley 548
-3. **Solicitud de datos** — nombre + WhatsApp (obligatorio antes de cerrar)
-4. **Guardado de ficha** — solo con nombre real (no guarda "Pendiente", "Cliente Web", etc.)
+1. **Turnos 1 a 2 — Escucha y Acogida:** Validación de emociones, contención humana, una sola pregunta de profundización.
+2. **Turnos 3 a 4 — Orientación Jurídica:** Fundamentos basados en Ley 603 (Familias), Código Civil y Ley 548 (Niñez).
+3. **Turnos 5 a 6 — Captura y Cierre:** Solicitud de Nombre + WhatsApp y registro de ficha técnica.
+4. **Turno 6 — Límite y CTA:** Mensaje de cierre cálido invitando a agendar en `/booking` o contactar al WhatsApp oficial.
 
 ### Entrada al chat
 

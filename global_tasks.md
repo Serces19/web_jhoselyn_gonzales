@@ -25,8 +25,10 @@
 - [x] **Actualización de Tarifas y Métodos de Pago:** 200 Bs (Bolivia) / 20 USD o 20 EUR (Exterior) en [`PagosPage.jsx`](frontend/src/pages/PagosPage.jsx), [`BookingApp.jsx`](frontend/src/pages/BookingApp.jsx) y [`bufete_knowledge.py`](infrastructure/lambda_api/bufete_knowledge.py). Removidas referencias a AirTM y Zelle.
 - [x] **Ajuste en FAQ:** Banner actualizado en [`FaqPage.jsx`](frontend/src/pages/FaqPage.jsx) aclarando que no incluye redacción de documentos complejos y recomendando consulta personalizada.
 - [x] **Integración Google Reviews (100% Real):** Reseñas reales de Brenda A., Keil Lucas y Fernanda Villarroel integradas con distintivo de verificación y enlace oficial en [`LandingPage.jsx`](frontend/src/pages/LandingPage.jsx) y [`AboutPage.jsx`](frontend/src/pages/AboutPage.jsx).
-- [x] **Sección de Docencia con Imagen:** Generada imagen fotorrealista de cátedra universitaria (`docencia.jpg`) e integrada en Sobre Mí y Home.
-- [x] **Despliegue Terraform:** `terraform apply` ejecutado exitosamente en AWS us-east-1 actualizando la base de conocimiento de la Lambda.
+- [x] **Módulo CRM & Embudo de Ventas Legal:** Diseñado e implementado en [`AdminDashboard.jsx`](frontend/src/pages/AdminDashboard.jsx) con tablero Kanban interactivo (6 etapas del embudo: Nuevo Prospecto, Primer Contacto, Asesoría Agendada, Propuesta Enviada, Casos Ganados, No Concretados).
+- [x] **Gestión Integral de Prospectos (CRM):** Creación manual de prospectos, edición de honorarios estimados, bitácora histórica de notas de seguimiento, filtrado por canal de marketing/origen/área/urgencia y acciones directas de WhatsApp con plantillas contextuales.
+- [x] **Endpoints Backend CRM:** Implementados `GET`, `POST`, `PATCH`, `DELETE` en `/api/crm/leads` con normalización automática de datos legacy en DynamoDB y despliegue exitoso en AWS Lambda via Terraform.
+- [x] **Despliegue Terraform:** `terraform apply` ejecutado exitosamente en AWS us-east-1 actualizando la base de conocimiento y endpoints CRM de la Lambda.
 
 ---
 

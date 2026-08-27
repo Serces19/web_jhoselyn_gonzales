@@ -239,24 +239,83 @@ def lambda_handler(event, context):
             result = process_chat_message(session_id, message)
             return build_response(200, result)
 
-        elif path == '/api/chat/leads' and http_method == 'GET':
+        # ==========================================
+        # CRM & LEADS MANAGEMENT
+        # ==========================================
+        elif (path == '/api/chat/leads' or path == '/api/crm/leads') and http_method == 'GET':
             from agent_core import leads_table
             resp = leads_table.scan()
-            items = sorted(resp.get('Items', []), key=lambda x: x.get('created_at', ''), reverse=True)
+            items = resp.get('Items', [])
+            # Normalize legacy items
+            for item in items:
+                if 'stage' not in item:
+                    item['stage'] = 'CONTACTADO' if item.get('status') == 'CONTACTADO' else 'NUEVO'
+                if 'source' not in item:
+                    item['source'] = 'Chatbot IA'
+                if 'notes' not in item or not isinstance(item['notes'], list):
+                    item['notes'] = []
+                if 'deal_value' not in item:
+                    item['deal_value'] = 0
+            items = sorted(items, key=lambda x: x.get('created_at', ''), reverse=True)
             return build_response(200, {'leads': items})
 
-        elif path.startswith('/api/chat/leads/') and http_method == 'PATCH':
+        elif (path == '/api/chat/leads' or path == '/api/crm/leads') and http_method == 'POST':
+            from agent_core import leads_table
+            body = json.loads(event.get('body', '{}'))
+            if not body.get('client_name'):
+                return build_response(400, {'error': 'Missing client_name parameter'})
+            lead_id = str(uuid.uuid4())
+            item = {
+                'lead_id': lead_id,
+                'client_name': body.get('client_name', '').strip(),
+                'client_phone': body.get('client_phone', 'No proporcionado'),
+                'client_email': body.get('client_email', ''),
+                'category': body.get('category', 'Consulta General'),
+                'source': body.get('source', 'Manual / Despacho'),
+                'stage': body.get('stage', 'NUEVO'),
+                'status': body.get('status', 'NUEVO_LEAD'),
+                'urgency': body.get('urgency', 'NORMAL'),
+                'case_summary': body.get('case_summary', body.get('case_details', '')[:300]),
+                'case_details': body.get('case_details', ''),
+                'emotional_state': body.get('emotional_state', 'No especificado'),
+                'payment_preference': body.get('payment_preference', 'Por coordinar'),
+                'deal_value': body.get('deal_value', 0),
+                'notes': body.get('notes', []),
+                'created_at': datetime.utcnow().isoformat()
+            }
+            leads_table.put_item(Item=item)
+            return build_response(201, {'message': 'Lead created', 'lead_id': lead_id, 'lead': item})
+
+        elif (path.startswith('/api/chat/leads/') or path.startswith('/api/crm/leads/')) and http_method == 'PATCH':
             from agent_core import leads_table
             lead_id = path.split('/')[-1]
             body = json.loads(event.get('body', '{}'))
-            status = body.get('status', 'CONTACTADO')
+            fields = [
+                'stage', 'status', 'notes', 'deal_value', 'category', 'urgency',
+                'source', 'client_name', 'client_phone', 'client_email',
+                'case_summary', 'case_details', 'payment_preference', 'emotional_state', 'lost_reason'
+            ]
+            updates, expr_names, expr_values = [], {}, {}
+            for field in fields:
+                if field in body:
+                    updates.append(f"#{field} = :{field}")
+                    expr_names[f"#{field}"] = field
+                    expr_values[f":{field}"] = body[field]
+            if not updates:
+                return build_response(400, {'error': 'No fields to update'})
             leads_table.update_item(
                 Key={'lead_id': lead_id},
-                UpdateExpression='SET #s = :s',
-                ExpressionAttributeNames={'#s': 'status'},
-                ExpressionAttributeValues={':s': status}
+                UpdateExpression="SET " + ", ".join(updates),
+                ExpressionAttributeNames=expr_names,
+                ExpressionAttributeValues=expr_values
             )
-            return build_response(200, {'message': 'Lead status updated'})
+            return build_response(200, {'message': 'Lead updated'})
+
+        elif (path.startswith('/api/chat/leads/') or path.startswith('/api/crm/leads/')) and http_method == 'DELETE':
+            from agent_core import leads_table
+            lead_id = path.split('/')[-1]
+            leads_table.delete_item(Key={'lead_id': lead_id})
+            return build_response(200, {'message': 'Lead deleted'})
 
         return build_response(404, {'error': 'Route not found'})
 

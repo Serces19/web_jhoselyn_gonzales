@@ -145,6 +145,10 @@ def execute_save_lead(tool_input, session_id):
         'urgency': tool_input.get('urgency', 'NORMAL'),
         'payment_preference': tool_input.get('payment_preference', 'Por coordinar'),
         'status': 'NUEVO_LEAD',
+        'stage': 'NUEVO',
+        'source': 'Chatbot IA',
+        'notes': [],
+        'deal_value': 0,
         'created_at': datetime.utcnow().isoformat()
     }
     

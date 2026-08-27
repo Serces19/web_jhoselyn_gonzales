@@ -120,12 +120,14 @@ Base URL: `https://x4konjc6z6.execute-api.us-east-1.amazonaws.com`
 | `PUT` | `/api/blog/{id}` | Edita articulo (admin) |
 | `DELETE` | `/api/blog/{id}` | Elimina articulo (admin) |
 
-### Chat / Asistente IA
+### CRM & Embudo de Ventas / Leads
 | Metodo | Ruta | Descripcion |
 |---|---|---|
-| `POST` | `/api/chat` | Envia mensaje, recibe respuesta del asistente |
-| `GET` | `/api/chat/leads` | Lista todos los leads capturados |
-| `PATCH` | `/api/chat/leads/{id}` | Actualiza estado de un lead |
+| `GET` | `/api/crm/leads` | Lista todos los prospectos y leads con etapas |
+| `POST` | `/api/crm/leads` | Registra prospecto manual en el embudo |
+| `PATCH` | `/api/crm/leads/{id}` | Actualiza etapa, notas, honorarios o datos del prospecto |
+| `DELETE` | `/api/crm/leads/{id}` | Elimina un prospecto del CRM |
+| `POST` | `/api/chat` | Envia mensaje, recibe respuesta del asistente IA y genera lead |
 
 ### Pro Bono
 | Metodo | Ruta | Descripcion |

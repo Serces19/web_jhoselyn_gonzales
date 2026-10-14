@@ -108,7 +108,12 @@ resource "aws_sqs_queue" "despacho_stream_failures" {
   message_retention_seconds = 1209600
 }
 locals {
-  despacho_handlers = { api = "despacho_handler.lambda_handler", relay = "worker.relay", worker = "worker.consume", reconcile = "worker.reconcile" }
+  despacho_handlers      = { api = "despacho_handler.lambda_handler", relay = "worker.relay", worker = "worker.consume", reconcile = "worker.reconcile" }
+  despacho_pilot_enabled = false
+  despacho_environment   = var.resource_prefix == "" ? "production" : "staging"
+}
+output "despacho_review_mode" {
+  value = var.despacho_enabled ? { environment = local.despacho_environment, pilot_enabled = local.despacho_pilot_enabled } : null
 }
 resource "aws_cloudwatch_log_group" "despacho" {
   for_each          = var.despacho_enabled ? local.despacho_handlers : {}
@@ -132,8 +137,8 @@ resource "aws_lambda_function" "despacho" {
       JOBS_QUEUE_URL     = aws_sqs_queue.despacho_jobs[0].url
       COGNITO_ISSUER     = "https://cognito-idp.us-east-1.amazonaws.com/${aws_cognito_user_pool.pool.id}"
       COGNITO_CLIENT_ID  = aws_cognito_user_pool_client.client.id
-      ENVIRONMENT        = var.resource_prefix == "" ? "production" : "staging"
-      PILOT_ENABLED      = "false"
+      ENVIRONMENT        = local.despacho_environment
+      PILOT_ENABLED      = tostring(local.despacho_pilot_enabled)
     }
   }
   depends_on = [aws_cloudwatch_log_group.despacho, aws_iam_role_policy.despacho]
@@ -153,6 +158,13 @@ resource "aws_apigatewayv2_route" "despacho" {
   authorization_type   = "JWT"
   authorizer_id        = aws_apigatewayv2_authorizer.admin.id
   authorization_scopes = ["aws.cognito.signin.user.admin"]
+}
+resource "aws_apigatewayv2_route" "despacho_options" {
+  count              = var.despacho_enabled ? 1 : 0
+  api_id             = aws_apigatewayv2_api.http_api.id
+  route_key          = "OPTIONS /api/admin/despacho/{proxy+}"
+  target             = "integrations/${aws_apigatewayv2_integration.despacho[0].id}"
+  authorization_type = "NONE"
 }
 resource "aws_lambda_permission" "despacho" {
   count         = var.despacho_enabled ? 1 : 0

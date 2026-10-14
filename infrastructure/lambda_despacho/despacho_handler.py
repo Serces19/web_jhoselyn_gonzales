@@ -134,12 +134,14 @@ def response(status, data, request_id):
 def lambda_handler(event, context):
     request_id = event.get('requestContext', {}).get('requestId') or str(uuid.uuid4())
     try:
-        actor = require_admin(event)
         method = event.get('requestContext', {}).get('http', {}).get('method', '')
         root = '/api/admin/despacho'
         raw = event.get('rawPath', '')
         if not raw.startswith(root + '/'):
             raise ApiError(404, 'NOT_FOUND', 'Ruta inexistente')
+        if method == 'OPTIONS':
+            return {'statusCode': 204, 'headers': {'Cache-Control': 'no-store'}, 'body': ''}
+        actor = require_admin(event)
         path = raw[len(root):]
         body = body_of(event) if method in {'POST', 'PATCH'} else {}
         if method in {'POST', 'PATCH'} and os.getenv('ENVIRONMENT') == 'production' and os.getenv('PILOT_ENABLED', 'false') != 'true':

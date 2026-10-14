@@ -1,5 +1,5 @@
 {
-  "status": "AWAITING_EXPLICIT_PRODUCTION_AUTHORIZATION",
+  "status": "BACKEND_READ_ONLY_DEPLOYED_FRONTEND_PENDING",
   "new_resources": 26,
   "existing_resource_changes": 0,
   "deletions": 0,
@@ -109,5 +109,7 @@
       "address": "aws_sqs_queue.despacho_stream_failures[0]",
       "action": "created"
     }
-  ]
+  ],
+  "applied_base_resources": 26,
+  "additional_cors_options_route": 1
 }

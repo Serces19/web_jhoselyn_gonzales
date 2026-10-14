@@ -50,7 +50,7 @@ Escenarios a completar en T01: reposo con datos existentes, actividad real típi
 
 [Benchmark de staging](../../operations/e1-benchmark.json) y [contratos/latencia](../../operations/e1-staging-verification.json). El costo técnico transaccional se distingue del costo de operación completa y de la factura. Catálogo AWS Pricing GetProducts consultado el 2026-10-14 para Standard on-demand us-east-1: USD 0.000000625/WRU y USD 0.000000125/RRU. Transacciones ya reportan sus unidades consumidas: no volver a multiplicarlas por dos. No restar créditos/elegibilidad desconocida. [Modelo de cobro oficial](https://aws.amazon.com/dynamodb/pricing/).
 
-E1 agrega dos alarmas DLQ estándar de una métrica: base bruta USD 0.20/mes si se mantienen todo el mes, antes de Free Tier/créditos; se prorratean al retirar staging. [Tarifa CloudWatch](https://aws.amazon.com/cloudwatch/pricing/). Core, índices, PITR, almacenamiento, colas/logs/eventos y Lambda siguen por uso; no hay base reservada ni concurrencia provisionada. E1 permanece apagado en producción; ningún piso nuevo se activó allí.
+E1 agrega dos alarmas DLQ estándar de una métrica: base bruta USD 0.20/mes si se mantienen todo el mes, antes de Free Tier/créditos; staging fue retirado y se prorratea. [Tarifa CloudWatch](https://aws.amazon.com/cloudwatch/pricing/). Core, índices, PITR, almacenamiento, colas/logs/eventos y Lambda siguen por uso; no hay base reservada ni concurrencia provisionada. Usuario autorizó y se aplicaron 26 recursos E1 productivos para sólo lectura; el aviso general USD 20 permanece y no garantiza un tope de factura.
 
 ## Controles de gasto
 

@@ -1,6 +1,6 @@
 # E1 — Patrones de acceso privados y ADR LC-01
 
-Estado: implementación y pruebas aisladas E1, 2026-10-14. Producción mantiene `despacho_enabled=false`; publicación de 26 recursos pendiente de autorización explícita. La propuesta habilita infraestructura con `PILOT_ENABLED=false`, que bloquea escrituras productivas. No hay expedientes reales ni migración productiva. Entrega de referencia: T12; código en infrastructure/lambda_despacho/ e IaC en infrastructure/despacho.tf. [Evidencia/pendientes](../operations/e1-progress.md).
+Estado: implementación y pruebas E1, 2026-10-14. Usuario autorizó publicación de sólo lectura; Terraform aplicó 26 creaciones, 0 cambios existentes, 0 eliminaciones. `despacho_enabled=true`, `PILOT_ENABLED=false` bloquea escrituras productivas. No hay expedientes reales ni migración productiva. Entrega de referencia: T12; código en infrastructure/lambda_despacho/ e IaC en infrastructure/despacho.tf. [Evidencia/pendientes](../operations/e1-progress.md).
 
 ## Decisión
 

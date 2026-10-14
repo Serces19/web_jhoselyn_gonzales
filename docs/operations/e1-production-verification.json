@@ -1,0 +1,115 @@
+{
+  "checked_at_utc": "2026-10-14T16:33:21.803355+00:00",
+  "mode": "PRODUCTION_READ_ONLY",
+  "checks": [
+    {
+      "name": "api production review config",
+      "passed": true
+    },
+    {
+      "name": "relay production review config",
+      "passed": true
+    },
+    {
+      "name": "worker production review config",
+      "passed": true
+    },
+    {
+      "name": "reconcile production review config",
+      "passed": true
+    },
+    {
+      "name": "deployed handler response GET/config",
+      "passed": true
+    },
+    {
+      "name": "review config exposed",
+      "passed": true
+    },
+    {
+      "name": "deployed handler response GET/personas",
+      "passed": true
+    },
+    {
+      "name": "person directory readable and initially empty",
+      "passed": true
+    },
+    {
+      "name": "deployed handler response GET/casos",
+      "passed": true
+    },
+    {
+      "name": "cases readable and initially empty",
+      "passed": true
+    },
+    {
+      "name": "deployed handler response GET/personas",
+      "passed": true
+    },
+    {
+      "name": "non-admin handler denied",
+      "passed": true
+    },
+    {
+      "name": "deployed handler response POST/personas",
+      "passed": true
+    },
+    {
+      "name": "production write blocked POST/personas",
+      "passed": true
+    },
+    {
+      "name": "deployed handler response PATCH/casos/nonexistent",
+      "passed": true
+    },
+    {
+      "name": "production write blocked PATCH/casos/nonexistent",
+      "passed": true
+    },
+    {
+      "name": "deployed handler response POST/metricas/rebuild",
+      "passed": true
+    },
+    {
+      "name": "production write blocked POST/metricas/rebuild",
+      "passed": true
+    },
+    {
+      "name": "Gateway anonymous denied /config",
+      "passed": true
+    },
+    {
+      "name": "Gateway anonymous denied /personas",
+      "passed": true
+    },
+    {
+      "name": "production origin CORS",
+      "passed": true
+    },
+    {
+      "name": "Core private on-demand protected with PITR",
+      "passed": true
+    },
+    {
+      "name": "GSI projection keys only",
+      "passed": true
+    },
+    {
+      "name": "public Lambda still denied Core",
+      "passed": true
+    },
+    {
+      "name": "MFA OPTIONAL preserved",
+      "passed": true
+    },
+    {
+      "name": "legacy booking available and AI off",
+      "passed": true
+    }
+  ],
+  "new_production_users": 0,
+  "business_records_written": 0,
+  "leads_migrated": 0,
+  "authenticated_gateway_browser_acceptance": "PENDING_USER_LOGIN",
+  "verification_method": "anonymous HTTP, AWS configuration/IAM, privileged direct handler invocation"
+}

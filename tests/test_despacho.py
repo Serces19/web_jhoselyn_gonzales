@@ -47,6 +47,14 @@ def test_desk_no_public_access(desk):
     assert desk[0]('GET', '/config')[0] == 200
 
 
+def test_options_is_empty_preflight_and_does_not_grant_read_access(desk):
+    handler = importlib.import_module('despacho_handler')
+    result = handler.lambda_handler(event('OPTIONS', '/api/admin/despacho/personas'), None)
+    assert result['statusCode'] == 204 and result['body'] == ''
+    assert desk[0]('GET', '/personas', admin=False)[0] == 401
+    assert desk[1].scan()['Count'] == 0
+
+
 def test_production_review_mode_rejects_writes_before_database_changes(desk, monkeypatch):
     monkeypatch.setenv('ENVIRONMENT', 'production')
     monkeypatch.setenv('PILOT_ENABLED', 'false')

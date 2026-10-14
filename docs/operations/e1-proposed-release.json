@@ -1,0 +1,113 @@
+{
+  "status": "AWAITING_EXPLICIT_PRODUCTION_AUTHORIZATION",
+  "new_resources": 26,
+  "existing_resource_changes": 0,
+  "deletions": 0,
+  "pilot_writes_enabled": false,
+  "changes": [
+    {
+      "address": "aws_apigatewayv2_integration.despacho[0]",
+      "action": "created"
+    },
+    {
+      "address": "aws_apigatewayv2_route.despacho[0]",
+      "action": "created"
+    },
+    {
+      "address": "aws_cloudwatch_event_rule.despacho_reconcile[0]",
+      "action": "created"
+    },
+    {
+      "address": "aws_cloudwatch_event_target.despacho_reconcile[0]",
+      "action": "created"
+    },
+    {
+      "address": "aws_cloudwatch_log_group.despacho[\"api\"]",
+      "action": "created"
+    },
+    {
+      "address": "aws_cloudwatch_log_group.despacho[\"reconcile\"]",
+      "action": "created"
+    },
+    {
+      "address": "aws_cloudwatch_log_group.despacho[\"relay\"]",
+      "action": "created"
+    },
+    {
+      "address": "aws_cloudwatch_log_group.despacho[\"worker\"]",
+      "action": "created"
+    },
+    {
+      "address": "aws_cloudwatch_metric_alarm.despacho_dlq[\"jobs\"]",
+      "action": "created"
+    },
+    {
+      "address": "aws_cloudwatch_metric_alarm.despacho_dlq[\"stream\"]",
+      "action": "created"
+    },
+    {
+      "address": "aws_dynamodb_table.despacho[0]",
+      "action": "created"
+    },
+    {
+      "address": "aws_iam_role.despacho[\"api\"]",
+      "action": "created"
+    },
+    {
+      "address": "aws_iam_role.despacho[\"worker\"]",
+      "action": "created"
+    },
+    {
+      "address": "aws_iam_role_policy.despacho[\"api\"]",
+      "action": "created"
+    },
+    {
+      "address": "aws_iam_role_policy.despacho[\"worker\"]",
+      "action": "created"
+    },
+    {
+      "address": "aws_lambda_event_source_mapping.despacho_jobs[0]",
+      "action": "created"
+    },
+    {
+      "address": "aws_lambda_event_source_mapping.despacho_stream[0]",
+      "action": "created"
+    },
+    {
+      "address": "aws_lambda_function.despacho[\"api\"]",
+      "action": "created"
+    },
+    {
+      "address": "aws_lambda_function.despacho[\"reconcile\"]",
+      "action": "created"
+    },
+    {
+      "address": "aws_lambda_function.despacho[\"relay\"]",
+      "action": "created"
+    },
+    {
+      "address": "aws_lambda_function.despacho[\"worker\"]",
+      "action": "created"
+    },
+    {
+      "address": "aws_lambda_permission.despacho[0]",
+      "action": "created"
+    },
+    {
+      "address": "aws_lambda_permission.despacho_reconcile[0]",
+      "action": "created"
+    },
+    {
+      "address": "aws_sqs_queue.despacho_dlq[0]",
+      "action": "created"
+    },
+    {
+      "address": "aws_sqs_queue.despacho_jobs[0]",
+      "action": "created"
+    },
+    {
+      "address": "aws_sqs_queue.despacho_stream_failures[0]",
+      "action": "created"
+    }
+  ]
+}

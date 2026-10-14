@@ -1,6 +1,6 @@
 # Cost model — Costo fijo mínimo y consumo controlado
 
-Fecha de consulta: 2026-10-13. Sin datos de facturación de la cuenta. Los USD 65–135 del plan anterior y el objetivo conversacional USD 20–30 no son cotización, autorización de gasto ni factura proyectada. El usuario priorizó minimizar costos fijos; monto numérico pendiente de acordar con consumo real.
+Actualización: 2026-10-14. Factura del proyecto aún sin atribución completa. Los USD 65–135 del plan anterior no son presupuesto vigente ni factura proyectada. Usuario aprobó aviso mensual USD 20 y prioriza minimizar costos fijos; no es un límite automático de factura.
 
 ## Decisiones por recurso
 
@@ -45,6 +45,12 @@ Registrar por servicio: región, SKU/plan, moneda, tarifa y fecha efectiva, cant
 | PITR/logs/exports | Métricas de storage y retención | Incluir explícitamente, no esconder en «otros» |
 
 Escenarios a completar en T01: reposo con datos existentes, actividad real típica y pico observado/prueba acordada. Ningún escenario se representa como métricas del negocio. Comparar ahorro de factura contra horas adicionales de mantenimiento.
+
+## Medición E1
+
+[Benchmark de staging](../../operations/e1-benchmark.json) y [contratos/latencia](../../operations/e1-staging-verification.json). El costo técnico transaccional se distingue del costo de operación completa y de la factura. Catálogo AWS Pricing GetProducts consultado el 2026-10-14 para Standard on-demand us-east-1: USD 0.000000625/WRU y USD 0.000000125/RRU. Transacciones ya reportan sus unidades consumidas: no volver a multiplicarlas por dos. No restar créditos/elegibilidad desconocida. [Modelo de cobro oficial](https://aws.amazon.com/dynamodb/pricing/).
+
+E1 agrega dos alarmas DLQ estándar de una métrica: base bruta USD 0.20/mes si se mantienen todo el mes, antes de Free Tier/créditos; se prorratean al retirar staging. [Tarifa CloudWatch](https://aws.amazon.com/cloudwatch/pricing/). Core, índices, PITR, almacenamiento, colas/logs/eventos y Lambda siguen por uso; no hay base reservada ni concurrencia provisionada. E1 permanece apagado en producción; ningún piso nuevo se activó allí.
 
 ## Controles de gasto
 

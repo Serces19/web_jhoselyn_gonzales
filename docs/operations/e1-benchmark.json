@@ -1,0 +1,38 @@
+{
+  "checked_at_utc": "2026-10-14T14:49:19.127527+00:00",
+  "environment": "staging-e1-",
+  "successful_command_transactions": 31,
+  "observed_action_counts": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "capacity_units": {
+    "min": 9.0,
+    "max": 30.0,
+    "mean": 19.677419354838708
+  },
+  "interpretation": "Command transactions only. Excludes pre-reads, worker, queues, network, logs and storage. Older logs contain TOTAL units only.",
+  "regional_usd_per_request_unit": {
+    "ReadRequestUnits": 1.25e-07,
+    "WriteRequestUnits": 6.25e-07
+  },
+  "tariff_source": "AWS Pricing GetProducts, us-east-1, Standard on-demand",
+  "priced_transactions": 0,
+  "partial_transaction_cost_usd": null,
+  "transaction_component_usd_upper_bound": {
+    "min_observed_units": 5.625e-06,
+    "max_observed_units": 1.8750000000000002e-05,
+    "basis": "Reported aggregate capacity units times the larger regional unit price; excludes other operation components."
+  },
+  "billed_amount": false,
+  "cost_reason": "Gross list-price estimate for the transaction component; excludes credits/free tier and other operation components."
+}

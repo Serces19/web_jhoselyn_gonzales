@@ -34,7 +34,7 @@ variable "ai_monthly_budget_microusd" {
   type    = number
   default = 0
   validation {
-    condition = var.ai_monthly_budget_microusd >= 0 && floor(var.ai_monthly_budget_microusd) == var.ai_monthly_budget_microusd
+    condition     = var.ai_monthly_budget_microusd >= 0 && floor(var.ai_monthly_budget_microusd) == var.ai_monthly_budget_microusd
     error_message = "La cuota usa microUSD enteros no negativos."
   }
 }
@@ -42,7 +42,7 @@ variable "ai_daily_budget_microusd" {
   type    = number
   default = 0
   validation {
-    condition = var.ai_daily_budget_microusd >= 0 && floor(var.ai_daily_budget_microusd) == var.ai_daily_budget_microusd
+    condition     = var.ai_daily_budget_microusd >= 0 && floor(var.ai_daily_budget_microusd) == var.ai_daily_budget_microusd
     error_message = "La cuota usa microUSD enteros no negativos."
   }
 }
@@ -57,6 +57,11 @@ variable "ai_output_usd_per_million" {
 variable "alerts_email" {
   type    = string
   default = null
+}
+variable "despacho_enabled" {
+  description = "E1 privado: habilitar primero en staging; producción permanece apagada hasta release revisado."
+  type        = bool
+  default     = false
 }
 variable "alerts_emails" {
   description = "Destinatarios confirmados. Cada nuevo correo debe aceptar la suscripción SNS."
@@ -79,5 +84,5 @@ variable "monthly_budget_usd" {
 
 locals {
   alert_recipients = setunion(var.alerts_emails, var.alerts_email == null ? toset([]) : toset([var.alerts_email]))
-  public_routes = toset(["GET /api/availability", "GET /api/schedule", "GET /api/blog", "GET /api/blog/{slug}", "POST /api/appointments", "POST /api/chat", "POST /api/probono"])
+  public_routes    = toset(["GET /api/availability", "GET /api/schedule", "GET /api/blog", "GET /api/blog/{slug}", "POST /api/appointments", "POST /api/chat", "POST /api/probono"])
 }

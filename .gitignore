@@ -10,6 +10,7 @@ __pycache__/
 *.pyc
 .venv/
 lambda_function.zip
+despacho_function.zip
 .local-backups/
 .pytest_cache/
 .uv-cache/

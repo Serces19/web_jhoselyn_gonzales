@@ -8,6 +8,9 @@
 |---|---|
 | Conocer código/operación existentes | [current-state.md](current-state.md) |
 | Revisar implementación E0 y requisitos de rollout | [operations/e0-progress.md](operations/e0-progress.md) |
+| Revisar desarrollo E1 y límite del piloto | [operations/e1-progress.md](operations/e1-progress.md) |
+| Consultar patrones privados y decisión DynamoDB | [data/access-patterns.md](data/access-patterns.md) |
+| Preparar importación de leads y corte | [operations/e1-migration.md](operations/e1-migration.md) |
 | Revisar inventario AWS real y costos de cuenta | [operations/baseline.md](operations/baseline.md) |
 | Coordinar despliegue y recuperación | [operations/deploy-rollback.md](operations/deploy-rollback.md) |
 | Ejecutar pruebas locales y configurar alertas/costos | [operations/checks-and-alerts.md](operations/checks-and-alerts.md) |
@@ -54,4 +57,4 @@ La separación es por propósito: estado existente, objetivo requerido, tareas y
 
 E0: cerrar seguridad/integridad y establecer recuperación/costos. E1: CRM, alta, agenda, dinero y métricas. E2: biblioteca/plantillas/procedimientos. E3: recordatorios y automatización selectiva. E4: WhatsApp API/RAG bajo decisión económica. Dependencias y criterios exactos: [tasks.md](specs/despacho-digital-coste-minimo/tasks.md).
 
-El inventario AWS se contrastó y E0 se desplegó; gasto específico del proyecto sigue sin atribución completa. Siguen pendientes contenido aprobado, reglas jurídicas, retención, SIAT, licencias y condiciones Meta. Esos datos no se sustituyen por ejemplos ficticios. CRM/documentos/RAG corresponden a entregas posteriores.
+El inventario AWS se contrastó y E0 se desplegó; gasto específico del proyecto sigue sin atribución completa. Contenido/aviso aprobados operativamente; antes de expedientes reales siguen pendientes conservación y requisitos profesionales. SIAT sólo admite referencias manuales E1, sin emisión ni subida de adjuntos. Reglas jurídicas, licencias y condiciones Meta se resuelven en sus fases. Esos datos no se sustituyen por ejemplos ficticios. CRM está en desarrollo E1; documentos/RAG corresponden a entregas posteriores.

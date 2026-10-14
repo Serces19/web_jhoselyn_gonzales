@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import AboutPage from './pages/AboutPage';
@@ -14,6 +14,7 @@ import PagosPage from './pages/PagosPage';
 import ChatPage from './pages/ChatPage';
 import PrivacyPage from './pages/PrivacyPage';
 import './App.css';
+const DespachoPage = lazy(() => import('./pages/DespachoPage'));
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/sobre-mi" element={<AboutPage />} />
         <Route path="/booking" element={<BookingApp />} />
         <Route path="/admin/*" element={<AdminDashboard />} />
+        <Route path="/admin/despacho" element={<Suspense fallback={<p>Cargando despacho…</p>}><DespachoPage/></Suspense>} />
         <Route path="/login" element={<Login />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:slug" element={<BlogPost />} />

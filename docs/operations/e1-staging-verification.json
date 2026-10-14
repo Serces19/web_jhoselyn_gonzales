@@ -1,0 +1,176 @@
+{
+  "checked_at_utc": "2026-10-14T10:41:37.601606-04:00",
+  "environment": "staging-e1-",
+  "checks": [
+    {
+      "name": "anonymous denied",
+      "passed": true
+    },
+    {
+      "name": "non-admin denied",
+      "passed": true
+    },
+    {
+      "name": "ID token denied",
+      "passed": true
+    },
+    {
+      "name": "admin access",
+      "passed": true
+    },
+    {
+      "name": "public Lambda IAM denies Core",
+      "passed": true
+    },
+    {
+      "name": "person create 0",
+      "passed": true
+    },
+    {
+      "name": "person create 1",
+      "passed": true
+    },
+    {
+      "name": "shared contact preserves identities",
+      "passed": true
+    },
+    {
+      "name": "atomic intake IAM",
+      "passed": true
+    },
+    {
+      "name": "intake replay",
+      "passed": true
+    },
+    {
+      "name": "activation without review denied",
+      "passed": true
+    },
+    {
+      "name": "reviewed activation",
+      "passed": true
+    },
+    {
+      "name": "stale case update denied",
+      "passed": true
+    },
+    {
+      "name": "agreement real transaction",
+      "passed": true
+    },
+    {
+      "name": "concurrent allocations cannot exceed quota",
+      "passed": true
+    },
+    {
+      "name": "full accounting reversal",
+      "passed": true
+    },
+    {
+      "name": "balance and quota restored",
+      "passed": true
+    },
+    {
+      "name": "link legacy appointment real IAM",
+      "passed": true
+    },
+    {
+      "name": "task manual source required",
+      "passed": true
+    },
+    {
+      "name": "task manual date",
+      "passed": true
+    },
+    {
+      "name": "opportunity created",
+      "passed": true
+    },
+    {
+      "name": "opportunity case link",
+      "passed": true
+    },
+    {
+      "name": "person historical case relations",
+      "passed": true
+    },
+    {
+      "name": "manual invoice metadata",
+      "passed": true
+    },
+    {
+      "name": "later allocation",
+      "passed": true
+    },
+    {
+      "name": "overdue job accepted",
+      "passed": true
+    },
+    {
+      "name": "overdue bounded step 0",
+      "passed": true
+    },
+    {
+      "name": "overdue all months uses actual unpaid balance",
+      "passed": true
+    },
+    {
+      "name": "day agenda explicit time zone",
+      "passed": true
+    },
+    {
+      "name": "incremental parties invalidate review",
+      "passed": true
+    },
+    {
+      "name": "real Stream FIFO worker metrics",
+      "passed": true
+    },
+    {
+      "name": "rebuild job accepted",
+      "passed": true
+    },
+    {
+      "name": "rebuild step 0",
+      "passed": true
+    },
+    {
+      "name": "rebuild completed without double counting",
+      "passed": true
+    },
+    {
+      "name": "relay stopped for recovery test",
+      "passed": true
+    },
+    {
+      "name": "commit succeeds with relay unavailable",
+      "passed": true
+    },
+    {
+      "name": "reconcile invokes real worker IAM",
+      "passed": true
+    },
+    {
+      "name": "outbox recovered after commit without stream delivery",
+      "passed": true
+    },
+    {
+      "name": "worker duplicate invokes successfully",
+      "passed": true
+    },
+    {
+      "name": "duplicate after rebuild does not increment",
+      "passed": true
+    }
+  ],
+  "latency_ms": {
+    "samples": 31,
+    "min": 435.94,
+    "median": 1519.66,
+    "max": 3522.14,
+    "includes_cold_start_and_network": true,
+    "not_an_SLA": true
+  },
+  "fixtures": "synthetic, API-only, deleted before teardown",
+  "fixtures_removed": true
+}

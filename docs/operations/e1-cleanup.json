@@ -1,0 +1,19 @@
+{
+  "checked_at_utc": "2026-10-14T14:56:10.130244+00:00",
+  "environment": "staging-e1-",
+  "remaining": {
+    "tables": 0,
+    "functions": 0,
+    "roles": 0,
+    "queues": 0,
+    "apis": 0,
+    "pools": 0,
+    "topics": 0,
+    "alarms": 0,
+    "event_rules": 0,
+    "log_groups": 0,
+    "state_managed_resources": 0
+  },
+  "complete": true,
+  "remote_state_retained": true
+}

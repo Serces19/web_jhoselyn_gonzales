@@ -14,7 +14,7 @@ for path in files:
         if target.startswith(('https:','http:','#','mailto:','tel:','codex:')): continue
         target=target.split('#')[0]
         if not (path.parent/target).exists(): errors.append(f'{path.relative_to(ROOT)} -> {target}')
-for path in (ROOT/'infrastructure/lambda_api').glob('*.py'):
+for path in [*(ROOT/'infrastructure/lambda_api').glob('*.py'), *(ROOT/'infrastructure/lambda_despacho').glob('*.py'), *(ROOT/'scripts/ops').glob('*.py')]:
     ast.parse(path.read_text(encoding='utf-8'))
 spec=ROOT/'docs/specs/despacho-digital-coste-minimo'
 criteria=set(re.findall(r'\*\*(R\d{2}\.\d+):\*\*',(spec/'requirements.md').read_text(encoding='utf-8')))

@@ -7,7 +7,7 @@ La checklist activa está exclusivamente en [specs/tasks.md](specs/despacho-digi
 | Entrega | Tareas | Resultado | Estado |
 |---|---|---|---|
 | E0 | T01–T11 | Acceso, integridad, recuperación, cuotas y control de release | Backend/frontend publicados, agenda/staging/recuperación probados. TOTP OPTIONAL, IA apagada, controles locales sin Actions. Aviso USD 20 configurado, SNS/prueba recibidos; contenido aprobado operativamente y aviso de datos publicado. Criterios jurídicos de expedientes pendientes antes del piloto |
-| E1 | T12–T20 | Modelo DynamoDB, CRM, intake, agenda, dinero, KPIs y piloto | Pendiente |
+| E1 | T12–T20 | Modelo DynamoDB, CRM, intake, agenda, dinero, KPIs y piloto | Core/UI/contabilidad/jobs: 33 tests offline y 40 controles AWS; staging retirado. [Evidencia y remanentes](operations/e1-progress.md). Publicación de 26 recursos en modo revisión pendiente de autorización explícita (revisión automática); T12 costo completo, T15 corte, T16 tiempo y T20 aceptación siguen abiertos |
 | E2 | T21–T26 | Documentos privados, cuarentena, biblioteca, plantillas y exportación | Pendiente |
 | E3 | T27–T30 | Recordatorios, reglas verificadas, IA/OCR opcionales y métricas | Pendiente |
 | E4 | T31–T36 | Decisión WhatsApp, integración, handoff, corpus, RAG y cierre | Pendiente de implementación y decisiones de activación |

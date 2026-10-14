@@ -1,6 +1,6 @@
 # Design — Arquitectura y contratos
 
-Estado: diseño para implementar; ningún recurso creado por esta spec. Requisitos: [requirements.md](requirements.md). Tareas: [tasks.md](tasks.md). Costos/fuentes: [cost-model.md](cost-model.md). Fecha: 2026-10-13.
+Estado: E0 publicado; E1 en desarrollo con verificación aislada. E2–E4 siguen propuestos. La checklist [tasks.md](tasks.md) y la [evidencia E1](../../operations/e1-progress.md) distinguen implementación de aceptación. Requisitos: [requirements.md](requirements.md). Costos/fuentes: [cost-model.md](cost-model.md). Actualización: 2026-10-14.
 
 ## 1. Decisiones de arquitectura
 
@@ -52,7 +52,7 @@ flowchart TD
 
 PUB no lee expedientes/documentos privados. ADM no acepta actor/tenant/rol del body. Worker no publica archivos ni envía mensajes por decisión del modelo sin políticas. Tabla/prefijos IAM separan datos públicos e internos. Las Lambdas comparten módulos, no un rol IAM omnipotente.
 
-Separación propuesta dentro del repositorio, a crear al implementar:
+Separación objetivo para fases posteriores; E0 usa `lambda_api/secure_handler.py` y módulos de dominio, E1 usa el paquete privado separado `lambda_despacho/` con handler, repositorio, CRM, agenda, finanzas, métricas y worker. No mover rutas antiguas sin migrar sus consumidores:
 
 ```text
 infrastructure/
@@ -94,13 +94,13 @@ Rutas antiguas administrativas devuelven 401/403 mientras migra UI, luego 404/41
 
 ## 4. Modelo lógico y físico DynamoDB
 
-Tablas legacy conservadas al principio: Appointments, AvailabilityBlocks, BlogPosts, ProBonoRequests, ChatLeads, ChatSessions. Nuevas: `DespachoCore` (entidades privadas y relaciones) y `OperationControl` (idempotencia, cuotas, locks cortos). Las tablas on-demand no agregan cómputo fijo por cantidad, pero almacenamiento, índices y PITR sí cuestan.
+Tablas legacy conservadas: Appointments, AvailabilityBlocks, BlogPosts, ProBonoRequests, ChatLeads, ChatSessions; E0 agrega BookingSlots y OperationControl para controles legacy/públicos. E1 agrega `DespachoCore` privado, incluyendo sus propios recibos idempotentes, auditoría y outbox. El rol legacy no accede a Core. Las tablas on-demand no agregan cómputo fijo por cantidad, pero almacenamiento, índices y PITR sí cuestan. [ADR/patrones implementados](../../data/access-patterns.md) detallan las claves físicas actuales.
 
 `DespachoCore`: PK/SK string, `entity_type`, `schema_version`, `version`, `created_at`, `updated_at`, actor `sub`. Importes en unidades menores enteras con moneda ISO; tiempos ISO UTC más zona donde corresponde. IDs opacos sin nombres/CI en claves S3. Campos de ejemplos son contratos, no datos para cargar.
 
 | Entidad | PK | SK / relaciones |
 |---|---|---|
-| Persona | PERSON#id | META, CONTACT#id; contacts incluyen valor y verificación, no teléfono UNIQUE |
+| Persona | PERSON#id | META con contactos acotados e identificadores país/emisor/tipo/valor; no teléfono UNIQUE |
 | Cliente | PERSON#id | CLIENT; condición comercial separada de persona |
 | Oportunidad | OPP#id | META, STAGE#timestamp#event_id, INTERACTION#id |
 | Caso | CASE#id | META, PARTY#role#person_id, EVENT#timestamp#id, STEP#id, TASK#id |
@@ -110,7 +110,8 @@ Tablas legacy conservadas al principio: Appointments, AvailabilityBlocks, BlogPo
 | Documento | DOC#id | META, VERSION#n, LINK#case_id; el caso guarda DOC#doc_id como vínculo inverso |
 | Taxonomía | TAXON#id | META con parent_id y etiqueta; paths se derivan, no son identidad |
 | Workflow | WORKFLOW#id | META, VERSION#n, STEP#version#id |
-| Métricas | METRIC#period#dimension | VALUE#name, APPLIED#event_id |
+| Métricas E1 | METRIC#period | OPP#stage, CASE#state, magnitud#currency; marker APPLIED#metrics#event_id / META |
+| Ledger y revisión E1 | LEDGER#period, REV#period | Ledger timestamp#event_id inmutable; REV con LEDGER/METRICS para reconstrucción consistente |
 | Auditoría | AUDIT#yyyy-mm-dd | timestamp#event_id; actor, acción, referencias y diff minimizado |
 | Outbox | OUTBOX#event_id | META con destino/tipo/status/next_attempt |
 | Configuración | CONFIG#despacho | BUDGET, POLICY#version, CHANNEL#id, tarifas reales versionadas |
@@ -124,15 +125,15 @@ GSI1 (`gsi1pk`, `gsi1sk`) para listados; GSI2 (`gsi2pk`, `gsi2sk`) para búsqued
 | Consulta | Patrón |
 |---|---|
 | Personas por nombre/prefijo | GSI2: PERSON_NAME#prefijo acotado, SK nombre_normalizado#id; tokenizar nombres/apellidos en ítems de búsqueda si se requieren varios prefijos |
-| Contacto exacto compartido | Ítems CONTACT_LOOKUP#hash_normalizado / PERSON#id; Query puede devolver varias personas; restringir este índice a backend privado |
-| Oportunidades por etapa | GSI1pk OPP_STAGE#stage, SK created_at#id; intervalos/paginación |
-| Casos por estado | GSI1pk CASE_STATUS#state, SK updated_at#id |
+| Contacto exacto compartido | Ítems LOOKUP#tipo#hash_normalizado / PERSON#id; Query devuelve candidatos; sólo backend privado |
+| Oportunidades por etapa E1 | Query base LIST#OPP#stage / created_at#id, pointers con Get fuerte |
+| Casos por estado E1 | Query base LIST#CASE#state / created_at#id, pointers con Get fuerte |
 | Casos de persona / expediente | Query PERSON#id por CASE# y CASE#id por prefijo de SK |
 | Archivos en rama/colección | GSI1 sobre ítems de vínculo: LIBRARY#collection#taxon_id / title_normalizado#doc_id |
 | Hijos del árbol | GSI1pk TAXON_PARENT#id / order#label#id |
-| Vencimientos por fecha | GSI1pk DUE#yyyy-mm, SK timestamp#task_id; obtener registro base y versión antes de notificar |
+| Vencimientos por fecha E1 | GSI2pk DUE_TASK#yyyy-mm o DUE_INSTALLMENT#yyyy-mm, SK fecha#id; hidratar registro base antes de decidir |
 | Slug blog público | Ítem de mapeo de slug único a post; lectura de post confirma published antes de devolver |
-| KPI por período | Get/Query METRIC#period#dimension; no calcular desde página visible del Kanban |
+| KPI por período E1 | Query METRIC#period; no calcular desde página visible del Kanban |
 
 Ramas descendientes: paginar hijos y resultados con límite de nodos; no un scan completo encubierto. Búsqueda MVP usa título/prefijo/tags y filtros; no asegura fuzzy ni full-text. Conflictos combina identificador exacto, contactos y candidatos por nombre; similitud en candidatos sirve de ayuda, no dictamen.
 
@@ -140,7 +141,7 @@ No persistir arrays ilimitados de notas/pagos/mensajes ni documentos enteros en 
 
 ## 5. Transacciones, concurrencia e idempotencia
 
-Todas las creaciones sensibles reciben `Idempotency-Key`. Registro durable en OperationControl por actor/ruta/key con hash del payload, estado y resultado/IDs; clave reutilizada con payload distinto →409. TTL es limpieza tardía: la aplicación comprueba expires_at. Para pagos y migración mantener además clave de negocio duradera; la expiración de idempotencia no habilita duplicar un cobro.
+Todas las creaciones sensibles reciben `Idempotency-Key`. E0 guarda controles públicos/legacy en OperationControl; E1 guarda COMMAND#hash en Core privado por actor/ruta/key, hash del payload y resultado/IDs, sin TTL. Clave con otro payload →409. Los TTL de cuotas/sesiones E0 son limpieza tardía y la aplicación comprueba expires_at. Pagos y migración mantienen además clave de negocio duradera; no duplicar cobros por expiración.
 
 **Alta:** reservar IDs; transacción comprueba persona/versión, decisión de conflicto y escritura de persona si nueva, oportunidad o caso, vínculos, auditoría y outbox. Máximo de partes admitido en alta rápida mantiene operación bajo 100 acciones/4 MB; más partes se incorporan luego a borrador con comandos idempotentes. No marcar ACTIVE hasta completar requisitos. Mismo ítem no recibe ConditionCheck separado más Update en la misma transacción: condición va en la escritura.
 
@@ -177,6 +178,8 @@ Transición E0 (2026-10-14): para no romper consumidores actuales, las rutas leg
 | POST `/api/admin/casos/{id}/export` | Job privado, enlace temporal, manifiesto |
 | POST `/api/admin/intake/estructurar` | Opcional; cuota, resultado propuesto y editable |
 
+Las rutas nuevas implementadas E1 usan **`/api/admin/despacho`** antes de `/personas`, `/conflictos`, `/oportunidades`, `/intake`, `/casos`, `/agenda`, `/metricas` y `/jobs`; las demás filas son objetivos de E2–E4. Esto permite Gateway/roles/Lambda propios sin cambiar el contrato legacy `/api/admin/*`. Nuevos comandos: honorarios, pagos, asignaciones posteriores, reversión completa, gastos, tareas y vínculo de cita. Reconstrucción de métricas: POST `/metricas/rebuild` devuelve 202 con job_id/version/status, GET `/jobs/{id}` consulta y POST `/jobs/{id}/step` avanza páginas acotadas con expected_version.
+
 Navigation: Inicio (tareas reales), Alta rápida, Embudo, Personas/clientes, Casos, Agenda, Biblioteca, Finanzas, Web, Configuración; Bandeja WhatsApp sólo si API activada. Panel de caso: resumen/partes, pasos, documentos, agenda, finanzas y eventos. Formularios accesibles, móvil, estados loading/empty/error explícitos; al fallar API conservar edición y no fabricar ceros. Lazy routes para admin/chat; no usar datos semilla del despacho sin validación.
 
 ## 7. Biblioteca e ingesta segura
@@ -197,7 +200,7 @@ Workflow publicado inmutable; copiar pasos al caso y permitir cambios locales au
 
 Scheduler ejecuta una revisión horaria de tareas por fecha/mes con watermark durable y lookback para caídas; nunca depender sólo de «hoy» para recuperar alertas atrasadas. Dedupe por task_id/version/offset/channel. Antes de enviar comprobar estado actual, vencimiento y consentimiento; modificación del plazo invalida versión antigua. El panel muestra atrasos aun sin correo. Canal SES/SNS requiere destinatario/configuración y prueba de entrega; no declarar listo al crear topic. ICS privado con token revocable y datos minimizados, posterior al núcleo.
 
-Métricas E1: conteo por etapa, casos activos, pactado/cobrado, saldo y vencido por moneda. Eventos actualizan agregados con marcador APPLIED; reconciliación bajo petición reconstruye desde índices de período, paginada, con job y límite. No full scan por request. E3 añade cohortes, canal y tiempos; CAC exige gasto atribuible; rentabilidad exige tiempo/costo. Distribución de ingresos por canal usa oportunidad de origen única por contratación o regla de atribución explícita; varios pagos no multiplican oportunidades.
+Métricas E1: conteo por etapa, casos activos, pactado/cobrado, saldo y vencido por moneda. Eventos actualizan agregados con marcador APPLIED; reconciliación reconstruye ledger inmutable de período por páginas con job y revisiones de origen/contadores, sin Scan. Saldo vencido actual usa buckets diarios mantenidos en la misma transacción de cuotas/asignaciones/reversos; job recorre todos los meses y detecta cambios concurrentes. No reconstruye deuda histórica ni toma un total de una página. [Patrones implementados](../../data/access-patterns.md). E3 añade canal y tiempos; CAC exige gasto atribuible; rentabilidad exige tiempo/costo. Distribución por canal usa oportunidad de origen única por contratación o regla explícita; varios pagos no multiplican oportunidades.
 
 ## 9. IA, WhatsApp y RAG con interruptores
 

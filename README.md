@@ -8,6 +8,7 @@ Proyecto del despacho de la Dra. Jhoselyn Gonzales en Cochabamba, Bolivia. React
 
 - [Índice documental](docs/README.md) y [reglas de organización](docs/documentation-policy.md).
 - [Estado y comandos detallados](docs/current-state.md).
+- [Desarrollo E1 y puerta del piloto](docs/operations/e1-progress.md), [modelo privado y patrones](docs/data/access-patterns.md).
 - [Requisitos](docs/specs/despacho-digital-coste-minimo/requirements.md), [arquitectura](docs/specs/despacho-digital-coste-minimo/design.md) y [única checklist de implementación](docs/specs/despacho-digital-coste-minimo/tasks.md).
 - [Costos](docs/specs/despacho-digital-coste-minimo/cost-model.md), [trazabilidad](docs/specs/despacho-digital-coste-minimo/traceability.md), [roadmap](docs/global_tasks.md) e [ideas](docs/ideas_creativas.md).
 - [Auditorías](docs/audits/README.md). Los [planes anteriores](docs/archive/README.md) están archivados y no son instrucciones de implementación.
@@ -40,5 +41,7 @@ uv run <script.py>
 ```
 
 Control completo previo al release: `uv run python scripts/ops/check_local.py` (documentos, suite offline, lint, build). No usa GitHub Actions ni AWS. Los scripts en `scripts/experiments/` realizan llamadas reales y no pertenecen a la suite. Infraestructura: `.tools/terraform/terraform.exe`, perfil `Administrador`, state remoto y plan revisado. Destinatarios privados: `infrastructure/zz-alerts.private.auto.tfvars`, ignorado en Git. Un push a main despliega frontend en Amplify con `amplify.yml`; no aplica Terraform.
+
+E1 se desarrolla en `/admin/despacho`: `infrastructure/lambda_despacho/` contiene CRM, contabilidad y workers privados; `infrastructure/despacho.tf` crea Core/colas/roles sólo con `despacho_enabled=true`. La UI requiere `VITE_DESPACHO_ENABLED=true` y `VITE_DESPACHO_API_ENDPOINT` del entorno correspondiente. Usar también Cognito del mismo entorno, nunca combinar staging con el pool productivo. Las escrituras productivas permanecen bloqueadas por `PILOT_ENABLED=false`. [Comandos y limitaciones E1](docs/operations/e1-progress.md).
 
 Repositorio: [Serces19/web_jhoselyn_gonzales](https://github.com/Serces19/web_jhoselyn_gonzales).

@@ -17,7 +17,7 @@ def main():
     local=ROOT/'.tools/terraform/terraform.exe'
     command=[str(local) if local.exists() else 'terraform','plan','-input=false','-no-color','-out=bootstrap.tfplan' if args.bootstrap else '-out=e0.tfplan']
     try:
-        result=subprocess.run(command,cwd=directory,env=env,capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=180)
+        result=subprocess.run(command,cwd=directory,env=env,capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=600)
     except subprocess.TimeoutExpired:
         raise SystemExit('Terraform provider timeout; no changes applied') from None
     log=ROOT/'.local-backups'/('bootstrap-plan.log' if args.bootstrap else 'e0-plan.log')

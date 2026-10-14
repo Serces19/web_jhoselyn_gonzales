@@ -64,34 +64,42 @@ Requisitos: [requirements.md](requirements.md). Diseño: [design.md](design.md).
 ## E1 — CRM, alta, agenda y dinero reales
 
 - [ ] **T12 — Validar modelo DynamoDB y patrones**
+  - Avance 2026-10-14: repositorio sin Scan, relaciones múltiples/GSI/pointers y límites probados; consumo real y tarifas capturados en [benchmark](../../operations/e1-benchmark.json). Costo completo por comando y p95 caliente siguen pendientes del piloto; no cerrar por existencia del modelo.
   - Implementar contratos/ítems/repositorios y GSI propuestos; medir consultas y transacciones con límites; definir relación múltiple cliente/caso/pagador y referencias de identidad por país/emisor.
   - Salida: ADR LC-01 y `docs/data/access-patterns.md`; ninguna consulta interactiva depende de scan completo; costo por operación capturado.
   - Dependencias: T11. _Requirements: R01.2, R03.4, R06.1, R06.3_
-- [ ] **T13 — Primitivas transaccionales y outbox**
+- [x] **T13 — Primitivas transaccionales y outbox**
+  - Evidencia técnica: [40 controles staging E1](../../operations/e1-staging-verification.json), incluyendo commit con relay detenido, recuperación por conciliación, marker/rebuild/duplicado sin efecto repetido e IAM público sin Core. Dos DLQ con alarmas; publicación productiva pendiente de autorización, sin efectos externos implementados.
   - Versiones, claves idempotentes con payload hash, auditoría, Streams→cola, DLQ y reconciliación de pendientes. IAM público sin lectura core privado.
   - Salida: fallo después de commit no pierde evento; replay no duplica efectos internos; efecto externo ambiguo queda pendiente de revisión.
   - Dependencias: T12. _Requirements: R03.2, R03.3, R03.5, R02.5_
-- [ ] **T14 — Personas y conflictos**
+- [x] **T14 — Personas y conflictos**
+  - Evidencia técnica offline/staging: teléfono compartido conserva dos personas, identificadores por país/emisor, vínculos/roles históricos, revisión ligada a versiones y adiciones a borrador invalidan revisión. UI compilada; aceptación profesional/visual del piloto pendiente T20.
   - UI/API contactos, lookup exacto y candidatos por nombre, vínculos históricos; decisión de conflicto auditada; distinguir propietario/titular/pagador/representado.
   - Salida: teléfono familiar compartido mantiene personas distintas; candidatos sensibles sólo admin; caso no se activa sin revisión.
   - Dependencias: T13. _Requirements: R06.1, R06.3, R06.4_
 - [ ] **T15 — Oportunidades y migración**
+  - Avance: Kanban/historial y origen revisable; importador repetido no duplica ni infiere dinero, origen cambiado →409. Dry-run sólo lectura: tres leads reales requieren revisión. [Mapeo/corte/rollback](../../operations/e1-migration.md); snapshot/corte productivo y ensayo posterior pendientes.
   - Kanban/historial/canales/motivo de pérdida; snapshot ChatLeads, mapeo, dry-run, import idempotente, reconciliación y corte con rollback descrito.
   - Salida: misma migración ejecutada dos veces no duplica; ambiguos en revisión; UI no interpreta ganado como sentencia favorable.
   - Dependencias: T14. _Requirements: R06.2, R06.5, R03.4_
 - [ ] **T16 — Casos y alta rápida**
+  - Avance: API/UI, vínculo de oportunidad, relato inmutable, alta todo/nada/replay y partes adicionales al borrador probados. Falta objetivo de tiempo con la abogada; no habilitar escrituras reales por aprobación técnica.
   - Relato original, partes, revisión conflictos, oportunidad/caso, evento inicial; plantilla de formulario móvil sin dependencia IA. Borradores para altas mayores que límite transaccional.
   - Salida: persistencia todo/nada, reintento estable y objetivo de tiempo probado con la abogada.
   - Dependencias: T14, T15. _Requirements: R07.1, R07.2, R07.4, R06.3_
-- [ ] **T17 — Agenda interna y tareas**
+- [x] **T17 — Agenda interna y tareas**
+  - Evidencia: mes/día/siete días con cursor; prueba offline cruza meses, staging valida día y vínculo de cita real sin tocar slots. Audiencia/plazo exigen fuente y confirmación manual; America/La_Paz explícita. Recordatorios automáticos quedan en E3.
   - Vincular citas/caso/oportunidad, tareas y vencimientos manuales con evidencia de inicio/confirmación, vistas por día/semana y estado.
   - Salida: zona explícita; audiencia/plazo no se calcula por IA; asociación no altera exclusión de slots.
   - Dependencias: T06, T16. _Requirements: R05.4, R10.1_
-- [ ] **T18 — Finanzas básicas**
+- [x] **T18 — Finanzas básicas**
+  - Evidencia offline/staging: cuotas múltiples y asignaciones posteriores, concurrencia no sobreasigna, reversión restaura saldos, fondos usados bloquean reversión íntegra. SIAT sólo metadata externa manual; adjuntos E2. Sin transferencias, emisión ni conciliación inferida.
   - Contratos/honorarios/cuotas, pagos parciales/múltiples asignaciones, gastos/fondos de cliente, monedas, reversión y adjunto SIAT manual. Metadata documental hasta que E2 habilite subida.
   - Salida: concurrencia no sobreasigna; reversión restaura saldo; no mezclar monedas ni marcar cobro desde captura.
   - Dependencias: T13, T16. _Requirements: R11.1, R11.2, R11.3, R11.4, R11.5_
-- [ ] **T19 — KPIs iniciales y conciliación**
+- [x] **T19 — KPIs iniciales y conciliación**
+  - Evidencia: ledger/revisiones/markers y rebuild paginado en AWS sin doble efecto; saldo vencido actual recorre todos los meses por moneda, cambios de saldo durante cálculo →409. No usa conteo de página ni deuda histórica; conversión/canal/CAC completos E3.
   - Materializar etapas/casos/pactado/cobrado/vencido por moneda desde eventos, markers de consumo, rebuild paginado, actualizado_en.
   - Salida: varios pagos de una oportunidad no aumentan conversión; replay no duplica; agregados coinciden con reconstrucción.
   - Dependencias: T15, T18. _Requirements: R12.1, R12.2, R12.3, R12.4_

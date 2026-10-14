@@ -479,6 +479,7 @@ export default function AdminDashboard() {
         </div>
 
         <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
+          {import.meta.env.VITE_DESPACHO_ENABLED === 'true' && <button onClick={() => navigate('/admin/despacho')} style={{ padding: '0.85rem 1rem', textAlign: 'left', borderRadius: '12px', border: '1px solid #10b981', color: '#065f46', background: '#ecfdf5' }}>Personas, casos y finanzas</button>}
           <button
             onClick={() => setActiveTab('crm')}
             style={{

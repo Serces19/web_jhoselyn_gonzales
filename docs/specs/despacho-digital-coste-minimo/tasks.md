@@ -55,7 +55,8 @@ Requisitos: [requirements.md](requirements.md). Diseño: [design.md](design.md).
   - PITR, retención logs/redacción, flags, métricas de consumo, alarma de cola/error y presupuesto; canal real de notificación con confirmación. Runbook restore y objetivos medidos.
   - Salida: prueba de recuperación, aviso recibido, fallo visible y gasto estimado/facturado distinguido; presupuesto no se anuncia como hard cap.
   - Dependencias: T02, T09. _Requirements: R01.1, R01.2, R01.5, R05.5, R16.2, R16.5_
-- [ ] **T11 — Puerta E0 y CI**
+- [x] **T11 — Puerta técnica E0 y control de release**
+  - Evidencia: 14 pruebas offline, 31 checks reales de staging y recuperación; controles locales pasan, deploy Amplify y aviso verificados, SNS recibido y presupuesto USD 20. Remanentes permitidos para desarrollo E1: MFA OPTIONAL autorizado, IA apagada; calendario/revisión jurídica de expedientes antes del piloto. T08 conserva remanente jurídico; no se declara aprobación de la abogada por aprobación técnica del usuario.
   - Separar scripts live, fijar dependencias uv/npm, build/lint/pruebas focalizadas antes del release; documentar despliegue coordinado/rollback. LC-12: control local reproducible en lugar de GitHub Actions por decisión del usuario; no exigir resolver facturación GitHub para publicar.
   - Salida: matriz A01–A09 cerrada o con remanentes explícitos no bloqueantes; no cargar expedientes hasta cerrar P0. Registrar evidencia y pendientes reales.
   - Dependencias: T03–T10. _Requirements: R02.1, R03.1, R16.4, R16.5_

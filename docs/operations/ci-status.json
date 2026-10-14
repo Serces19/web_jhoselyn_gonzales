@@ -9,5 +9,7 @@
   ],
   "url": "https://github.com/Serces19/web_jhoselyn_gonzales/actions/runs/38559029506",
   "local_backend": "14 passed",
-  "local_frontend": "build passed; lint passed with warnings"
+  "local_frontend": "build passed; lint passed with warnings",
+  "current_mode": "LOCAL_ONLY",
+  "historical_github_billing_blocker": "No longer a release requirement; workflow removed by user decision"
 }

@@ -200,7 +200,7 @@ export default function BookingApp() {
                   <div style={{ padding: '0.85rem', backgroundColor: '#fff', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
                     <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>Residentes en Bolivia</span>
                     <div style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--color-primary-dark)', marginTop: '0.2rem' }}>200 Bs</div>
-                    <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>QR Bancario / Transferencia BNB</span>
+                    <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>Coordina el medio de pago con el despacho</span>
                   </div>
                   <div style={{ padding: '0.85rem', backgroundColor: '#fff', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
                     <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>Exterior (EEUU / Europa)</span>

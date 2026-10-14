@@ -11,16 +11,16 @@ Fecha: 2026-10-14, America/La_Paz. Checklist única: [tasks.md](../specs/despach
 | T05 | Errores 400/413/422/404/409, decimal, versión y cursor contra Lambda/DynamoDB aislados | Cerrada según tasks |
 | T06 | Tres locks migrados sin conflictos; concurrencia, replay, reschedule/cancelación reales | Cerrada según tasks |
 | T07 | Draft oculto por lista/slug, publicación y slug único; paginación completa sin duplicación | Cerrada según tasks |
-| T08 | Contenido existente aprobado operativamente por el usuario; aviso factual `/privacidad` y enlaces implementados; solicitudes pendientes de aprobación descritas correctamente | Publicar/verificar aviso; revisión jurídica y retención de expedientes antes del piloto |
+| T08 | Contenido existente aprobado operativamente por usuario; aviso `/privacidad` publicado y verificado en navegador; formulario enlaza finalidad/datos; citas pendientes y pago manual descritos correctamente | Conservación/revisión jurídica para expedientes del piloto; no se certifica cumplimiento legal |
 | T09 | IA desactivada en AWS; controles y fallos probados offline; fallback real staging | Cuota/tarifas y pruebas de inferencia antes de activar; ningún modelo invocado |
 | T10 | Ocho PITR/protecciones, logs 30 días, restore idéntico; USD 20 por Project, avisos 16/20 y pronóstico20, SNS confirmado y prueba recibida por usuario | Cerrada para configuración E0; cobertura fiscal/servicios no atribuibles y objetivos del piloto no se presumen |
-| T11 | `check_local.py`: documentos, 14 tests, lint y build pasan; workflow Actions eliminado por decisión del usuario | Gate final de publicación/aviso; facturación GitHub deja de ser requisito. Remanentes IA apagada/revisión jurídica explícitos |
+| T11 | `check_local.py`: documentos, 14 tests, lint y build pasan; workflow Actions eliminado; publicación/aviso verificados | Gate técnico de release satisfecho; remanentes explícitos: IA apagada y criterios jurídicos antes del piloto |
 
 ## Despliegue y evidencias
 
 Bootstrap: 5 altas; E0: 13 altas y 14 cambios; agenda: 1 cambio. Sin destrucciones en producción. Estados en bucket privado jhoselyn-tfstate-295894327291-us-east-1, claves production/terraform.tfstate y bootstrap/terraform.tfstate, con cifrado/versiones/lockfile. ZIP/configuración Lambda anteriores respaldados en .local-backups/pre-e0-release/. Configuración vigente: infrastructure/production.auto.tfvars.json.
 
-Amplify main job 22 SUCCEED, commit dbda76bc8becdb4f968407561cc92a3e167353d4 (job 21 publicó la primera revisión E0). Login verificado en navegador y usuario confirmó ingreso con autenticador. Mejora del mensaje TOTP publicada; no modifica factores del usuario.
+Amplify main job 23 SUCCEED, commit 4336097fe00218244007ecb9c00998e48456e630: aviso de datos y controles locales publicados; `/privacidad` verificada en navegador. Jobs 21–22 publicaron acceso E0 y mejora TOTP. Usuario confirmó ingreso con autenticador; ningún factor fue modificado en estas actualizaciones. La corrección final de una etiqueta QR restante en agenda se publica como revisión posterior.
 
 - [Producción](deployment-verification.json): públicos 200, privados 401, agenda true, IA false, ocho tablas ACTIVE/PITR/protegidas.
 - [20 comprobaciones de integración](staging-verification.json): JWT real, scope/firma/grupo, TOTP, IAM ConditionCheckItem, concurrencia, reintentos, cancelación y blog.

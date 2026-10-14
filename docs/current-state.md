@@ -2,7 +2,7 @@
 
 Verificado el 2026-10-14 con el perfil AWS Administrador, cuenta 295894327291, us-east-1.
 
-- Web: https://main.d2caobufsyec5z.amplifyapp.com — Amplify, rama main; job 22 SUCCEED, login verificado y usuario confirmó TOTP.
+- Web: https://main.d2caobufsyec5z.amplifyapp.com — Amplify, rama main; job 23 SUCCEED, aviso `/privacidad` publicado y verificado, login TOTP confirmado. Controles de release locales, sin workflow GitHub Actions.
 - API: https://x4konjc6z6.execute-api.us-east-1.amazonaws.com — HTTP API payload v2, Lambda jhoselyn_web_api con secure_handler.lambda_handler.
 - Cognito: us-east-1_WIEGYaEgn; cliente 7bnjmrjftms9vgrjksg2shc48b. Autoregistro deshabilitado, grupo Admins, access token/JWT y scope. MFA OPTIONAL por decisión explícita del usuario; cuenta actual con TOTP e ingreso confirmado. No cambiar a ON sin nueva autorización.
 - Datos: Appointments, AvailabilityBlocks, BlogPosts, ChatLeads, ChatSessions, ProBonoRequests, OperationControl y BookingSlots; on-demand, PITR y protección contra borrado. Tres reservas activas migradas sin conflictos; agenda habilitada.

@@ -6,7 +6,7 @@ La checklist activa está exclusivamente en [specs/tasks.md](specs/despacho-digi
 
 | Entrega | Tareas | Resultado | Estado |
 |---|---|---|---|
-| E0 | T01–T11 | Acceso, integridad, recuperación, cuotas y control de release | Backend/frontend publicados, agenda/staging/recuperación probados. TOTP OPTIONAL; controles locales sin Actions. Usuario aprobó contenido operativo, un destinatario y aviso mensual USD 20. Pendientes recepción de avisos y criterios jurídicos del piloto |
+| E0 | T01–T11 | Acceso, integridad, recuperación, cuotas y control de release | Backend/frontend publicados, agenda/staging/recuperación probados. TOTP OPTIONAL, IA apagada, controles locales sin Actions. Aviso USD 20 configurado, SNS/prueba recibidos; contenido aprobado operativamente y aviso de datos publicado. Criterios jurídicos de expedientes pendientes antes del piloto |
 | E1 | T12–T20 | Modelo DynamoDB, CRM, intake, agenda, dinero, KPIs y piloto | Pendiente |
 | E2 | T21–T26 | Documentos privados, cuarentena, biblioteca, plantillas y exportación | Pendiente |
 | E3 | T27–T30 | Recordatorios, reglas verificadas, IA/OCR opcionales y métricas | Pendiente |

@@ -20,7 +20,7 @@ Fecha: 2026-10-14, America/La_Paz. Checklist única: [tasks.md](../specs/despach
 
 Bootstrap: 5 altas; E0: 13 altas y 14 cambios; agenda: 1 cambio. Sin destrucciones en producción. Estados en bucket privado jhoselyn-tfstate-295894327291-us-east-1, claves production/terraform.tfstate y bootstrap/terraform.tfstate, con cifrado/versiones/lockfile. ZIP/configuración Lambda anteriores respaldados en .local-backups/pre-e0-release/. Configuración vigente: infrastructure/production.auto.tfvars.json.
 
-Amplify main job 23 SUCCEED, commit 4336097fe00218244007ecb9c00998e48456e630: aviso de datos y controles locales publicados; `/privacidad` verificada en navegador. Jobs 21–22 publicaron acceso E0 y mejora TOTP. Usuario confirmó ingreso con autenticador; ningún factor fue modificado en estas actualizaciones. La corrección final de una etiqueta QR restante en agenda se publica como revisión posterior.
+Amplify main job 23 SUCCEED, commit 4336097fe00218244007ecb9c00998e48456e630: aviso de datos y controles locales publicados; `/privacidad` verificada en navegador. Jobs 21–22 publicaron acceso E0 y mejora TOTP. Usuario confirmó ingreso con autenticador; ningún factor fue modificado en estas actualizaciones. Corrección final de etiqueta QR en agenda publicada: job 24 SUCCEED, commit 2c64bb43725725cea5b2b765571347a8a9dd3046.
 
 - [Producción](deployment-verification.json): públicos 200, privados 401, agenda true, IA false, ocho tablas ACTIVE/PITR/protegidas.
 - [20 comprobaciones de integración](staging-verification.json): JWT real, scope/firma/grupo, TOTP, IAM ConditionCheckItem, concurrencia, reintentos, cancelación y blog.

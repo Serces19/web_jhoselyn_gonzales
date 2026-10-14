@@ -1,38 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CreditCard, Smartphone, Building2, Globe, Upload, CheckCircle, ChevronDown, ChevronUp, ArrowRight, ShieldCheck } from 'lucide-react';
+import { CreditCard, Building2, CheckCircle, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 
 const PAYMENT_METHODS = [
-  {
-    id: 'qr',
-    icon: <Smartphone size={28} />,
-    label: 'QR Bancario Interoperable (Bolivia)',
-    sublabel: '200 Bs · Pago instantáneo desde cualquier app bancaria',
-    badge: 'Bolivia · 200 Bs',
-    badgeColor: '#1e40af',
-    color: '#1d4ed8',
-    bg: '#eff6ff',
-    amount: '200 Bs',
-    steps: [
-      'Abre la app de tu banco (BNB, Banco Sol, Mercantil, BCP, etc.)',
-      'Selecciona la opción "Pago con QR"',
-      'Escanea el código QR oficial del despacho',
-      'Confirma el monto de la consulta (200 Bs)',
-      'Guarda tu comprobante y envíalo por WhatsApp para confirmar tu horario'
-    ],
-    extra: (
-      <div style={{ textAlign: 'center', margin: '1.5rem 0' }}>
-        <div style={{ display: 'inline-block', padding: '1rem', backgroundColor: '#fff', border: '2px solid #e2e8f0', borderRadius: '12px' }}>
-          <div style={{ width: '160px', height: '160px', backgroundColor: '#f1f5f9', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontSize: '0.82rem', textAlign: 'center', padding: '1rem' }}>
-            📱 QR Oficial BNB<br />(200 Bs)
-          </div>
-        </div>
-        <p style={{ color: '#64748b', fontSize: '0.85rem', marginTop: '0.75rem', fontWeight: '500' }}>
-          Monto de la consulta: <strong>200 Bs</strong> · Despacho Dra. Jhoselyn Gonzales
-        </p>
-      </div>
-    ),
-  },
   {
     id: 'banco',
     icon: <Building2 size={28} />,
@@ -109,7 +79,6 @@ export default function PagosPage() {
   const [step, setStep] = useState('select'); // select | proof | done
   const [selectedMethod, setSelectedMethod] = useState(null);
   const [proofForm, setProofForm] = useState({ name: '', phone: '', amount: '200 Bs', notes: '' });
-  const [file, setFile] = useState(null);
   const [sending, setSending] = useState(false);
 
   const whatsappBase = 'https://wa.me/59169512921';
@@ -127,13 +96,12 @@ export default function PagosPage() {
     setSending(true);
     const method = PAYMENT_METHODS.find(m => m.id === selectedMethod);
     const msg = encodeURIComponent(
-      `✅ Comprobante de Pago\n\n💳 Método: ${method?.label}\n👤 Nombre: ${proofForm.name}\n📱 WhatsApp: ${proofForm.phone}\n💰 Monto: ${proofForm.amount}\n📝 Notas: ${proofForm.notes}\n\n(Comprobante adjunto)`
+      `✅ Comprobante de Pago\n\n💳 Método: ${method?.label}\n👤 Nombre: ${proofForm.name}\n📱 WhatsApp: ${proofForm.phone}\n💰 Monto: ${proofForm.amount}\n📝 Notas: ${proofForm.notes}\n\nAdjuntar el comprobante manualmente en WhatsApp`
     );
-    setTimeout(() => {
-      setSending(false);
-      setStep('done');
-      window.open(`${whatsappBase}?text=${msg}`, '_blank');
-    }, 800);
+    const opened = window.open(`${whatsappBase}?text=${msg}`, '_blank');
+    setSending(false);
+    if (opened) { opened.opener = null; setStep('done'); }
+    else alert('Permite abrir WhatsApp, adjunta la captura y pulsa Enviar.');
   };
 
   return (
@@ -271,15 +239,7 @@ export default function PagosPage() {
 
                   {/* File upload */}
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-primary-dark)', marginBottom: '0.4rem' }}>Adjuntar Comprobante (imagen)</label>
-                    <label htmlFor="proof-file" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', padding: '2rem', border: '2px dashed #cbd5e1', borderRadius: '10px', cursor: 'pointer', backgroundColor: file ? '#f0fdf4' : '#fafafa', transition: 'all 0.2s' }}>
-                      <Upload size={24} style={{ color: file ? '#22c55e' : '#94a3b8' }} />
-                      <span style={{ fontSize: '0.88rem', color: file ? '#166534' : '#64748b', fontWeight: '500' }}>
-                        {file ? `✓ ${file.name}` : 'Haz clic para subir o arrastra la imagen aquí'}
-                      </span>
-                      <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>PNG, JPG, PDF — máx. 10MB</span>
-                    </label>
-                    <input id="proof-file" type="file" accept="image/*,.pdf" onChange={e => setFile(e.target.files[0])} style={{ display: 'none' }} />
+                    <p>Adjunta la imagen o PDF directamente en WhatsApp después de abrirlo.</p>
                   </div>
 
                   <div style={{ backgroundColor: '#fffbeb', borderRadius: '10px', padding: '1rem 1.25rem', border: '1px solid #fde68a', fontSize: '0.85rem', color: '#92400e', lineHeight: 1.5 }}>
@@ -298,13 +258,13 @@ export default function PagosPage() {
           {step === 'done' && (
             <div style={{ textAlign: 'center', padding: '4rem 2rem' }}>
               <div style={{ fontSize: '4rem', marginBottom: '1.5rem' }}>🎉</div>
-              <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', color: 'var(--color-primary-dark)', marginBottom: '1rem' }}>¡Comprobante Enviado!</h2>
+              <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', color: 'var(--color-primary-dark)', marginBottom: '1rem' }}>Resumen preparado para WhatsApp</h2>
               <p style={{ color: '#64748b', fontSize: '1.05rem', maxWidth: '480px', margin: '0 auto 2.5rem', lineHeight: 1.7 }}>
-                Hemos recibido tu comprobante. Lo verificaremos y confirmaremos tu cita o servicio a la brevedad posible.
+                Adjunta el comprobante y pulsa Enviar en WhatsApp. La recepción y el pago se confirmarán después de la revisión del despacho.
               </p>
               <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <button onClick={() => navigate('/booking')} className="btn-primary" style={{ padding: '0.9rem 2rem' }}>Agendar una Cita</button>
-                <button onClick={() => { setStep('select'); setSelectedMethod(null); setProofForm({ name: '', phone: '', amount: '200 Bs', notes: '' }); setFile(null); }} style={{ backgroundColor: '#fff', color: 'var(--color-primary-dark)', border: '1.5px solid var(--color-primary-dark)', padding: '0.9rem 2rem', borderRadius: '10px', fontWeight: '600', cursor: 'pointer', fontSize: '0.95rem' }}>
+                <button onClick={() => { setStep('select'); setSelectedMethod(null); setProofForm({ name: '', phone: '', amount: '200 Bs', notes: '' }); }} style={{ backgroundColor: '#fff', color: 'var(--color-primary-dark)', border: '1.5px solid var(--color-primary-dark)', padding: '0.9rem 2rem', borderRadius: '10px', fontWeight: '600', cursor: 'pointer', fontSize: '0.95rem' }}>
                   Realizar otro pago
                 </button>
               </div>

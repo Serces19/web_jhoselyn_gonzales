@@ -1,0 +1,278 @@
+{
+  "profile": "Administrador",
+  "region": "us-east-1",
+  "account_matches_state": true,
+  "errors": {},
+  "api": {
+    "ApiEndpoint": "https://x4konjc6z6.execute-api.us-east-1.amazonaws.com",
+    "ApiId": "x4konjc6z6",
+    "CorsConfiguration": {
+      "AllowCredentials": false,
+      "AllowHeaders": [
+        "content-type",
+        "authorization"
+      ],
+      "AllowMethods": [
+        "PUT",
+        "POST",
+        "GET",
+        "PATCH",
+        "OPTIONS",
+        "DELETE"
+      ],
+      "AllowOrigins": [
+        "*"
+      ],
+      "MaxAge": 0
+    }
+  },
+  "routes": [
+    {
+      "AuthorizationType": "NONE",
+      "RouteKey": "ANY /api/{proxy+}"
+    }
+  ],
+  "authorizers_count": 0,
+  "lambda": {
+    "Runtime": "python3.11",
+    "Timeout": 30,
+    "MemorySize": 128,
+    "LastModified": "2026-08-27T22:40:11.000+0000",
+    "CodeSha256": "s/QmO1DalcWAvYpkB3YuK0Nyo7CLwEs7h/N9MA5TAwg=",
+    "environment_names": [
+      "APPOINTMENTS_TABLE",
+      "BEDROCK_MODEL_ID",
+      "BLOCKS_TABLE",
+      "BLOG_TABLE",
+      "LEADS_TABLE",
+      "MAX_CHAT_TURNS",
+      "PROBONO_TABLE",
+      "SESSIONS_TABLE",
+      "SNS_TOPIC_ARN"
+    ],
+    "vpc_configured": false
+  },
+  "cognito": {
+    "Policies": {
+      "PasswordPolicy": {
+        "MinimumLength": 8,
+        "RequireUppercase": true,
+        "RequireLowercase": true,
+        "RequireNumbers": true,
+        "RequireSymbols": false,
+        "TemporaryPasswordValidityDays": 7
+      },
+      "SignInPolicy": {
+        "AllowedFirstAuthFactors": [
+          "PASSWORD"
+        ]
+      }
+    },
+    "MfaConfiguration": "OFF",
+    "AdminCreateUserConfig": {
+      "AllowAdminCreateUserOnly": false,
+      "UnusedAccountValidityDays": 7
+    },
+    "UserPoolTier": "ESSENTIALS"
+  },
+  "admins": {
+    "count_first_page": 1,
+    "has_more": false,
+    "enabled": 1
+  },
+  "tables": {
+    "Appointments": {
+      "status": "ACTIVE",
+      "approx_item_count": 4,
+      "bytes": 791,
+      "billing": "PAY_PER_REQUEST",
+      "pitr": "DISABLED"
+    },
+    "AvailabilityBlocks": {
+      "status": "ACTIVE",
+      "approx_item_count": 1,
+      "bytes": 322,
+      "billing": "PAY_PER_REQUEST",
+      "pitr": "DISABLED"
+    },
+    "BlogPosts": {
+      "status": "ACTIVE",
+      "approx_item_count": 0,
+      "bytes": 0,
+      "billing": "PAY_PER_REQUEST",
+      "pitr": "DISABLED"
+    },
+    "ChatLeads": {
+      "status": "ACTIVE",
+      "approx_item_count": 3,
+      "bytes": 1738,
+      "billing": "PAY_PER_REQUEST",
+      "pitr": "DISABLED"
+    },
+    "ChatSessions": {
+      "status": "ACTIVE",
+      "approx_item_count": 10,
+      "bytes": 53335,
+      "billing": "PAY_PER_REQUEST",
+      "pitr": "DISABLED"
+    },
+    "ProBonoRequests": {
+      "status": "ACTIVE",
+      "approx_item_count": 0,
+      "bytes": 0,
+      "billing": "PAY_PER_REQUEST",
+      "pitr": "DISABLED"
+    }
+  },
+  "notification_protocols": [],
+  "amplify": [
+    {
+      "name": "web_jhoselyn_gonzales",
+      "default_domain": "d2caobufsyec5z.amplifyapp.com",
+      "branch": "main",
+      "auto_build": true,
+      "custom_domains": []
+    }
+  ],
+  "account_cost_october_to_13": [
+    {
+      "period": {
+        "Start": "2026-10-01",
+        "End": "2026-10-14"
+      },
+      "estimated": true,
+      "services": [
+        {
+          "service": "AWS Amplify",
+          "Amount": "0.0000000239",
+          "Unit": "USD"
+        },
+        {
+          "service": "AWS CloudFormation",
+          "Amount": "0",
+          "Unit": "USD"
+        },
+        {
+          "service": "AWS Data Transfer",
+          "Amount": "-0.0369715894",
+          "Unit": "USD"
+        },
+        {
+          "service": "AWS Glue",
+          "Amount": "0",
+          "Unit": "USD"
+        },
+        {
+          "service": "AWS Key Management Service",
+          "Amount": "0",
+          "Unit": "USD"
+        },
+        {
+          "service": "AWS Lambda",
+          "Amount": "0",
+          "Unit": "USD"
+        },
+        {
+          "service": "AWS Secrets Manager",
+          "Amount": "-0.0000004832",
+          "Unit": "USD"
+        },
+        {
+          "service": "AWS Service Catalog",
+          "Amount": "0",
+          "Unit": "USD"
+        },
+        {
+          "service": "Amazon API Gateway",
+          "Amount": "-0",
+          "Unit": "USD"
+        },
+        {
+          "service": "Amazon Bedrock",
+          "Amount": "0",
+          "Unit": "USD"
+        },
+        {
+          "service": "Amazon CloudFront",
+          "Amount": "0",
+          "Unit": "USD"
+        },
+        {
+          "service": "Amazon Deadline Cloud",
+          "Amount": "0.0369715893",
+          "Unit": "USD"
+        },
+        {
+          "service": "Amazon DynamoDB",
+          "Amount": "0.0000000528",
+          "Unit": "USD"
+        },
+        {
+          "service": "Amazon EC2 Container Registry (ECR)",
+          "Amount": "0.000000044",
+          "Unit": "USD"
+        },
+        {
+          "service": "EC2 - Other",
+          "Amount": "-0.0000000024",
+          "Unit": "USD"
+        },
+        {
+          "service": "Amazon Registrar",
+          "Amount": "16",
+          "Unit": "USD"
+        },
+        {
+          "service": "Amazon Route 53",
+          "Amount": "-0",
+          "Unit": "USD"
+        },
+        {
+          "service": "Amazon SageMaker",
+          "Amount": "0",
+          "Unit": "USD"
+        },
+        {
+          "service": "Amazon Simple Email Service",
+          "Amount": "0.0000000025",
+          "Unit": "USD"
+        },
+        {
+          "service": "Amazon Simple Notification Service",
+          "Amount": "0",
+          "Unit": "USD"
+        },
+        {
+          "service": "Amazon Simple Queue Service",
+          "Amount": "0",
+          "Unit": "USD"
+        },
+        {
+          "service": "Amazon Simple Storage Service",
+          "Amount": "-0.0000000044",
+          "Unit": "USD"
+        },
+        {
+          "service": "AmazonCloudWatch",
+          "Amount": "0",
+          "Unit": "USD"
+        },
+        {
+          "service": "Claude Haiku 4.5 (Amazon Bedrock Edition)",
+          "Amount": "0",
+          "Unit": "USD"
+        },
+        {
+          "service": "Tax",
+          "Amount": "0",
+          "Unit": "USD"
+        }
+      ]
+    }
+  ],
+  "bedrock_model_regions": [
+    "us-east-1",
+    "us-east-2",
+    "us-west-2"
+  ]
+}

@@ -17,11 +17,10 @@ export default function ContactPage() {
     const msg = encodeURIComponent(
       `Consulta desde web\n\n👤 Nombre: ${form.name}\n📧 Correo: ${form.email}\n📱 Teléfono: ${form.phone}\n📋 Asunto: ${form.subject}\n\n${form.message}`
     );
-    setTimeout(() => {
-      setSending(false);
-      setSent(true);
-      window.open(`${whatsappBase}?text=${msg}`, '_blank');
-    }, 600);
+    const opened = window.open(`${whatsappBase}?text=${msg}`, '_blank');
+    setSending(false);
+    if (opened) { opened.opener = null; setSent(true); }
+    else alert('Permite abrir WhatsApp y envía el mensaje para contactar al despacho.');
   };
 
   const contacts = [
@@ -127,9 +126,9 @@ export default function ContactPage() {
               {sent ? (
                 <div style={{ textAlign: 'center', padding: '3rem 1rem' }}>
                   <div style={{ fontSize: '3.5rem', marginBottom: '1.5rem' }}>✅</div>
-                  <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: 'var(--color-primary-dark)', marginBottom: '0.75rem' }}>¡Mensaje enviado!</h3>
+                  <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: 'var(--color-primary-dark)', marginBottom: '0.75rem' }}>Mensaje preparado para WhatsApp</h3>
                   <p style={{ color: '#64748b', lineHeight: 1.6, marginBottom: '2rem' }}>
-                    Se abrirá WhatsApp con tu mensaje listo. Nos pondremos en contacto a la brevedad posible.
+                    Se abrió WhatsApp con tu mensaje preparado. Revísalo y pulsa Enviar allí; abrir el enlace no confirma recepción.
                   </p>
                   <button onClick={() => setSent(false)} className="btn-secondary">Enviar otro mensaje</button>
                 </div>

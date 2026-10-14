@@ -1,0 +1,5 @@
+resource_prefix = "staging-e0-"
+allowed_origins = ["http://localhost:5173"]
+admin_mfa_mode = "OPTIONAL"
+booking_ready = false
+chat_ai_enabled = false

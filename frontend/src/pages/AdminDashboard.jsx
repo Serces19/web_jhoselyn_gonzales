@@ -1,3 +1,5 @@
+import { adminFetch as fetch, clearApiState } from '../api/client';
+import { currentSession, signOut } from '../api/auth';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -45,11 +47,11 @@ export default function AdminDashboard() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [schedule, setSchedule] = useState(null);
-  
+
   // Appointments modal states
   const [showAddModal, setShowAddModal] = useState(false);
   const [newAppt, setNewAppt] = useState({ name: '', phone: '', email: '', date: '', time: '', reason: '' });
-  
+
   // Appointment edit states
   const [editingAppt, setEditingAppt] = useState(null);
   const [editFormData, setEditFormData] = useState({});
@@ -87,14 +89,11 @@ export default function AdminDashboard() {
   const [selectedLead, setSelectedLead] = useState(null);
   const [newNoteText, setNewNoteText] = useState('');
 
+  const [apiError, setApiError] = useState('');
   useEffect(() => {
-    const token = localStorage.getItem('admin_token');
-    if (!token) {
-      navigate('/login');
-      return;
-    }
-    fetchData();
-  }, []);
+    currentSession().then(() => fetchData()).catch(() => navigate('/login'));
+    return () => clearApiState();
+  }, [navigate]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -114,7 +113,7 @@ export default function AdminDashboard() {
         setAppointments(sorted);
       }
     } catch (e) {
-      console.error(e);
+      setApiError(e.message || 'Error de conexión');
     }
   };
 
@@ -126,7 +125,7 @@ export default function AdminDashboard() {
         setSchedule(data.schedule);
       }
     } catch(e) {
-      console.error(e);
+      setApiError(e.message || 'Error de conexión');
     }
   };
 
@@ -141,7 +140,7 @@ export default function AdminDashboard() {
         fetchAppointments();
       }
     } catch (e) {
-      console.error(e);
+      setApiError(e.message || 'Error de conexión');
     }
   };
 
@@ -159,7 +158,7 @@ export default function AdminDashboard() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('admin_token');
+    signOut(); clearApiState();
     navigate('/login');
   };
 
@@ -177,7 +176,7 @@ export default function AdminDashboard() {
         setNewAppt({ name: '', phone: '', email: '', date: '', time: '', reason: '' });
         fetchAppointments();
       }
-    } catch(e) { console.error(e); }
+    } catch(e) { setApiError(e.message || 'Error de conexión'); }
   };
 
   const handleEditClick = (appt) => {
@@ -197,7 +196,7 @@ export default function AdminDashboard() {
         setEditingAppt(null);
         fetchAppointments();
       }
-    } catch(e) { console.error(e); }
+    } catch(e) { setApiError(e.message || 'Error de conexión'); }
   };
 
   const handleSaveSchedule = async () => {
@@ -210,7 +209,7 @@ export default function AdminDashboard() {
       if (res.ok) {
         alert("Horarios guardados correctamente");
       }
-    } catch(e) { console.error(e); }
+    } catch(e) { setApiError(e.message || 'Error de conexión'); }
   };
 
   const addTimeToSchedule = (day) => {
@@ -237,7 +236,7 @@ export default function AdminDashboard() {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/blog`);
       if (res.ok) { const d = await res.json(); setPosts(d.posts || []); }
-    } catch (e) { console.error(e); }
+    } catch (e) { setApiError(e.message || 'Error de conexión'); }
   };
 
   const openNewPost = () => {
@@ -266,7 +265,7 @@ export default function AdminDashboard() {
       }
       setShowPostEditor(false);
       fetchPosts();
-    } catch (e) { console.error(e); }
+    } catch (e) { setApiError(e.message || 'Error de conexión'); }
   };
 
   const handleDeletePost = async (post_id) => {
@@ -284,20 +283,15 @@ export default function AdminDashboard() {
       if (res.ok) {
         const d = await res.json();
         setLeads(d.leads || []);
+        setSelectedLead(prev => prev ? (d.leads || []).find(item => item.lead_id === prev.lead_id) || null : prev);
       }
     } catch (e) {
-      console.error(e);
+      setApiError(e.message || 'Error de conexión');
     }
   };
 
   const handleUpdateLeadStage = async (lead_id, newStage) => {
     try {
-      // Optimistic update
-      setLeads(prev => prev.map(l => l.lead_id === lead_id ? { ...l, stage: newStage } : l));
-      if (selectedLead && selectedLead.lead_id === lead_id) {
-        setSelectedLead(prev => ({ ...prev, stage: newStage }));
-      }
-
       await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/crm/leads/${lead_id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -305,17 +299,12 @@ export default function AdminDashboard() {
       });
       fetchLeads();
     } catch (e) {
-      console.error(e);
+      setApiError(e.message || 'Error de conexión');
     }
   };
 
   const handleUpdateLeadField = async (lead_id, fields) => {
     try {
-      setLeads(prev => prev.map(l => l.lead_id === lead_id ? { ...l, ...fields } : l));
-      if (selectedLead && selectedLead.lead_id === lead_id) {
-        setSelectedLead(prev => ({ ...prev, ...fields }));
-      }
-
       await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/crm/leads/${lead_id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -323,7 +312,7 @@ export default function AdminDashboard() {
       });
       fetchLeads();
     } catch (e) {
-      console.error(e);
+      setApiError(e.message || 'Error de conexión');
     }
   };
 
@@ -341,11 +330,10 @@ export default function AdminDashboard() {
     const updatedNotes = [newNote, ...currentNotes];
 
     try {
-      setSelectedLead(prev => ({ ...prev, notes: updatedNotes }));
-      setNewNoteText('');
+
       await handleUpdateLeadField(selectedLead.lead_id, { notes: updatedNotes });
     } catch (e) {
-      console.error(e);
+      setApiError(e.message || 'Error de conexión');
     }
   };
 
@@ -395,7 +383,7 @@ export default function AdminDashboard() {
         fetchLeads();
       }
     } catch (e) {
-      console.error(e);
+      setApiError(e.message || 'Error de conexión');
     }
   };
 
@@ -408,7 +396,7 @@ export default function AdminDashboard() {
       setSelectedLead(null);
       fetchLeads();
     } catch (e) {
-      console.error(e);
+      setApiError(e.message || 'Error de conexión');
     }
   };
 
@@ -447,7 +435,7 @@ export default function AdminDashboard() {
 
   // Filtrado de prospectos para el CRM
   const filteredLeads = leads.filter(lead => {
-    const matchesSearch = crmSearch === '' || 
+    const matchesSearch = crmSearch === '' ||
       (lead.client_name && lead.client_name.toLowerCase().includes(crmSearch.toLowerCase())) ||
       (lead.client_phone && lead.client_phone.toLowerCase().includes(crmSearch.toLowerCase())) ||
       (lead.case_summary && lead.case_summary.toLowerCase().includes(crmSearch.toLowerCase())) ||
@@ -467,7 +455,7 @@ export default function AdminDashboard() {
   const wonLeadsCount = leads.filter(l => l.stage === 'GANADO').length;
   const inPipelineCount = leads.filter(l => ['CONTACTADO', 'ASESORIA', 'PROPUESTA'].includes(l.stage)).length;
   const conversionRate = totalLeadsCount > 0 ? Math.round((wonLeadsCount / totalLeadsCount) * 100) : 0;
-  
+
   // Pipeline Value
   const totalPipelineValue = leads.reduce((sum, l) => sum + (Number(l.deal_value) || 0), 0);
   const wonPipelineValue = leads.filter(l => l.stage === 'GANADO').reduce((sum, l) => sum + (Number(l.deal_value) || 0), 0);
@@ -479,6 +467,7 @@ export default function AdminDashboard() {
 
   return (
     <div style={{ backgroundColor: '#f8fafc', minHeight: '100vh', display: 'flex', fontFamily: "'Inter', sans-serif" }}>
+      {apiError && <div role="alert" style={{padding:'1rem',background:'#fef2f2',color:'#991b1b'}}>{apiError}<button onClick={() => {setApiError(''); fetchData();}}>Volver a cargar</button></div>}
       {/* Sidebar */}
       <aside style={{ width: '270px', backgroundColor: '#ffffff', borderRight: '1px solid #e2e8f0', padding: '2rem 1.25rem', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '2.5rem' }}>
@@ -488,9 +477,9 @@ export default function AdminDashboard() {
             <span style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: '600' }}>Dra. Jhoselyn Gonzales</span>
           </div>
         </div>
-        
+
         <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
-          <button 
+          <button
             onClick={() => setActiveTab('crm')}
             style={{
               padding: '0.85rem 1rem',
@@ -525,7 +514,7 @@ export default function AdminDashboard() {
             )}
           </button>
 
-          <button 
+          <button
             onClick={() => setActiveTab('appointments')}
             style={{
               padding: '0.85rem 1rem',
@@ -560,7 +549,7 @@ export default function AdminDashboard() {
             )}
           </button>
 
-          <button 
+          <button
             onClick={() => setActiveTab('availability')}
             style={{
               padding: '0.85rem 1rem',
@@ -581,7 +570,7 @@ export default function AdminDashboard() {
             <span>Horarios Semanales</span>
           </button>
 
-          <button 
+          <button
             onClick={() => setActiveTab('blog')}
             style={{
               padding: '0.85rem 1rem',
@@ -634,7 +623,7 @@ export default function AdminDashboard() {
         {/* ========================================================= */}
         {activeTab === 'crm' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            
+
             {/* KPI Analytics Header */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '1rem' }}>
               <div style={{ backgroundColor: '#fff', padding: '1.25rem', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}>
@@ -681,7 +670,7 @@ export default function AdminDashboard() {
             {/* Filter & Actions Bar */}
             <div style={{ backgroundColor: '#fff', borderRadius: '16px', padding: '1.25rem', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-                
+
                 {/* Search box */}
                 <div style={{ position: 'relative', flex: '1 1 280px', maxWidth: '380px' }}>
                   <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
@@ -908,7 +897,7 @@ export default function AdminDashboard() {
                                   gap: '0.65rem',
                                   transition: 'transform 0.15s, box-shadow 0.15s'
                                 }}>
-                                
+
                                 {/* Top badges */}
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem' }}>
                                   <span style={{
@@ -1309,14 +1298,14 @@ export default function AdminDashboard() {
                 <Check size={18} /> Guardar Horarios
               </button>
             </div>
-            
+
             <div style={{ display: 'grid', gap: '1.5rem' }}>
               {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map(day => {
                 const dayNames = { monday: 'Lunes', tuesday: 'Martes', wednesday: 'Miércoles', thursday: 'Jueves', friday: 'Viernes', saturday: 'Sábado', sunday: 'Domingo' };
                 return (
                   <div key={day} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1rem', paddingBottom: '1.5rem', borderBottom: '1px solid #f1f5f9' }}>
                     <div style={{ width: '120px', fontWeight: '600', color: '#334155' }}>{dayNames[day]}</div>
-                    
+
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', flex: 1 }}>
                       {schedule[day].length === 0 ? (
                         <span style={{ color: '#94a3b8', fontSize: '0.9rem', padding: '0.4rem 0' }}>No atiendes este día</span>
@@ -1333,8 +1322,8 @@ export default function AdminDashboard() {
                     </div>
 
                     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                      <input 
-                        type="time" 
+                      <input
+                        type="time"
                         id={`time-${day}`}
                         style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.9rem', outline: 'none' }}
                       />
@@ -1552,7 +1541,7 @@ export default function AdminDashboard() {
       {selectedLead && (
         <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(15,23,42,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem' }}>
           <div style={{ backgroundColor: '#fff', borderRadius: '16px', padding: '2rem', width: '100%', maxWidth: '780px', maxHeight: '92vh', overflowY: 'auto', boxShadow: '0 25px 50px rgba(0,0,0,0.2)' }}>
-            
+
             {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', borderBottom: '1px solid #f1f5f9', paddingBottom: '1rem' }}>
               <div>
@@ -1584,7 +1573,7 @@ export default function AdminDashboard() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              
+
               {/* Stage Progress Selector Bar */}
               <div>
                 <label style={{ display: 'block', fontWeight: '700', fontSize: '0.85rem', color: '#334155', marginBottom: '0.5rem' }}>
@@ -1847,18 +1836,18 @@ export default function AdminDashboard() {
               <h3 style={{ fontSize: '1.4rem', margin: 0, color: '#0f172a' }}>Nueva Cita Manual</h3>
               <button onClick={() => setShowAddModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}><X size={24} /></button>
             </div>
-            
+
             <form onSubmit={handleCreateAppointment} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <input required type="text" placeholder="Nombre del Cliente" value={newAppt.name} onChange={e => setNewAppt({...newAppt, name: e.target.value})} style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1' }} />
               <input required type="tel" placeholder="WhatsApp" value={newAppt.phone} onChange={e => setNewAppt({...newAppt, phone: e.target.value})} style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1' }} />
-              
+
               <div style={{ display: 'flex', gap: '1rem' }}>
                 <input required type="date" value={newAppt.date} onChange={e => setNewAppt({...newAppt, date: e.target.value})} style={{ flex: 1, padding: '0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1' }} />
                 <input required type="time" value={newAppt.time} onChange={e => setNewAppt({...newAppt, time: e.target.value})} style={{ flex: 1, padding: '0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1' }} />
               </div>
-              
+
               <textarea placeholder="Motivo de la consulta (Opcional)" value={newAppt.reason} onChange={e => setNewAppt({...newAppt, reason: e.target.value})} style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1', minHeight: '80px' }}></textarea>
-              
+
               <button type="submit" style={{ backgroundColor: '#10b981', color: '#fff', border: 'none', padding: '1rem', borderRadius: '8px', fontWeight: '600', fontSize: '1rem', cursor: 'pointer', marginTop: '0.5rem' }}>
                 Guardar Cita (Aprobada)
               </button>
@@ -1877,18 +1866,18 @@ export default function AdminDashboard() {
               <h3 style={{ fontSize: '1.4rem', margin: 0, color: '#0f172a' }}>Editar Cita</h3>
               <button onClick={() => setEditingAppt(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}><X size={24} /></button>
             </div>
-            
+
             <form onSubmit={handleUpdateAppointment} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div>
                 <label style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '0.2rem', display: 'block' }}>Nombre del Cliente</label>
                 <input required type="text" value={editFormData.name || ''} onChange={e => setEditFormData({...editFormData, name: e.target.value})} style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1', width: '100%', boxSizing: 'border-box' }} />
               </div>
-              
+
               <div>
                 <label style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '0.2rem', display: 'block' }}>Teléfono / WhatsApp</label>
                 <input required type="tel" value={editFormData.phone || ''} onChange={e => setEditFormData({...editFormData, phone: e.target.value})} style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1', width: '100%', boxSizing: 'border-box' }} />
               </div>
-              
+
               <div style={{ display: 'flex', gap: '1rem' }}>
                 <div style={{ flex: 1 }}>
                   <label style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '0.2rem', display: 'block' }}>Fecha</label>
@@ -1899,7 +1888,7 @@ export default function AdminDashboard() {
                   <input required type="time" value={editFormData.time || ''} onChange={e => setEditFormData({...editFormData, time: e.target.value})} style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1', width: '100%', boxSizing: 'border-box' }} />
                 </div>
               </div>
-              
+
               <div>
                 <label style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '0.2rem', display: 'block' }}>Motivo</label>
                 <textarea value={editFormData.reason || ''} onChange={e => setEditFormData({...editFormData, reason: e.target.value})} style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1', minHeight: '80px', width: '100%', boxSizing: 'border-box' }}></textarea>
@@ -1913,7 +1902,7 @@ export default function AdminDashboard() {
                   <option value="CANCELLED">Cancelada</option>
                 </select>
               </div>
-              
+
               <button type="submit" style={{ backgroundColor: '#3b82f6', color: '#fff', border: 'none', padding: '1rem', borderRadius: '8px', fontWeight: '600', fontSize: '1rem', cursor: 'pointer', marginTop: '0.5rem' }}>
                 Actualizar Cambios
               </button>

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heart, FileText, CheckCircle, ArrowRight, AlertCircle } from 'lucide-react';
 
 export default function ProBonoPage() {
   const navigate = useNavigate();
+  const requestKey = useRef(null);
   const [form, setForm] = useState({ name: '', phone: '', email: '', location: '', case_type: '', description: '', income: '' });
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
@@ -16,15 +17,16 @@ export default function ProBonoPage() {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/probono`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': requestKey.current || (requestKey.current = crypto.randomUUID()) },
         body: JSON.stringify(form)
       });
       if (res.ok) setSubmitted(true);
+      else { const data = await res.json(); throw new Error(data.error || 'No se pudo guardar la solicitud'); }
     } catch {
       // Fallback: WhatsApp
       const msg = encodeURIComponent(`Solicitud Pro Bono\n\n👤 ${form.name}\n📱 ${form.phone}\n📧 ${form.email}\n📍 ${form.location}\n📋 Tipo: ${form.case_type}\n\nDescripción: ${form.description}`);
       window.open(`${whatsappBase}?text=${msg}`, '_blank');
-      setSubmitted(true);
+      alert('No se confirmó recepción. Se abrió WhatsApp: revisa y envía allí tu solicitud.');
     }
     setSending(false);
   };

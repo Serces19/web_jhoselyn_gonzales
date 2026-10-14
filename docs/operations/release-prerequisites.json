@@ -1,0 +1,31 @@
+{
+  "functions_using_existing_role": [
+    "jhoselyn_web_api"
+  ],
+  "backups": [
+    {
+      "table": "Appointments",
+      "status": "AVAILABLE"
+    },
+    {
+      "table": "AvailabilityBlocks",
+      "status": "AVAILABLE"
+    },
+    {
+      "table": "BlogPosts",
+      "status": "AVAILABLE"
+    },
+    {
+      "table": "ProBonoRequests",
+      "status": "AVAILABLE"
+    },
+    {
+      "table": "ChatLeads",
+      "status": "AVAILABLE"
+    },
+    {
+      "table": "ChatSessions",
+      "status": "AVAILABLE"
+    }
+  ]
+}

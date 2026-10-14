@@ -17,14 +17,8 @@ export default function ChatPage() {
   const [loading, setLoading] = useState(false);
   const [limitReached, setLimitReached] = useState(false);
   const [turnCount, setTurnCount] = useState(0);
-  const [sessionId] = useState(() => {
-    let sId = sessionStorage.getItem('jhoselyn_chat_session_id');
-    if (!sId) {
-      sId = 'session_' + Math.random().toString(36).substring(2, 11) + '_' + Date.now();
-      sessionStorage.setItem('jhoselyn_chat_session_id', sId);
-    }
-    return sId;
-  });
+  const [sessionId, setSessionId] = useState(null);
+  const pendingMessage = useRef(null);
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
 
@@ -39,6 +33,7 @@ export default function ChatPage() {
   const handleSend = async () => {
     const text = input.trim();
     if (!text || loading || limitReached) return;
+    if (pendingMessage.current?.text !== text) pendingMessage.current = { text, key: crypto.randomUUID() };
 
     const userMsg = { id: 'u_' + Date.now(), role: 'user', text };
     setMessages(prev => [...prev, userMsg]);
@@ -53,12 +48,14 @@ export default function ChatPage() {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/chat`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': pendingMessage.current.key },
         body: JSON.stringify({ session_id: sessionId, message: text })
       });
 
       if (res.ok) {
         const data = await res.json();
+        pendingMessage.current = null;
+        if (data.session_id) setSessionId(data.session_id);
         if (data.turn_count) {
           setTurnCount(data.turn_count);
         }

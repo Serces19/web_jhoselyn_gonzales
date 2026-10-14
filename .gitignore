@@ -4,10 +4,16 @@ dist/
 .env.*
 !.env.example
 .terraform/
-.terraform.lock.hcl
 terraform.tfstate
 terraform.tfstate.backup
 __pycache__/
 *.pyc
 .venv/
 lambda_function.zip
+.local-backups/
+.pytest_cache/
+.uv-cache/
+.tools/
+*.tfplan
+*.tfvars
+!*.tfvars.example

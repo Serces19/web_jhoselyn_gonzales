@@ -1,9 +1,10 @@
+import getpass
 import boto3
 
 client = boto3.client('cognito-idp', region_name='us-east-1')
 pool_id = 'us-east-1_WIEGYaEgn'
 email = 'scope.estudio@gmail.com'
-password = 'ScopeEstudio1!'
+password = getpass.getpass("Contraseña administrativa (entrada oculta): ")
 
 try:
     response = client.admin_create_user(

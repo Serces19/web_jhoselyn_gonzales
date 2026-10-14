@@ -1,0 +1,100 @@
+{
+  "api_checks": [
+    {
+      "path": "/api/admin/appointments",
+      "status": 401,
+      "expected": 401,
+      "passed": true
+    },
+    {
+      "path": "/api/appointments",
+      "status": 401,
+      "expected": 401,
+      "passed": true
+    },
+    {
+      "path": "/api/crm/leads",
+      "status": 401,
+      "expected": 401,
+      "passed": true
+    },
+    {
+      "path": "/api/blog",
+      "status": 200,
+      "expected": 200,
+      "passed": true
+    },
+    {
+      "path": "/api/schedule",
+      "status": 200,
+      "expected": 200,
+      "passed": true
+    },
+    {
+      "path": "/api/availability?date=2099-10-13",
+      "status": 200,
+      "expected": 200,
+      "passed": true
+    }
+  ],
+  "lambda_update": "Successful",
+  "booking_ready": "true",
+  "ai_enabled": "false",
+  "mfa": "OPTIONAL",
+  "self_signup_disabled": true,
+  "tables": [
+    {
+      "table": "Appointments",
+      "status": "ACTIVE",
+      "deletion_protected": true,
+      "pitr": "ENABLED"
+    },
+    {
+      "table": "AvailabilityBlocks",
+      "status": "ACTIVE",
+      "deletion_protected": true,
+      "pitr": "ENABLED"
+    },
+    {
+      "table": "BlogPosts",
+      "status": "ACTIVE",
+      "deletion_protected": true,
+      "pitr": "ENABLED"
+    },
+    {
+      "table": "ChatLeads",
+      "status": "ACTIVE",
+      "deletion_protected": true,
+      "pitr": "ENABLED"
+    },
+    {
+      "table": "ChatSessions",
+      "status": "ACTIVE",
+      "deletion_protected": true,
+      "pitr": "ENABLED"
+    },
+    {
+      "table": "ProBonoRequests",
+      "status": "ACTIVE",
+      "deletion_protected": true,
+      "pitr": "ENABLED"
+    },
+    {
+      "table": "OperationControl",
+      "status": "ACTIVE",
+      "deletion_protected": true,
+      "pitr": "ENABLED"
+    },
+    {
+      "table": "BookingSlots",
+      "status": "ACTIVE",
+      "deletion_protected": true,
+      "pitr": "ENABLED"
+    }
+  ],
+  "frontend_job": {
+    "jobId": "20",
+    "status": "SUCCEED",
+    "commitId": "770285cdbb761de33f64c452943e605149e471c9"
+  }
+}

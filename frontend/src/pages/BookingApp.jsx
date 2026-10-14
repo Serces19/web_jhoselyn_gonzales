@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { format, addDays, startOfToday, isSameDay } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -7,6 +7,9 @@ import '../App.css'; // Reusing global styles
 
 export default function BookingApp() {
   const navigate = useNavigate();
+  const pendingRequest = useRef(null);
+  const [bookingError, setBookingError] = useState('');
+  const [saving, setSaving] = useState(false);
   const today = startOfToday();
   const [selectedDate, setSelectedDate] = useState(addDays(today, 1));
   const [selectedTime, setSelectedTime] = useState(null);
@@ -21,10 +24,11 @@ export default function BookingApp() {
         try {
           const res = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/availability?date=${dateStr}`);
           const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'No se pudo consultar la agenda');
           setAvailableTimes(data.available_times || []);
           setSelectedTime(null);
         } catch (e) {
-          console.error("Error fetching availability", e);
+          setBookingError(e.message); setAvailableTimes([]); setSelectedTime(null);
         }
       }
     };
@@ -36,6 +40,8 @@ export default function BookingApp() {
   };
 
   const handleNext = async () => {
+    if (saving) return;
+    setBookingError('');
     if (step === 1 && selectedTime) {
       setStep(2);
     } else if (step === 2) {
@@ -43,6 +49,7 @@ export default function BookingApp() {
         alert("Por favor ingrese su nombre y teléfono.");
         return;
       }
+      setSaving(true);
       try {
         const dateStr = format(selectedDate, 'yyyy-MM-dd');
         const payload = {
@@ -53,20 +60,22 @@ export default function BookingApp() {
             time: selectedTime,
             reason: details.reason || 'Sin motivo especificado'
         };
+        const fingerprint = JSON.stringify(payload);
+        if (pendingRequest.current?.fingerprint !== fingerprint) pendingRequest.current = { fingerprint, key: crypto.randomUUID() };
         const res = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/appointments`, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: {'Content-Type': 'application/json', 'Idempotency-Key': pendingRequest.current.key},
             body: JSON.stringify(payload)
         });
         if(res.ok) {
-           setStep(3);
+           pendingRequest.current = null; setStep(3);
         } else {
-           alert("Error al agendar cita");
+           const data = await res.json();
+           throw new Error(data.error || 'Error al agendar cita');
         }
       } catch (e) {
-          console.error(e);
-          alert("Error de conexión");
-      }
+          setBookingError(e.message || 'Error de conexión');
+      } finally { setSaving(false); }
     }
   };
 
@@ -84,6 +93,8 @@ export default function BookingApp() {
       </header>
 
       <main className="container" style={{ padding: '4rem 1rem', maxWidth: '800px' }}>
+        <p>Horarios del despacho: America/La_Paz (Bolivia).</p>
+        {bookingError && <p role="alert" style={{color:'#991b1b'}}>{bookingError}</p>}
         <button onClick={() => step > 1 ? setStep(step - 1) : navigate('/')} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'none', color: '#4a5568', marginBottom: '2rem', fontSize: '1rem' }}>
           <ArrowLeft size={18} /> Volver
         </button>
@@ -93,7 +104,7 @@ export default function BookingApp() {
             <div className="animate-fade-in">
               <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: 'var(--color-primary-dark)' }}>Agendar Cita</h2>
               <p style={{ color: '#718096', marginBottom: '2rem' }}>Seleccione una fecha y hora disponible. Las consultas duran 1 hora.</p>
-              
+
               <div style={{ display: 'flex', gap: '2rem', flexDirection: 'column' }}>
                 {/* Date Picker (Horizontal Scroll or Grid) */}
                 <div>
@@ -102,13 +113,13 @@ export default function BookingApp() {
                   </h3>
                   <div style={{ display: 'flex', gap: '1rem', overflowX: 'auto', paddingBottom: '1rem' }}>
                     {generateDates().map((date, i) => (
-                      <div 
-                        key={i} 
+                      <div
+                        key={i}
                         onClick={() => setSelectedDate(date)}
-                        style={{ 
-                          minWidth: '65px', 
-                          padding: '0.8rem 0.5rem', 
-                          borderRadius: '12px', 
+                        style={{
+                          minWidth: '65px',
+                          padding: '0.8rem 0.5rem',
+                          borderRadius: '12px',
                           border: isSameDay(date, selectedDate) ? '2px solid var(--color-primary-dark)' : '1px solid #e2e8f0',
                           backgroundColor: isSameDay(date, selectedDate) ? 'var(--color-primary-dark)' : '#fff',
                           color: isSameDay(date, selectedDate) ? '#fff' : 'inherit',
@@ -153,10 +164,10 @@ export default function BookingApp() {
               </div>
 
               <div style={{ marginTop: '3rem', textAlign: 'right' }}>
-                <button 
-                  onClick={handleNext} 
+                <button
+                  onClick={handleNext}
                   disabled={!selectedTime}
-                  className="btn-primary" 
+                  className="btn-primary"
                   style={{ opacity: selectedTime ? 1 : 0.5, cursor: selectedTime ? 'pointer' : 'not-allowed' }}>
                   Continuar
                 </button>
@@ -171,7 +182,7 @@ export default function BookingApp() {
                 Has seleccionado el <strong>{format(selectedDate, "d 'de' MMMM", { locale: es })}</strong> a las <strong>{selectedTime}</strong>.
                 Por favor ingresa tus datos o inicia sesión.
               </p>
-              
+
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <input type="text" placeholder="Nombre completo" className="form-control" value={details.name} onChange={e => setDetails({...details, name: e.target.value})} />
                 <input type="tel" placeholder="Número de WhatsApp" className="form-control" value={details.phone} onChange={e => setDetails({...details, phone: e.target.value})} />
@@ -183,7 +194,7 @@ export default function BookingApp() {
                 <h4 style={{ color: 'var(--color-primary-dark)', marginBottom: '0.75rem', fontWeight: '700', fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   💼 Hermenéutica y Tarifas de la Consulta
                 </h4>
-                
+
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
                   <div style={{ padding: '0.85rem', backgroundColor: '#fff', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
                     <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase' }}>Residentes en Bolivia</span>
@@ -227,7 +238,7 @@ export default function BookingApp() {
               <p style={{ color: '#4a5568', marginBottom: '1.5rem', maxWidth: '540px', margin: '0 auto 1.5rem', lineHeight: 1.6 }}>
                 Tu cita para el <strong>{format(selectedDate, "d 'de' MMMM", { locale: es })} a las {selectedTime}</strong> ha sido agendada con éxito.
               </p>
-              
+
               <div style={{ backgroundColor: '#FAF8F5', borderRadius: '12px', border: '1px solid #EAE5DC', padding: '1.25rem', maxWidth: '500px', margin: '0 auto 2rem', textAlign: 'left', fontSize: '0.9rem', color: '#475569' }}>
                 <strong>Siguiente paso para habilitar tu cita:</strong>
                 <p style={{ margin: '0.5rem 0 0' }}>

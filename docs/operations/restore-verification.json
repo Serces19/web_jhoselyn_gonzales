@@ -1,0 +1,6 @@
+{
+  "table": "staging-e0-restore-appointments-20261014",
+  "source": "Appointments",
+  "started_unix": 1791978191.3456879,
+  "status": "CREATING"
+}

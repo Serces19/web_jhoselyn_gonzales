@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, Tag, ArrowRight, BookOpen } from 'lucide-react';
+import { readCollection } from '../api/public';
 
 export default function BlogPage() {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/blog`)
-      .then(r => r.json())
-      .then(d => { setPosts(d.posts || []); setLoading(false); })
-      .catch(() => setLoading(false));
+    readCollection(`${import.meta.env.VITE_API_ENDPOINT}/api/blog`, 'posts')
+      .then(data => setPosts(data))
+      .catch(err => setError(err.message))
+      .finally(() => setLoading(false));
   }, []);
 
   const whatsappMessage = encodeURIComponent("Hola, me gustaría información sobre sus servicios legales.");
@@ -34,6 +36,7 @@ export default function BlogPage() {
       </header>
 
       <main style={{ paddingTop: '8rem', paddingBottom: '5rem' }}>
+        {error && <p role="alert" style={{textAlign:'center',color:'#991b1b'}}>{error}</p>}
         <div className="container" style={{ maxWidth: '1000px' }}>
           {/* Hero */}
           <div style={{ marginBottom: '4rem', paddingBottom: '3rem', borderBottom: '1px solid #e2e8f0' }}>

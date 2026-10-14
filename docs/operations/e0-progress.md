@@ -5,9 +5,9 @@ Fecha: 2026-10-14, America/La_Paz. Checklist única: [tasks.md](../specs/despach
 | Tarea | Evidencia observada | Remanente |
 |---|---|---|
 | T01 | Inventario real, perfil Administrador y gasto de cuenta | Gasto específico sin atribución completa: desconocido |
-| T02 | Seis backups AVAILABLE, dos states S3/versiones/lock, staging aislado; cuatro citas restauradas idénticas | Plan final sin drift y teardown staging en curso |
+| T02 | Seis backups AVAILABLE, dos states S3/versiones/lock, staging aislado; cuatro citas restauradas idénticas | Cerrada: plan final sin cambios y 32 recursos temporales retirados |
 | T03 | JWT/scope/firma/grupo e IAM reales en staging; privados 401 en producción | Cerrada según tasks |
-| T04 | Usuario confirmó login TOTP; recuperación con MFA ON en staging; autoregistro cerrado | Publicar mejora del mensaje TOTP; pool OPTIONAL por decisión explícita del usuario |
+| T04 | Usuario confirmó login TOTP; recuperación con MFA ON en staging; autoregistro cerrado; mensaje mejorado publicado | Cerrada con pool OPTIONAL por decisión explícita del usuario |
 | T05 | Errores 400/413/422/404/409, decimal, versión y cursor contra Lambda/DynamoDB aislados | Cerrada según tasks |
 | T06 | Tres locks migrados sin conflictos; concurrencia, replay, reschedule/cancelación reales | Cerrada según tasks |
 | T07 | Draft oculto por lista/slug, publicación y slug único; paginación completa sin duplicación | Cerrada según tasks |
@@ -20,7 +20,7 @@ Fecha: 2026-10-14, America/La_Paz. Checklist única: [tasks.md](../specs/despach
 
 Bootstrap: 5 altas; E0: 13 altas y 14 cambios; agenda: 1 cambio. Sin destrucciones en producción. Estados en bucket privado jhoselyn-tfstate-295894327291-us-east-1, claves production/terraform.tfstate y bootstrap/terraform.tfstate, con cifrado/versiones/lockfile. ZIP/configuración Lambda anteriores respaldados en .local-backups/pre-e0-release/. Configuración vigente: infrastructure/production.auto.tfvars.json.
 
-Amplify main job 21 SUCCEED, commit 92f177ad759c51fddaa9441e912b3c0001e46fd5. Login verificado en navegador y usuario confirmó ingreso con autenticador. Mejora posterior del mensaje TOTP en publicación; no modifica factores del usuario.
+Amplify main job 22 SUCCEED, commit dbda76bc8becdb4f968407561cc92a3e167353d4 (job 21 publicó la primera revisión E0). Login verificado en navegador y usuario confirmó ingreso con autenticador. Mejora del mensaje TOTP publicada; no modifica factores del usuario.
 
 - [Producción](deployment-verification.json): públicos 200, privados 401, agenda true, IA false, ocho tablas ACTIVE/PITR/protegidas.
 - [20 comprobaciones de integración](staging-verification.json): JWT real, scope/firma/grupo, TOTP, IAM ConditionCheckItem, concurrencia, reintentos, cancelación y blog.
@@ -28,6 +28,7 @@ Amplify main job 21 SUCCEED, commit 92f177ad759c51fddaa9441e912b3c0001e46fd5. Lo
 - [Recuperación TOTP](mfa-recovery-verification.json): retirar factor del usuario temporal, MFA_SETUP, asociar otro y reingresar, con pool ON. Ningún factor de producción eliminado.
 - [Restore](restore-verification.json): cuatro citas, esquema/contenido idénticos al origen actual. Tiempo observado ~322 s incluye intervalos entre consultas, no es SLA/RTO garantizado ni mide RPO futuro. Tabla temporal eliminada y ausencia confirmada.
 - [CI](ci-status.json): no iniciado por facturación; no equivale a tests fallidos. Suite/build/lint locales sí se ejecutaron.
+- [Limpieza staging](staging-cleanup.json): 32 recursos retirados, state vacío, tablas/pool ausentes. [Plan final de producción](terraform-stability.json): sin cambios, MFA OPTIONAL, agenda habilitada e IA apagada. Ningún recurso productivo destruido.
 
 Terraform AMD64 1.15.4 con SHA256 oficial; AWS 5.100.0/archive 2.8.0 fijados. Datos sintéticos sólo en staging/offline, nunca producción ni interfaces. No hubo inferencia ni avisos externos en las pruebas.
 

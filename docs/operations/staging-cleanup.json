@@ -1,0 +1,7 @@
+{
+  "terraform_resources_remaining": 0,
+  "staging_tables_remaining": 0,
+  "staging_pools_remaining": 0,
+  "removed_managed_resources": 32,
+  "production_resources_destroyed": 0
+}

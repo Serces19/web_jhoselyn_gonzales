@@ -1,0 +1,9 @@
+{
+  "profile": "Administrador",
+  "production_plan": "No changes",
+  "resource_prefix": "",
+  "mfa": "OPTIONAL",
+  "booking_ready": true,
+  "ai_enabled": false,
+  "replaced_or_destroyed_production_resources": 0
+}

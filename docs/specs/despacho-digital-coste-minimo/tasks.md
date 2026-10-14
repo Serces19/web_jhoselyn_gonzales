@@ -11,7 +11,8 @@ Requisitos: [requirements.md](requirements.md). Diseño: [design.md](design.md).
   - Inspeccionar estado Git y configuración AWS efectiva de Gateway, Lambda, Cognito, DynamoDB, Amplify y notificaciones; contrastar con IaC sin imprimir PII/secretos. Obtener gasto por servicio/uso y volumen real disponible.
   - Salida: `docs/operations/baseline.md`, diferencias, tarifas fechadas y recursos sin propietario. Gasto no disponible se marca desconocido.
   - Dependencias: ninguna. _Requirements: R01.1, R01.5, R16.1_
-- [ ] **T02 — Respaldo, state y entornos**
+- [x] **T02 — Respaldo, state y entornos**
+  - Evidencia: S3 states separados/versiones/lock, seis backups, restore de cuatro citas idénticas, staging probado y 32 recursos retirados. Rollout sin destrucciones productivas; plan final [sin cambios](../../operations/terraform-stability.json), [restore](../../operations/restore-verification.json) y [limpieza](../../operations/staging-cleanup.json).
   - Resguardar state/datos; bootstrap bucket S3/versioning/lock, migración del state, versiones providers/lock; staging aislado con misma arquitectura por uso. Comprobar que no se recrean recursos persistentes.
   - Salida: plan revisable, `docs/operations/deploy-rollback.md` y restauración inicial. Verificar dos ejecuciones Terraform sin cambio inesperado.
   - Dependencias: T01. _Requirements: R16.1, R16.2_
@@ -20,7 +21,8 @@ Requisitos: [requirements.md](requirements.md). Diseño: [design.md](design.md).
   - Inventariar método/ruta/alias y cerrar acceso anónimo actual; JWT y permiso Admins; sin fallback público administrativo. Añadir IAM mínimo y matriz de accesos.
   - Salida: tests sin token/vencido/issuer-client incorrectos/no admin/admin en citas, blog write, horario, CRM y pro bono; alias chat/leads incluido.
   - Dependencias: T01 y respaldo inicial T02. _Requirements: R02.1, R02.2, R02.4, R02.5_
-- [ ] **T04 — Cliente autenticado y MFA**
+- [x] **T04 — Cliente autenticado y MFA**
+  - Evidencia: usuario confirmó ingreso con autenticador; job Amplify 22 SUCCEED, refresh/access-token/errores y enrolamiento implementados. Login y usuario sin grupo comprobados con Cognito/Gateway en staging; [recuperación](../../operations/mfa-recovery-verification.json) con pool ON. Política final OPTIONAL por decisión del usuario; no se acredita MFA obligatorio global.
   - Crear cliente API común con access token, refresh, 401/403; login TOTP/enrollment/challenges/recuperación, cierre de auto-registro y eliminación del formulario de registro engañoso.
   - Salida: prueba E2E con admin y usuario sin grupo; logout limpia datos; TOTP/enrollment y recuperación probados con la política aprobada. Usuario decidió mantener MFA OPTIONAL (LC-11); no cambiar a ON. Desplegar coordinado con T03 para evitar ventana pública.
   - Dependencias: T03. _Requirements: R02.3, R02.4_

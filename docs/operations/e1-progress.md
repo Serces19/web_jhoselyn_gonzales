@@ -1,6 +1,6 @@
 # E1 — Desarrollo, evidencia y publicación pendiente
 
-2026-10-14. **Backend E1 publicado y verificado en modo de sólo lectura**; frontend en publicación (`despacho_enabled=true`, `PILOT_ENABLED=false`). No se cargaron expedientes reales ni se migraron leads productivos. E0 conserva funcionamiento, MFA OPTIONAL y alertas USD 20.
+2026-10-14. **Backend y frontend E1 publicados y verificados en modo de sólo lectura** (`despacho_enabled=true`, `PILOT_ENABLED=false`). [Abrir CRM](https://main.d2caobufsyec5z.amplifyapp.com/admin/despacho/). Amplify job 25 SUCCEED, commit b39165b; Terraform final No changes. No se cargaron expedientes reales ni se migraron leads productivos. MFA OPTIONAL, agenda E0, IA apagada y alertas USD 20 conservados.
 
 La revisión automática rechazó inicialmente la propuesta aditiva de **26 recursos E1 en producción**; posteriormente el usuario respondió «Sí, publicar en sólo lectura». Plan regenerado: 26 creaciones, 0 cambios existentes, 0 eliminaciones. [Plan revisable sin secretos](e1-proposed-release.json). `/admin/despacho` se publica en modo revisión, con altas/cambios/jobs deshabilitados en UI y `PILOT_ENABLED=false` comprobado antes de cualquier escritura API. Esta autorización no incluye expedientes reales, migración ni aprobación de conservación profesional.
 
@@ -24,9 +24,9 @@ La revisión automática rechazó inicialmente la propuesta aditiva de **26 recu
 ## Verificación
 
 - **34 pruebas offline**: acceso, alta/replay, versiones de conflicto, dinero/reversos/fondos, importación, identidad comercial, semanas entre meses, saldo vencido, bloqueo productivo y preflight vacío sin acceso a datos.
-- **26 controles productivos**: [evidencia](e1-production-verification.json), configuración de funciones, rechazo de altas/cambios/jobs, CORS, acceso anónimo denegado, IAM público aislado, PITR/índices y MFA OPTIONAL. Invocación administrativa directa verifica guard del handler; sesión real de navegador se comprueba después del frontend.
+- **26 controles productivos**: [evidencia](e1-production-verification.json), configuración de funciones, rechazo de altas/cambios/jobs, CORS, acceso anónimo denegado, IAM público aislado, PITR/índices y MFA OPTIONAL. Invocación administrativa directa verifica guard del handler; [navegador con sesión existente](e1-browser-verification.json) comprueba configuración/lecturas reales y controles deshabilitados, sin credenciales expuestas ni datos simulados.
 - **40 controles AWS**: [reporte](e1-staging-verification.json). JWT/grupo/ID token; IAM público/Core; concurrencia de pagos; vínculo de cita; agenda; cuotas vencidas; Streams/FIFO/rebuild; commit con relay detenido y recuperación por reconciliación; duplicado después de rebuild sin doble cómputo.
-- Lint/build locales pasan; advertencias heredadas de variables sin uso/bundle principal no se convierten en métricas de funcionamiento. Build adicional `VITE_DESPACHO_ENABLED=true` verifica el módulo completo (producción actual tiene flag apagado).
+- Lint/build locales pasan; advertencias heredadas de variables sin uso/bundle principal no se convierten en métricas de funcionamiento. Build con `VITE_DESPACHO_ENABLED=true` verifica el módulo completo; Amplify main tiene flag habilitado y endpoint E1 en la misma API/Cognito. Formularios productivos deshabilitados por modo de revisión.
 - Última muestra AWS: 31 llamadas, mediana 1519.66 ms y máximo 3522.14 ms, incluyendo red/cold start. No certifica objetivos p95 calientes ni experiencia móvil; pendientes del piloto.
 - [Benchmark](e1-benchmark.json): 31 transacciones observadas, 9–30 unidades agregadas. AWS no devolvió desglose WRU/RRU en estas respuestas: costo exacto transaccional no disponible. Se conserva cota del componente reportado y tarifas oficiales, sin presentar monto facturado ni costo total de operación.
 - Dry-run productivo sólo lectura: 3 leads, 3 importables, 3 requieren revisión; ninguna escritura. La conservación/corte real y rollback posterior necesitan validación.
@@ -48,9 +48,9 @@ El Gateway de este despliegue reenvía OPTIONS al handler: éste devuelve 204 va
 
 ## Pendientes antes del piloto y cierre E1
 
-1. Publicación de sólo lectura autorizada: 26 recursos base aplicados, una ruta OPTIONS necesaria y corrección de código privado; terminar publicación/lectura autenticada del frontend. Alarmas: base bruta USD 0.20/mes antes de créditos, más consumo/almacenamiento.
+1. Publicación de sólo lectura completada: 26 recursos base + una ruta OPTIONS necesaria; código privado ajustado para preflight. Alarmas: base bruta USD 0.20/mes antes de créditos, más consumo/almacenamiento. Revisar diseño/campos con la abogada.
 2. Recibir criterios profesionales de conservación/acceso y flujo aceptado por la abogada. Aprobación operativa previa no se declara certificación jurídica. No habilitar escrituras reales hasta resolverlo.
-3. Revisar en móvil/escritorio con la abogada: campos, roles, agenda, cuotas y comprobantes; medir alta y jornada completa. UI no ha recibido aceptación humana ni verificación visual autenticada de extremo a extremo.
+3. Revisar en móvil/escritorio con la abogada: campos, roles, agenda, cuotas y comprobantes; medir alta y jornada completa. Navegación/lectura autenticada de escritorio verificadas técnicamente; no equivalen a aceptación humana ni piloto con escrituras reales. En la visita inicial al panel anterior se observó Failed to fetch; ese panel legacy necesita seguimiento independiente y no se usó para certificar E1.
 4. Snapshot privado y reconciliación/corte de los tres leads reales, con rollback posterior ensayado. Importador probado no equivale a migración productiva concluida.
 5. Medir costo completo por comando (lecturas previas, worker, colas, storage/logs) y p95 caliente separado de cold start. Atribución de canal/margen/CAC completa pertenece a E3; no fabricar gasto/tiempo faltante.
 6. Acta T20 y manual acordado. Recordatorios automáticos E3, documentos E2 y WhatsApp/RAG E4 siguen pendientes y no se anuncian implementados.

@@ -2,7 +2,7 @@
 
 Verificado el 2026-10-14 con el perfil AWS Administrador, cuenta 295894327291, us-east-1.
 
-- Web: https://main.d2caobufsyec5z.amplifyapp.com — Amplify, rama main; job 24 SUCCEED, aviso `/privacidad` publicado y verificado, login TOTP confirmado. Controles de release locales, sin workflow GitHub Actions.
+- Web: https://main.d2caobufsyec5z.amplifyapp.com — Amplify, rama main; job 25 SUCCEED (b39165b), CRM E1 `/admin/despacho/` publicado en sólo lectura y comprobado con sesión existente. Aviso `/privacidad` publicado; login TOTP confirmado. Controles locales, sin GitHub Actions.
 - API: https://x4konjc6z6.execute-api.us-east-1.amazonaws.com — HTTP API payload v2, Lambda jhoselyn_web_api con secure_handler.lambda_handler.
 - Cognito: us-east-1_WIEGYaEgn; cliente 7bnjmrjftms9vgrjksg2shc48b. Autoregistro deshabilitado, grupo Admins, access token/JWT y scope. MFA OPTIONAL por decisión explícita del usuario; cuenta actual con TOTP e ingreso confirmado. No cambiar a ON sin nueva autorización.
 - Datos: Appointments, AvailabilityBlocks, BlogPosts, ChatLeads, ChatSessions, ProBonoRequests, OperationControl y BookingSlots; on-demand, PITR y protección contra borrado. Tres reservas activas migradas sin conflictos; agenda habilitada.
@@ -28,4 +28,4 @@ Controles de release locales en scripts/ops/check_local.py; GitHub Actions retir
 
 ## Publicación E1 autorizada
 
-El usuario autorizó explícitamente publicar los 26 recursos E1 y el CRM en modo de sólo lectura. Despliegue en curso, [avance/evidencia](operations/e1-progress.md). Nueva API `/api/admin/despacho/*`, tabla privada DespachoCore y roles/workers propios; Lambda pública sin acceso a Core. `PILOT_ENABLED=false` bloquea altas/cambios/jobs en servidor y la UI deshabilita esos controles. No se migra ChatLeads ni se crean usuarios o expedientes de prueba productivos. E1 staging pasó 40 controles y fue retirado; 33 tests offline pasan. No declarar piloto aceptado por publicar la revisión.
+El usuario autorizó explícitamente publicar los 26 recursos E1 y el CRM en sólo lectura. Despliegue completado; se agregó una ruta OPTIONS de preflight necesaria, sin abrir lecturas. [Evidencia](operations/e1-progress.md). API `/api/admin/despacho/*`, DespachoCore y roles/workers propios; Lambda pública sin Core. `PILOT_ENABLED=false` bloquea altas/cambios/jobs y la UI los deshabilita. No se migró ChatLeads ni se crearon usuarios/expedientes de prueba productivos. Staging pasó 40 controles y fue retirado; 34 tests offline y 26 controles productivos pasan. Navegación E1 autenticada verificada en navegador, Terraform No changes. Piloto humano/conservación siguen pendientes.

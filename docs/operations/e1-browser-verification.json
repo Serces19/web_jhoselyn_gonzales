@@ -1,0 +1,18 @@
+{
+  "checked_at_utc": "2026-10-14T16:54:22.678554+00:00",
+  "url": "https://main.d2caobufsyec5z.amplifyapp.com/admin/despacho/",
+  "amplify_job": "25",
+  "commit": "b39165b780d40c5cce9ad75372fdc4eed8386128",
+  "mode": "READ_ONLY",
+  "authenticated_existing_session": true,
+  "config_loaded": true,
+  "person_directory_loaded": true,
+  "pipeline_six_stages_loaded": true,
+  "cases_loaded": true,
+  "metrics_current_period_loaded": true,
+  "save_button_disabled": true,
+  "jobs_buttons_disabled": true,
+  "business_records_written": 0,
+  "human_pilot_accepted": false,
+  "mobile_pilot": "PENDING"
+}

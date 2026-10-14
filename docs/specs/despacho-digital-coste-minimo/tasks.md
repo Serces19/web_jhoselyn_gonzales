@@ -69,7 +69,7 @@ Requisitos: [requirements.md](requirements.md). Diseño: [design.md](design.md).
   - Salida: ADR LC-01 y `docs/data/access-patterns.md`; ninguna consulta interactiva depende de scan completo; costo por operación capturado.
   - Dependencias: T11. _Requirements: R01.2, R03.4, R06.1, R06.3_
 - [x] **T13 — Primitivas transaccionales y outbox**
-  - Evidencia técnica: [40 controles staging E1](../../operations/e1-staging-verification.json), incluyendo commit con relay detenido, recuperación por conciliación, marker/rebuild/duplicado sin efecto repetido e IAM público sin Core. Dos DLQ con alarmas; publicación productiva pendiente de autorización, sin efectos externos implementados.
+  - Evidencia técnica: [40 controles staging E1](../../operations/e1-staging-verification.json), incluyendo commit con relay detenido, recuperación por conciliación, marker/rebuild/duplicado sin efecto repetido e IAM público sin Core. Dos DLQ con alarmas; publicación de sólo lectura autorizada/completada y [controles productivos](../../operations/e1-production-verification.json). Sin efectos externos implementados.
   - Versiones, claves idempotentes con payload hash, auditoría, Streams→cola, DLQ y reconciliación de pendientes. IAM público sin lectura core privado.
   - Salida: fallo después de commit no pierde evento; replay no duplica efectos internos; efecto externo ambiguo queda pendiente de revisión.
   - Dependencias: T12. _Requirements: R03.2, R03.3, R03.5, R02.5_

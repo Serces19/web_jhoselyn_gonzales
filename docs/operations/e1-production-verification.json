@@ -110,6 +110,7 @@
   "new_production_users": 0,
   "business_records_written": 0,
   "leads_migrated": 0,
-  "authenticated_gateway_browser_acceptance": "PENDING_USER_LOGIN",
-  "verification_method": "anonymous HTTP, AWS configuration/IAM, privileged direct handler invocation"
+  "authenticated_gateway_browser_acceptance": "TECHNICAL_READ_ONLY_VERIFIED_EXISTING_SESSION",
+  "verification_method": "anonymous HTTP, AWS configuration/IAM, privileged direct handler invocation",
+  "browser_evidence": "e1-browser-verification.json"
 }

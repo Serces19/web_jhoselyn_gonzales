@@ -33,7 +33,7 @@ La revisión automática rechazó aplicar la propuesta aditiva de **26 recursos 
 
 ## Operación reproducible
 
-Activar `.venv\Scripts\activate`, usar `uv run python scripts/ops/check_local.py`. Es local, sin GitHub Actions. Los scripts live están separados de pytest y exigen `--profile Administrador`.
+Activar `.venv\Scripts\activate`, usar `uv run python scripts/ops/check_local.py`. Es local, sin GitHub Actions; check_docs valida enlaces/requisitos/sintaxis y espacios tanto de cambios preparados en Git como sin preparar. Los scripts live están separados de pytest y exigen `--profile Administrador`.
 
 `scripts/ops/e1_staging.py prepare/plan/apply` usa exclusivamente prefix `staging-e1-` y state remoto `staging/e1/terraform.tfstate`; revisa plan sin eliminaciones antes de apply. `test_staging_e1.py` limpia fixtures/usuarios y desactiva consumidores; `destroy-plan/destroy` valida sólo eliminaciones de ese estado. No dejar entorno temporal para uso diario ni mostrar fixtures en interfaces.
 

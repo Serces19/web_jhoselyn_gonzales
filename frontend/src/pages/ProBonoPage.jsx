@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import PrivacyHint from '../components/PrivacyHint';
 import { useNavigate } from 'react-router-dom';
 import { Heart, FileText, CheckCircle, ArrowRight, AlertCircle } from 'lucide-react';
 
@@ -83,7 +84,7 @@ export default function ProBonoPage() {
             <div style={{ marginTop: '1.5rem', padding: '1rem 1.25rem', backgroundColor: 'rgba(220,166,121,0.1)', borderRadius: '10px', borderLeft: '4px solid var(--color-accent)', display: 'flex', gap: '0.75rem' }}>
               <AlertCircle size={18} style={{ color: 'var(--color-accent)', flexShrink: 0, marginTop: '2px' }} />
               <p style={{ color: '#64748b', fontSize: '0.88rem', lineHeight: 1.6, margin: 0 }}>
-                Cada solicitud es evaluada individualmente. La aceptación al programa está sujeta a disponibilidad y criterio del equipo. Nos comprometemos a responder todas las solicitudes.
+                Cada solicitud es evaluada individualmente. La aceptación al programa está sujeta a disponibilidad y criterio del equipo.
               </p>
             </div>
           </div>
@@ -94,7 +95,7 @@ export default function ProBonoPage() {
               <div style={{ fontSize: '4rem', marginBottom: '1.5rem' }}>🙏</div>
               <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', color: 'var(--color-primary-dark)', marginBottom: '1rem' }}>Solicitud Recibida</h3>
               <p style={{ color: '#64748b', lineHeight: 1.7, maxWidth: '480px', margin: '0 auto 2rem' }}>
-                Hemos recibido tu solicitud. La revisaremos con cuidado y nos pondremos en contacto contigo dentro de 3 días hábiles para informarte sobre el estado.
+                Tu solicitud fue guardada para revisión. La aceptación del caso y el plazo de respuesta se coordinan con el despacho; si necesitas seguimiento, contacta por WhatsApp.
               </p>
               <button onClick={() => navigate('/')} className="btn-primary">Volver al inicio</button>
             </div>
@@ -147,6 +148,7 @@ export default function ProBonoPage() {
                   </button>
                 </div>
               </form>
+              <PrivacyHint />
             </div>
           )}
         </div>

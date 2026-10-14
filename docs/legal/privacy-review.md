@@ -1,0 +1,11 @@
+# Aviso de datos y aprobación de contenido
+
+Fecha: 2026-10-14. El usuario autorizó usar el contenido disponible y preparar/publicar el aviso. Esta es aprobación operativa del titular técnico, no una revisión jurídica por la abogada. No se inventaron fotografías, datos bancarios, identidad, plazos legales o garantías de cumplimiento.
+
+Texto público canónico: `frontend/src/pages/PrivacyPage.jsx`, ruta `/privacidad`. Formularios/contacto enlazan el aviso. Describe los campos reales, destino WhatsApp, finalidad, alojamiento AWS Estados Unidos, logs 30 días y ausencia de eliminación automática de citas/solicitudes. IA continúa desactivada; no se promete transferencia a modelos ni eliminación automática. Las solicitudes de acceso/corrección/eliminación se coordinan por el contacto real del despacho; no se afirma tener un módulo automático de derechos.
+
+La aprobación genérica no define un calendario de conservación de expedientes, acreditación profesional, licencias de material externo ni reglas de transferencias internacionales. Esos puntos quedan abiertos antes del piloto con expedientes E1. Mientras tanto, sólo puede avanzar implementación/pruebas aisladas; no interpretar este aviso como certificación legal.
+
+Referencia constitucional de privacidad y protección de datos: [Constitución Política del Estado, Gaceta Oficial](https://www.gacetaoficialdebolivia.gob.bo/app/webroot/archivos/constitucion.pdf), artículos 21.2 y 130–131. El PDF oficial tuvo timeout de descarga en esta sesión; texto de contraste accesible en [artículo 21](https://bolivia.infoleyes.com/articulo/8821), [130](https://bolivia.infoleyes.com/articulo/9309) y [131](https://bolivia.infoleyes.com/articulo/9310). Esta referencia no acredita que sea el marco normativo completo ni una comprobación exhaustiva de reformas. No se infiere un plazo legal de retención.
+
+También se retiraron textos no respaldados: QR oficial en agenda sin QR implementado, reserva presentada como aprobada cuando backend devuelve PENDING_APPROVAL y respuesta Pro Bono prometida en tres días sin entrega acreditada. El resto del contenido existente se conserva bajo la aprobación operativa del usuario; reemplazos de fotos/textos pueden llegar por lotes más adelante.

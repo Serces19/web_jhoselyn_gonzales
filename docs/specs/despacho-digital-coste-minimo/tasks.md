@@ -42,6 +42,7 @@ Requisitos: [requirements.md](requirements.md). Diseño: [design.md](design.md).
   - Salida: borrador público 404; varias páginas completas y sin duplicación; cursor inválido rechazado.
   - Dependencias: T05. _Requirements: R03.4, R04.2_
 - [ ] **T08 — Corregir confirmaciones y contenido**
+  - Usuario aprobó contenido existente operativamente. Aviso factual `/privacidad` y enlaces en formularios implementados; revisión jurídica/retención de expedientes permanece abierta antes del piloto. Ver [privacy-review.md](../../legal/privacy-review.md).
   - Retirar QR decorativo y recepción de comprobante/contacto no acreditada; inventariar activos/tarifas reales, revisar instrucciones y política de datos; recibir lotes de textos/fotos de la abogada.
   - Salida: popup bloqueado o cancelación no muestra enviado; no aparecen datos bancarios inventados; checklist de contenido aprobado.
   - Dependencias: ninguna para corregir estados; datos reales para publicar lote. _Requirements: R04.1, R04.3, R04.4, R04.5_
@@ -49,12 +50,13 @@ Requisitos: [requirements.md](requirements.md). Diseño: [design.md](design.md).
   - Implementar controles OperationControl, cuota global y por sesión/origen, max entrada/salida/iteraciones, historial por turnos, lead idempotente y persistencia versionada. Probar errores de herramientas y segunda llamada.
   - Salida: crear sesiones no supera cuota global; fallo no confirma ficha; duplicados y turnos concurrentes no pierden datos. Desactivar inferencia sin cuota/tarifa configurada.
   - Dependencias: T05. _Requirements: R01.3, R01.4, R13.1, R13.2, R13.3, R13.4, R13.5_
-- [ ] **T10 — Recuperación, alertas y observabilidad mínima**
+- [x] **T10 — Recuperación, alertas y observabilidad mínima**
+  - Usuario aprobó un destinatario y USD 20 mensual, confirmó SNS y recepción de prueba. Project activo, avisos 16/20/pronóstico20, sin hard cap. PITR/logs/alarma/restore comprobados; objetivos futuros del piloto no se declaran medidos. [Verificación](../../operations/alerts-budget-verification.json) y [procedimiento](../../operations/checks-and-alerts.md).
   - PITR, retención logs/redacción, flags, métricas de consumo, alarma de cola/error y presupuesto; canal real de notificación con confirmación. Runbook restore y objetivos medidos.
   - Salida: prueba de recuperación, aviso recibido, fallo visible y gasto estimado/facturado distinguido; presupuesto no se anuncia como hard cap.
   - Dependencias: T02, T09. _Requirements: R01.1, R01.2, R01.5, R05.5, R16.2, R16.5_
 - [ ] **T11 — Puerta E0 y CI**
-  - Separar scripts live, fijar dependencias uv/npm, build/lint/pruebas focalizadas en CI; documentar despliegue coordinado/rollback.
+  - Separar scripts live, fijar dependencias uv/npm, build/lint/pruebas focalizadas antes del release; documentar despliegue coordinado/rollback. LC-12: control local reproducible en lugar de GitHub Actions por decisión del usuario; no exigir resolver facturación GitHub para publicar.
   - Salida: matriz A01–A09 cerrada o con remanentes explícitos no bloqueantes; no cargar expedientes hasta cerrar P0. Registrar evidencia y pendientes reales.
   - Dependencias: T03–T10. _Requirements: R02.1, R03.1, R16.4, R16.5_
 

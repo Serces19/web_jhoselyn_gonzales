@@ -17,6 +17,8 @@ Estado: diseño para implementar; ningún recurso creado por esta spec. Requisit
 | LC-09 | IA optativa y medida por operación | CRM y expedientes siguen disponibles cuando se suspende IA |
 | LC-10 | Recuperación y controles desde E0 | No ahorrar eliminando permisos, PITR o validación de archivos |
 | LC-11 | MFA OPTIONAL por decisión explícita del usuario (2026-10-14) | Cuenta administradora actual inscrita y login TOTP confirmado; recuperación probada con MFA ON en staging. La política OPTIONAL permite usuarios sin factor y no garantiza MFA global. No cambiar a ON sin nueva autorización |
+| LC-12 | Verificación de release local, sin GitHub Actions (2026-10-14) | Usuario no quiere pagar Actions; script ejecuta tests/documentos/lint/build antes del release. Amplify conserva hosting/build AWS; no usar runners persistentes ni contratar CI |
+| LC-13 | Aviso mensual USD 20 por etiquetas (2026-10-14) | AWS Budgets sin acciones, Project=jhoselyn-despacho, SNS compartido con destinatarios confirmados. Umbrales 16/20 y pronóstico 20; no es corte ni garantía de cobertura de cargos no atribuibles |
 
 La elección de DynamoDB y costo mínimo sigue la preferencia del usuario. Cualquier servicio con piso mensual nuevo requiere actualizar ADR y mostrar efecto económico; no se introduce silenciosamente durante implementación.
 

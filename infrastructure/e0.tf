@@ -58,10 +58,10 @@ resource "aws_cloudwatch_log_group" "gateway" {
   retention_in_days = 30
 }
 resource "aws_sns_topic_subscription" "alerts_email" {
-  count     = var.alerts_email == null ? 0 : 1
+  for_each  = local.alert_recipients
   topic_arn = aws_sns_topic.lead_alerts.arn
   protocol  = "email"
-  endpoint  = var.alerts_email
+  endpoint  = each.value
 }
 resource "aws_cloudwatch_metric_alarm" "api_errors" {
   alarm_name          = "${var.resource_prefix}jhoselyn-api-errors"

@@ -14,6 +14,9 @@ terraform {
 
 provider "aws" {
   region = "us-east-1" # Asumiendo us-east-1 (N. Virginia) que es lo estandar y barato
+  default_tags {
+    tags = { Project = "jhoselyn-despacho", ManagedBy = "Terraform" }
+  }
 }
 
 # ---------------------------------------------------------

@@ -1,0 +1,7 @@
+{
+  "production_plan": "Plan: 3 to add, 17 to change, 0 to destroy.",
+  "bootstrap_plan": "Plan: 0 to add, 1 to change, 0 to destroy.",
+  "monthly_usd": 20,
+  "scope_tag": "Project=jhoselyn-despacho",
+  "subscriber_count": 1
+}

@@ -12,6 +12,7 @@ import ProBonoPage from './pages/ProBonoPage';
 import FaqPage from './pages/FaqPage';
 import PagosPage from './pages/PagosPage';
 import ChatPage from './pages/ChatPage';
+import PrivacyPage from './pages/PrivacyPage';
 import './App.css';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path="/faq" element={<FaqPage />} />
         <Route path="/pagos" element={<PagosPage />} />
         <Route path="/chat" element={<ChatPage />} />
+        <Route path="/privacidad" element={<PrivacyPage />} />
       </Routes>
     </BrowserRouter>
   );

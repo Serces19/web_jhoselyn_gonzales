@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PrivacyHint from '../components/PrivacyHint';
 import { useNavigate } from 'react-router-dom';
 import { MapPin, Phone, Mail, MessageCircle, Globe, AtSign, Send } from 'lucide-react';
 
@@ -182,6 +183,7 @@ export default function ContactPage() {
                       Tu información es confidencial y está protegida.
                     </p>
                   </form>
+                  <PrivacyHint />
                 </>
               )}
             </div>

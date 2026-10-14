@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PrivacyHint from '../components/PrivacyHint';
 import { useNavigate } from 'react-router-dom';
 import { format, addDays, startOfToday, isSameDay } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -218,10 +219,11 @@ export default function BookingApp() {
                 </div>
 
                 <a href="/pagos" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', backgroundColor: 'var(--color-primary-dark)', color: '#fff', fontSize: '0.88rem', padding: '0.65rem 1.25rem', borderRadius: '8px', textDecoration: 'none', fontWeight: '600' }}>
-                  💳 Ver Opciones de Pago y QR Oficial →
+                  💳 Ver opciones de pago →
                 </a>
               </div>
 
+              <PrivacyHint />
               <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <button onClick={() => navigate('/login')} style={{ background: 'none', border: 'none', color: 'var(--color-primary-dark)', textDecoration: 'underline', cursor: 'pointer', fontSize: '0.9rem' }}>
                   Acceso Administrativo
@@ -236,13 +238,13 @@ export default function BookingApp() {
               <CheckCircle size={64} color="var(--color-primary)" style={{ margin: '0 auto 1.5rem' }} />
               <h2 style={{ fontSize: '2rem', marginBottom: '1rem', color: 'var(--color-primary-dark)' }}>¡Reserva Registrada!</h2>
               <p style={{ color: '#4a5568', marginBottom: '1.5rem', maxWidth: '540px', margin: '0 auto 1.5rem', lineHeight: 1.6 }}>
-                Tu cita para el <strong>{format(selectedDate, "d 'de' MMMM", { locale: es })} a las {selectedTime}</strong> ha sido agendada con éxito.
+                Tu solicitud para el <strong>{format(selectedDate, "d 'de' MMMM", { locale: es })} a las {selectedTime}</strong> fue guardada y está pendiente de aprobación del despacho.
               </p>
 
               <div style={{ backgroundColor: '#FAF8F5', borderRadius: '12px', border: '1px solid #EAE5DC', padding: '1.25rem', maxWidth: '500px', margin: '0 auto 2rem', textAlign: 'left', fontSize: '0.9rem', color: '#475569' }}>
                 <strong>Siguiente paso para habilitar tu cita:</strong>
                 <p style={{ margin: '0.5rem 0 0' }}>
-                  Realiza el pago correspondiente (<strong>200 Bs</strong> en Bolivia o <strong>20 USD/EUR</strong> desde el exterior) mediante QR o Tarjeta y envía el comprobante a nuestro WhatsApp oficial para enviarte el enlace de videollamada o confirmar la sala en despacho.
+                  Revisa las opciones de pago y coordina con el despacho por WhatsApp. El comprobante se envía allí manualmente; esta página no acredita el pago ni confirma la aprobación de la cita.
                 </p>
               </div>
 

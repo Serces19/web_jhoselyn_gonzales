@@ -566,6 +566,7 @@ export default function LandingPage() {
             <a href="/contacto" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Contacto</a>
             <a href="/probono" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Pro Bono</a>
             <a href="/booking" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Agendar Cita</a>
+            <a href="/privacidad" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none', fontSize: '0.9rem' }}>Privacidad</a>
           </div>
           <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem' }}>© 2026 Jhoselyn Gonzales Abogada · Cochabamba, Bolivia · Hernínas y Oquendo</p>
         </div>

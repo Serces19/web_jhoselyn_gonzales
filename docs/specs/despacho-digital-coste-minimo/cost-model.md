@@ -48,6 +48,8 @@ Escenarios a completar en T01: reposo con datos existentes, actividad real típi
 
 ## Controles de gasto
 
+Decisión del usuario, 2026-10-14: **aviso mensual USD 20 para infraestructura del proyecto**. AWS Budgets por etiqueta Project=jhoselyn-despacho; avisos reales 80%/100% y pronóstico 100%, sin acciones/cortes. No sustituye factura ni fija cuota de IA: ésta permanece apagada. Control de release local sin GitHub Actions. Configuración y límites de atribución: [checks-and-alerts.md](../../operations/checks-and-alerts.md).
+
 1. Cuotas separadas por operación (chat, estructuración, OCR, embeddings, WhatsApp), período y ambiente. Valor por defecto de nuevas funciones: desactivadas hasta configuración; no inventar monto mensual aprobado.
 2. Reserva atómica de unidades/costo conservador antes de llamadas; límites de input/output, archivos/páginas y máximo de herramientas. Reintentos consumen presupuesto reservado; no son gratuitos.
 3. Circuit breaker de operaciones opcionales si se agota cuota o hay tasa de error alta. CRM/lectura/plazos/pagos manuales continúan.

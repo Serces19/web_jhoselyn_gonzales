@@ -10,6 +10,8 @@
 | Revisar implementación E0 y requisitos de rollout | [operations/e0-progress.md](operations/e0-progress.md) |
 | Revisar inventario AWS real y costos de cuenta | [operations/baseline.md](operations/baseline.md) |
 | Coordinar despliegue y recuperación | [operations/deploy-rollback.md](operations/deploy-rollback.md) |
+| Ejecutar pruebas locales y configurar alertas/costos | [operations/checks-and-alerts.md](operations/checks-and-alerts.md) |
+| Revisar aviso de datos y límites de aprobación | [legal/privacy-review.md](legal/privacy-review.md) |
 | Entender dolores y alcance: 77 criterios EARS | [requirements.md](specs/despacho-digital-coste-minimo/requirements.md) |
 | Implementar arquitectura, datos y contratos | [design.md](specs/despacho-digital-coste-minimo/design.md) |
 | Ejecutar/ver estado de trabajo: T01–T36 | [tasks.md](specs/despacho-digital-coste-minimo/tasks.md) |

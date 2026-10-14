@@ -6,7 +6,7 @@ La checklist activa está exclusivamente en [specs/tasks.md](specs/despacho-digi
 
 | Entrega | Tareas | Resultado | Estado |
 |---|---|---|---|
-| E0 | T01–T11 | Acceso, integridad, recuperación, cuotas y CI | Backend/frontend publicados, agenda migrada, staging y recuperación probados. Usuario confirmó TOTP y eligió MFA OPTIONAL. Pendientes contenido, alertas/presupuesto y CI por facturación GitHub |
+| E0 | T01–T11 | Acceso, integridad, recuperación, cuotas y control de release | Backend/frontend publicados, agenda/staging/recuperación probados. TOTP OPTIONAL; controles locales sin Actions. Usuario aprobó contenido operativo, un destinatario y aviso mensual USD 20. Pendientes recepción de avisos y criterios jurídicos del piloto |
 | E1 | T12–T20 | Modelo DynamoDB, CRM, intake, agenda, dinero, KPIs y piloto | Pendiente |
 | E2 | T21–T26 | Documentos privados, cuarentena, biblioteca, plantillas y exportación | Pendiente |
 | E3 | T27–T30 | Recordatorios, reglas verificadas, IA/OCR opcionales y métricas | Pendiente |
@@ -20,4 +20,4 @@ Se completaron auditoría local, preparación de specs y consolidación document
 
 La [matriz](specs/despacho-digital-coste-minimo/traceability.md) mapea A2 a T01–T36. Aurora del antiguo F2/A2-09 fue sustituida por patrones DynamoDB T12; endurecimiento se adelanta a E0/primera entrega con datos. F0–F8 y checklists anteriores permanecen únicamente en [archivo histórico](archive/global_tasks_previous.md).
 
-No hay fecha final comprometida ni presupuesto numérico aprobado. Estimar después de inventario/piloto y actualizar tasks cuando exista evidencia; la minimización de costo fijo es un criterio vigente.
+No hay fecha final comprometida. Umbral mensual de aviso de infraestructura aprobado: USD 20; no es tope de factura ni cuota de IA. Actualizar tasks con evidencia; costo fijo mínimo sigue vigente. E1 puede avanzar en desarrollo aislado; calendario de conservación y obligaciones del despacho se resuelven antes del piloto con expedientes.

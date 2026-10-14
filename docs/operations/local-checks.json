@@ -1,0 +1,22 @@
+{
+  "checked_at_utc": "2026-10-14T12:30:53.439388+00:00",
+  "mode": "local",
+  "checks": [
+    {
+      "name": "documents",
+      "passed": true
+    },
+    {
+      "name": "backend",
+      "passed": true
+    },
+    {
+      "name": "frontend-lint",
+      "passed": true
+    },
+    {
+      "name": "frontend-build",
+      "passed": true
+    }
+  ]
+}

@@ -58,7 +58,26 @@ variable "alerts_email" {
   type    = string
   default = null
 }
+variable "alerts_emails" {
+  description = "Destinatarios confirmados. Cada nuevo correo debe aceptar la suscripción SNS."
+  type        = set(string)
+  default     = []
+  validation {
+    condition     = alltrue([for email in var.alerts_emails : can(regex("^[^ @]+@[^ @]+\\.[^ @]+$", email))])
+    error_message = "Usa direcciones completas de correo."
+  }
+}
+variable "monthly_budget_usd" {
+  description = "Umbral de aviso mensual del proyecto; no es un límite de factura."
+  type        = number
+  default     = null
+  validation {
+    condition     = var.monthly_budget_usd == null ? true : var.monthly_budget_usd > 0
+    error_message = "El presupuesto debe ser positivo."
+  }
+}
 
 locals {
+  alert_recipients = setunion(var.alerts_emails, var.alerts_email == null ? toset([]) : toset([var.alerts_email]))
   public_routes = toset(["GET /api/availability", "GET /api/schedule", "GET /api/blog", "GET /api/blog/{slug}", "POST /api/appointments", "POST /api/chat", "POST /api/probono"])
 }

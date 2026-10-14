@@ -16,6 +16,7 @@ Estado: diseño para implementar; ningún recurso creado por esta spec. Requisit
 | LC-08 | WhatsApp manual primero; API directa candidata para fase E4 | Evita suscripción y recargo del intermediario, pero agrega mantenimiento webhook; comparar con AWS EUM usando volumen real |
 | LC-09 | IA optativa y medida por operación | CRM y expedientes siguen disponibles cuando se suspende IA |
 | LC-10 | Recuperación y controles desde E0 | No ahorrar eliminando permisos, PITR o validación de archivos |
+| LC-11 | MFA OPTIONAL por decisión explícita del usuario (2026-10-14) | Cuenta administradora actual inscrita y login TOTP confirmado; recuperación probada con MFA ON en staging. La política OPTIONAL permite usuarios sin factor y no garantiza MFA global. No cambiar a ON sin nueva autorización |
 
 La elección de DynamoDB y costo mínimo sigue la preferencia del usuario. Cualquier servicio con piso mensual nuevo requiere actualizar ADR y mostrar efecto económico; no se introduce silenciosamente durante implementación.
 
@@ -74,6 +75,8 @@ Mantener el handler actual hasta cerrar acceso; extraer módulos por comportamie
 Gateway JWT valida issuer/audience/expiración. Frontend envía access token de Cognito; backend exige `token_use=access`, client_id esperado y `cognito:groups` con Admins. No aceptar un ID token como autorización administrativa. Inspeccionar configuración real del app client y claims en staging. Middleware común garantiza grupo y permiso por recurso antes de acceder al repositorio.
 
 MFA TOTP: implementar enrollment, challenge, nuevo password cuando corresponda, renovación y recuperación administrativa antes de activarlo. No guardar contraseñas en scripts ni en logs. Evitar datos privados cacheados tras logout; preferir tokens de corta duración y limitar persistencia en navegador. Almacenamiento de token no sustituye permiso servidor.
+
+Implementación E0: enrollment/challenge y recuperación verificados. Mantener pool OPTIONAL conforme a LC-11, con TOTP habilitado en la cuenta actual. El reset administrativo del factor se prueba sólo en staging; nunca desactivar factores reales para probar recuperación.
 
 | Superficie | Público permitido | Privado / acción |
 |---|---|---|

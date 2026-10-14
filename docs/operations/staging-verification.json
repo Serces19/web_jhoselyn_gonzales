@@ -1,0 +1,85 @@
+{
+  "environment": "staging-e0-",
+  "checks": [
+    {
+      "name": "TOTP enrollment",
+      "passed": true
+    },
+    {
+      "name": "TOTP required on next login",
+      "passed": true
+    },
+    {
+      "name": "anonymous denied",
+      "passed": true
+    },
+    {
+      "name": "non-admin denied",
+      "passed": true
+    },
+    {
+      "name": "ID token denied by access scope",
+      "passed": true
+    },
+    {
+      "name": "invalid signature denied",
+      "passed": true
+    },
+    {
+      "name": "admin access JWT",
+      "passed": true
+    },
+    {
+      "name": "real concurrent slot exclusion and IAM ConditionCheckItem",
+      "passed": true
+    },
+    {
+      "name": "idempotent replay",
+      "passed": true
+    },
+    {
+      "name": "atomic reschedule",
+      "passed": true
+    },
+    {
+      "name": "stale version rejected",
+      "passed": true
+    },
+    {
+      "name": "atomic cancellation",
+      "passed": true
+    },
+    {
+      "name": "slots released",
+      "passed": true
+    },
+    {
+      "name": "draft write real IAM",
+      "passed": true
+    },
+    {
+      "name": "draft invisible by slug",
+      "passed": true
+    },
+    {
+      "name": "draft invisible in listing",
+      "passed": true
+    },
+    {
+      "name": "publish existing post",
+      "passed": true
+    },
+    {
+      "name": "published visible",
+      "passed": true
+    },
+    {
+      "name": "slug uniqueness",
+      "passed": true
+    },
+    {
+      "name": "chat disabled without model call",
+      "passed": true
+    }
+  ]
+}

@@ -4,11 +4,13 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import time
 
 import boto3
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.stdout.reconfigure(encoding='utf-8')
 
 
 def main():
@@ -26,6 +28,10 @@ def main():
     terraform = str(ROOT / '.tools/terraform/terraform.exe')
     if args.operation == 'migrate-state':
         for directory, key in [(infrastructure, 'production/terraform.tfstate'), (infrastructure / 'bootstrap', 'bootstrap/terraform.tfstate')]:
+            import json
+            metadata = directory / '.terraform/terraform.tfstate'
+            if metadata.exists() and json.loads(metadata.read_text()).get('backend', {}).get('type') == 's3':
+                raise SystemExit('Already using remote state; do not migrate an old local snapshot')
             shutil.copy2(directory / 'terraform.tfstate', backup / (directory.name + '.tfstate'))
             (directory / 'backend.tf').write_text('terraform {\n  backend "s3" {}\n}\n', encoding='utf-8')
             command = [terraform, 'init', '-migrate-state', '-no-color',

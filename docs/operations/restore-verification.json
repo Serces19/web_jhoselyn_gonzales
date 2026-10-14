@@ -2,5 +2,11 @@
   "table": "staging-e0-restore-appointments-20261014",
   "source": "Appointments",
   "started_unix": 1791978191.3456879,
-  "status": "CREATING"
+  "status": "ACTIVE",
+  "restored_count": 4,
+  "current_source_count": 4,
+  "content_matches_current_source": true,
+  "measured_ready_seconds": 322.3,
+  "keys_match": true,
+  "cleanup": "DELETED_VERIFIED"
 }

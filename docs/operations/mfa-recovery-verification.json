@@ -1,0 +1,10 @@
+{
+  "environment": "staging-e0-",
+  "mfa_required_throughout_recovery": true,
+  "administrative_factor_removal": "passed",
+  "new_login_challenge": "MFA_SETUP",
+  "replacement_registered": true,
+  "next_login_totp_verified": true,
+  "production_users_modified": false,
+  "external_messages_sent": false
+}

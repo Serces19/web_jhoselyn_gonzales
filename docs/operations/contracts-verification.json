@@ -1,0 +1,50 @@
+{
+  "environment": "staging-e0-",
+  "transport": "IAM Lambda invoke; JWT checked in separate suite",
+  "checks": [
+    {
+      "name": "invalid JSON 400, sanitized response",
+      "passed": true
+    },
+    {
+      "name": "body over 32KB 413",
+      "passed": true
+    },
+    {
+      "name": "invalid input 422",
+      "passed": true
+    },
+    {
+      "name": "missing entity 404",
+      "passed": true
+    },
+    {
+      "name": "decimal lead created 0",
+      "passed": true
+    },
+    {
+      "name": "decimal lead created 1",
+      "passed": true
+    },
+    {
+      "name": "pagination complete without duplicates",
+      "passed": true
+    },
+    {
+      "name": "123.45 preserved as exact decimal string",
+      "passed": true
+    },
+    {
+      "name": "invalid cursor 400",
+      "passed": true
+    },
+    {
+      "name": "first optimistic update succeeds",
+      "passed": true
+    },
+    {
+      "name": "stale update 409",
+      "passed": true
+    }
+  ]
+}

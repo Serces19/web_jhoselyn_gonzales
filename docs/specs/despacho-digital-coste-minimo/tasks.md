@@ -15,23 +15,27 @@ Requisitos: [requirements.md](requirements.md). Diseño: [design.md](design.md).
   - Resguardar state/datos; bootstrap bucket S3/versioning/lock, migración del state, versiones providers/lock; staging aislado con misma arquitectura por uso. Comprobar que no se recrean recursos persistentes.
   - Salida: plan revisable, `docs/operations/deploy-rollback.md` y restauración inicial. Verificar dos ejecuciones Terraform sin cambio inesperado.
   - Dependencias: T01. _Requirements: R16.1, R16.2_
-- [ ] **T03 — Contención de rutas privadas**
+- [x] **T03 — Contención de rutas privadas**
+  - Evidencia: 14 tests offline, JWT/Admins/firma/scope reales en staging y endpoints privados 401 en producción. Ver [staging-verification.json](../../operations/staging-verification.json) y [deployment-verification.json](../../operations/deployment-verification.json).
   - Inventariar método/ruta/alias y cerrar acceso anónimo actual; JWT y permiso Admins; sin fallback público administrativo. Añadir IAM mínimo y matriz de accesos.
   - Salida: tests sin token/vencido/issuer-client incorrectos/no admin/admin en citas, blog write, horario, CRM y pro bono; alias chat/leads incluido.
   - Dependencias: T01 y respaldo inicial T02. _Requirements: R02.1, R02.2, R02.4, R02.5_
 - [ ] **T04 — Cliente autenticado y MFA**
   - Crear cliente API común con access token, refresh, 401/403; login TOTP/enrollment/challenges/recuperación, cierre de auto-registro y eliminación del formulario de registro engañoso.
-  - Salida: prueba E2E con admin y usuario sin grupo; logout limpia datos; activar MFA tras probar recuperación. Desplegar coordinado con T03 para evitar ventana pública.
+  - Salida: prueba E2E con admin y usuario sin grupo; logout limpia datos; TOTP/enrollment y recuperación probados con la política aprobada. Usuario decidió mantener MFA OPTIONAL (LC-11); no cambiar a ON. Desplegar coordinado con T03 para evitar ventana pública.
   - Dependencias: T03. _Requirements: R02.3, R02.4_
-- [ ] **T05 — Validación y contrato de errores**
+- [x] **T05 — Validación y contrato de errores**
+  - Evidencia: [contracts-verification.json](../../operations/contracts-verification.json), errores reales y dinero exacto contra Lambda/DynamoDB aislados, además de suite offline.
   - Schemas por ruta, tamaños/enums, dinero exacto, JSON inválido, existencia/versiones; response envelope/request_id, sin detalles internos.
   - Salida: 400/422/404/409/413 reproducibles; 123.45 conserva valor por contrato; ID inexistente no crea registro.
   - Dependencias: T03. _Requirements: R03.1, R03.3, R11.3_
-- [ ] **T06 — Reservas atómicas e idempotentes**
+- [x] **T06 — Reservas atómicas e idempotentes**
+  - Evidencia: tres slots reales migrados sin conflictos; concurrencia, replay, reprogramación y cancelación atómicos en [staging-verification.json](../../operations/staging-verification.json); agenda pública 200.
   - Crear locks de slots, versionar horarios, fijar estado inicial, validar zona/fecha y migrar citas existentes detectando duplicados; transacciones cancelar/reprogramar y claves persistidas.
   - Salida: dos solicitudes concurrentes → una reserva; reintento devuelve mismo ID; ningún cambio parcial si falla transacción.
   - Dependencias: T05. _Requirements: R03.2, R05.1, R05.2, R05.3, R05.4_
-- [ ] **T07 — Blog y paginación**
+- [x] **T07 — Blog y paginación**
+  - Evidencia: borrador oculto/lista/slug, publicación y unicidad reales en staging; cursor completo/sin duplicados/rechazo inválido en [contracts-verification.json](../../operations/contracts-verification.json); suite offline y frontend desplegado consumen paginación.
   - Separar consulta admin/pública, comprobar published por lista/slug, índice/mapa slug único; cursores de citas/leads/blog y estados error vacíos diferenciados.
   - Salida: borrador público 404; varias páginas completas y sin duplicación; cursor inválido rechazado.
   - Dependencias: T05. _Requirements: R03.4, R04.2_

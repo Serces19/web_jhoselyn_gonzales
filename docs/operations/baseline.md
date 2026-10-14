@@ -1,5 +1,7 @@
 # E0 — Baseline e inventario
 
+**Registro histórico previo al rollout del 2026-10-14.** La configuración vigente y su verificación están en [current-state](../current-state.md) y [deployment-verification.json](deployment-verification.json). Conservar este archivo como evidencia del antes.
+
 Perfil comprobado: **Administrador** (mayúscula), región us-east-1, misma cuenta del state local. Inventario en [aws-inventory.json](aws-inventory.json). Se consultaron configuración y metadatos; no se imprimieron registros de clientes ni secretos.
 
 ## Configuración desplegada comprobada
@@ -18,4 +20,4 @@ Cost Explorer devolvió **gasto estimado de la cuenta completa** para 2026-10-01
 
 ## Trabajo local frente a producción
 
-Las correcciones E0 están preparadas localmente; este inventario describe la configuración anterior aún desplegada. JWT/roles/UI, reservas y controles no protegen producción hasta rollout verificado. MFA se preparó OPTIONAL para enrollment; ON y recuperación requieren prueba de la administradora antes del cierre de T04. IA nueva queda desactivada hasta cuota/tarifa confirmada.
+Este inventario describe la configuración anterior al rollout. Backend y frontend E0 ya se publicaron; evidencia en [e0-progress](e0-progress.md). MFA quedó OPTIONAL para enrollment; ON y recuperación requieren prueba de la administradora antes del cierre de T04. IA permanece desactivada hasta cuota/tarifa confirmada.

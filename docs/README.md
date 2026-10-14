@@ -1,6 +1,6 @@
 # Documentación del proyecto
 
-**Fuente única de documentación: `docs/`.** Las specs tienen una sola copia en `docs/specs/despacho-digital-coste-minimo/`. E0 está en implementación: [avance y evidencia](operations/e0-progress.md), [inventario AWS real](operations/baseline.md) y [rollout/rollback](operations/deploy-rollback.md). No se desplegó todavía el nuevo backend/frontend.
+**Fuente única de documentación: `docs/`.** Las specs tienen una sola copia en `docs/specs/despacho-digital-coste-minimo/`. Backend y frontend E0 desplegados el 2026-10-14: [avance y evidencia](operations/e0-progress.md), [baseline anterior](operations/baseline.md) y [rollout/rollback](operations/deploy-rollback.md). E0 sigue abierto hasta completar pruebas operativas y humanas.
 
 ## Qué leer según la necesidad
 
@@ -52,4 +52,4 @@ La separación es por propósito: estado existente, objetivo requerido, tareas y
 
 E0: cerrar seguridad/integridad y establecer recuperación/costos. E1: CRM, alta, agenda, dinero y métricas. E2: biblioteca/plantillas/procedimientos. E3: recordatorios y automatización selectiva. E4: WhatsApp API/RAG bajo decisión económica. Dependencias y criterios exactos: [tasks.md](specs/despacho-digital-coste-minimo/tasks.md).
 
-La auditoría y las specs no han desplegado módulos nuevos. Siguen pendientes inventario/factura AWS, contenido real, reglas jurídicas, retención, SIAT, licencias y condiciones Meta. Esos datos no se sustituyen por ejemplos ficticios.
+El inventario AWS se contrastó y E0 se desplegó; gasto específico del proyecto sigue sin atribución completa. Siguen pendientes contenido aprobado, reglas jurídicas, retención, SIAT, licencias y condiciones Meta. Esos datos no se sustituyen por ejemplos ficticios. CRM/documentos/RAG corresponden a entregas posteriores.

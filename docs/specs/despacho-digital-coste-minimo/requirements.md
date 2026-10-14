@@ -1,10 +1,10 @@
 # Requirements — Despacho Digital con costo fijo mínimo
 
-Estado: especificación propuesta para implementación. Fecha: 2026-10-13. Idioma: español. Prioridad aprobada por el usuario: mantener costos fijos lo más cerca de cero posible. La creación de specs no implica despliegue ni implementación.
+Estado: especificación por fases; E0 desplegado parcialmente el 2026-10-14, con evidencias y remanentes en operations. Idioma: español. Prioridad aprobada por el usuario: mantener costos fijos lo más cerca de cero posible. La creación de specs no implica despliegue ni implementación de las fases posteriores.
 
 ## Contexto y alcance
 
-Producto para una abogada independiente en Cochabamba: web pública, captación, clientes, expedientes, agenda, finanzas, documentos y procedimientos. El sistema actual usa React/Vite, Lambda, API Gateway HTTP API, Cognito y DynamoDB. La [segunda auditoría](../../audits/11_segunda_auditoria_2026-10-13.md) acredita fallos locales de acceso e integridad. AWS desplegado y gasto actual aún no se han inventariado.
+Producto para una abogada independiente en Cochabamba: web pública, captación, clientes, expedientes, agenda, finanzas, documentos y procedimientos. El sistema actual usa React/Vite, Lambda, API Gateway HTTP API, Cognito y DynamoDB. La [segunda auditoría](../../audits/11_segunda_auditoria_2026-10-13.md) acredita los fallos anteriores de acceso e integridad. AWS se inventarió; gasto específico del despacho sigue sin atribución completa.
 
 Decisión base: conservar DynamoDB on-demand; incorporar S3 privado y ejecución por eventos. Aurora, Neptune, OpenSearch, servidores persistentes y suscripciones de terceros quedan fuera del núcleo inicial. IA y WhatsApp automatizado son capacidades activables por fase y presupuesto. La biblioteca y los procedimientos deben funcionar sin ellas.
 
@@ -49,7 +49,7 @@ Historia: como abogada, quiero que mis expedientes sólo sean accesibles a perso
 
 - **R02.1:** CUANDO una ruta privada reciba una solicitud sin token válido, EL SISTEMA DEBERÁ responder 401 sin datos privados.
 - **R02.2:** CUANDO exista identidad válida sin permiso, EL SISTEMA DEBERÁ responder 403; para IDs privados ajenos podrá responder 404 para evitar enumeración.
-- **R02.3:** MIENTRAS una administradora use el panel, EL SISTEMA DEBERÁ exigir membresía Admins validada en servidor, MFA TOTP y sesiones con expiración/renovación manejadas.
+- **R02.3:** MIENTRAS una administradora use el panel, EL SISTEMA DEBERÁ exigir membresía Admins validada en servidor y sesiones con expiración/renovación manejadas, y soportar configuración y challenge MFA TOTP según la política Cognito aprobada. Decisión explícita del usuario del 2026-10-14: mantener MFA OPTIONAL; la cuenta actual tiene TOTP verificado. OPTIONAL permite cuentas sin factor y no equivale a MFA obligatorio global.
 - **R02.4:** CUANDO se retiren rutas antiguas, EL SISTEMA DEBERÁ impedir que `/api/chat/leads`, `/api/crm/leads` o el proxy genérico eludan el control; auto-registro estará cerrado.
 - **R02.5:** CUANDO se acceda a un expediente, archivo, resultado de búsqueda o exportación, EL SISTEMA DEBERÁ verificar autorización sobre el recurso y registrar acceso sin copiar contenido sensible a logs.
 

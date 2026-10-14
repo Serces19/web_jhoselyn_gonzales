@@ -1,0 +1,13 @@
+{
+  "run_id": 38559029506,
+  "commit": "92f177ad759c51fddaa9441e912b3c0001e46fd5",
+  "status": "blocked_before_execution",
+  "reason": "The job was not started because your account is locked due to a billing issue.",
+  "jobs": [
+    "backend",
+    "frontend"
+  ],
+  "url": "https://github.com/Serces19/web_jhoselyn_gonzales/actions/runs/38559029506",
+  "local_backend": "14 passed",
+  "local_frontend": "build passed; lint passed with warnings"
+}

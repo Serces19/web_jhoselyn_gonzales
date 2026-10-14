@@ -2,7 +2,7 @@
 
 Proyecto del despacho de la Dra. Jhoselyn Gonzales en Cochabamba, Bolivia. React/Vite, API Gateway HTTP API, Lambda Python, Cognito y DynamoDB. Backend E0 desplegado y contrastado en AWS el 2026-10-14; IA desactivada mientras no exista una cuota aprobada.
 
-**Toda la documentación del proyecto está en [docs/](docs/README.md).** E0 sigue abierto por validaciones humanas y operativas; [progreso y pendientes](docs/operations/e0-progress.md). El plan conserva costo fijo mínimo con DynamoDB on-demand y S3 privado. Frontend en publicación coordinada mediante Amplify.
+**Toda la documentación del proyecto está en [docs/](docs/README.md).** Backend/frontend E0 publicados; [progreso y pendientes](docs/operations/e0-progress.md). El plan conserva costo fijo mínimo con DynamoDB on-demand y S3 privado. E0 sigue abierto por contenido aprobado, alertas/presupuesto y CI bloqueado por facturación GitHub. MFA OPTIONAL por decisión del usuario; cuenta actual con TOTP confirmado.
 
 ## Mapa
 

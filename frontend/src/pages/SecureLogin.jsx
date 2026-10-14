@@ -17,7 +17,10 @@ export default function SecureLogin() {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
-  const fail = err => { setError(err.message || 'No se pudo iniciar sesión'); setBusy(false); };
+  const fail = err => {
+    setError(err.code === 'ExpiredCodeException' ? 'Espera el siguiente código del autenticador e inténtalo de nuevo.' : (err.message || 'No se pudo iniciar sesión'));
+    setBusy(false);
+  };
   const callbacks = {
     onSuccess: async () => {
       try {
@@ -61,7 +64,7 @@ export default function SecureLogin() {
         onSuccess: () => user.current.setUserMfaPreference(null, { Enabled: true, PreferredMfa: true }, err => {
           if (err) { fail(err); return; }
           user.current.signOut(); setSecret(''); setCode(''); setPassword(''); setStage('password'); setBusy(false);
-          setError('Autenticador configurado. Inicia sesión de nuevo para comprobar el código.');
+          setError('Autenticador configurado. Espera el siguiente código e inicia sesión de nuevo para comprobarlo.');
         }),
       });
     }

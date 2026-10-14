@@ -6,7 +6,7 @@ La checklist activa está exclusivamente en [specs/tasks.md](specs/despacho-digi
 
 | Entrega | Tareas | Resultado | Estado |
 |---|---|---|---|
-| E0 | T01–T11 | Acceso, integridad, recuperación, cuotas y CI | Backend desplegado, agenda migrada y habilitada; frontend en publicación. Pendientes MFA humano, staging integral, alertas y puerta de salida |
+| E0 | T01–T11 | Acceso, integridad, recuperación, cuotas y CI | Backend/frontend publicados, agenda migrada, staging y recuperación probados. Usuario confirmó TOTP y eligió MFA OPTIONAL. Pendientes contenido, alertas/presupuesto y CI por facturación GitHub |
 | E1 | T12–T20 | Modelo DynamoDB, CRM, intake, agenda, dinero, KPIs y piloto | Pendiente |
 | E2 | T21–T26 | Documentos privados, cuarentena, biblioteca, plantillas y exportación | Pendiente |
 | E3 | T27–T30 | Recordatorios, reglas verificadas, IA/OCR opcionales y métricas | Pendiente |
